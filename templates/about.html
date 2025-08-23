@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}{{ data.personal_info.name }} - About{% endblock %}
+
+{% block content %}
+<!-- About Hero Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">About Me</h1>
+                <p class="lead mb-4">{{ data.personal_info.bio }}</p>
+                <div class="row">
+                    <div class="col-6">
+                        <p><strong>Location:</strong><br>{{ data.personal_info.location }}</p>
+                        <p><strong>Email:</strong><br>{{ data.personal_info.email }}</p>
+                    </div>
+                    <div class="col-6">
+                        <p><strong>Phone:</strong><br>{{ data.personal_info.phone }}</p>
+                        <p><strong>Available:</strong><br>For new opportunities</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary me-3">
+                        <i class="bi bi-envelope me-2"></i>Get In Touch
+                    </a>
+                    <a href="{{ url_for('download_resume') }}" class="btn btn-outline-primary">
+                        <i class="bi bi-download me-2"></i>Download Resume
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="{{ url_for('static', filename='images/profile.jpg') }}" 
+                     alt="{{ data.personal_info.name }}" 
+                     class="img-fluid rounded shadow-lg"
+                     onerror="this.src='{{ url_for('static', filename='images/default-profile.jpg') }}'">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-6 fw-bold mb-5">Technical Skills</h2>
+            </div>
+        </div>
+        
+        <!-- Programming Languages -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="h4 mb-4">Programming Languages</h3>
+                <div class="row">
+                    {% for skill in data.skills.programming_languages %}
+                    <div class="col-lg-6 mb-3">
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-medium">{{ skill.name }}</span>
+                                <span class="text-muted">{{ skill.level }}%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-primary" style="width: {{ skill.level }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Frameworks & Libraries -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="h4 mb-4">Frameworks & Libraries</h3>
+                <div class="row">
+                    {% for skill in data.skills.frameworks_libraries %}
+                    <div class="col-lg-6 mb-3">
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-medium">{{ skill.name }}</span>
+                                <span class="text-muted">{{ skill.level }}%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-success" style="width: {{ skill.level }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools & Technologies -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="h4 mb-4">Tools & Technologies</h3>
+                <div class="row">
+                    {% for skill in data.skills.tools_technologies %}
+                    <div class="col-lg-6 mb-3">
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-medium">{{ skill.name }}</span>
+                                <span class="text-muted">{{ skill.level }}%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-warning" style="width: {{ skill.level }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Certifications Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-6 fw-bold mb-5">Certifications</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for cert in data.certifications %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="bi bi-award fs-1 text-primary mb-3"></i>
+                        <h5 class="card-title fw-bold">{{ cert.name }}</h5>
+                        <p class="card-text text-muted">{{ cert.issuer }}</p>
+                        <p class="card-text"><small class="text-muted">Issued: {{ cert.date }}</small></p>
+                        {% if cert.link %}
+                        <a href="{{ cert.link }}" class="btn btn-outline-primary btn-sm" target="_blank">View Certificate</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Languages Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-6 fw-bold mb-5">Languages</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for language in data.languages %}
+            <div class="col-md-4 mb-4">
+                <div class="text-center">
+                    <div class="language-badge mb-3">
+                        <i class="bi bi-translate fs-1 text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold">{{ language.name }}</h5>
+                    <p class="text-muted">{{ language.level }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Interests Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-6 fw-bold mb-5">Interests</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for interest in data.interests %}
+            <div class="col-md-4 col-6 mb-3">
+                <div class="text-center">
+                    <span class="badge bg-primary fs-6 px-3 py-2">{{ interest }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

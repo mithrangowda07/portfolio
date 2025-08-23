@@ -1,0 +1,179 @@
+{
+  "personal_info": {
+    "name": "Mithra N Gowda",
+    "tagline": "Software Development Intern | AI/ML Enthusiast | Full Stack Developer",
+    "location": "Bengaluru, Karnataka 560059",
+    "phone": "9740569178",
+    "email": "mithrangowda01@gmail.com",
+    "bio": "I am a passionate software development intern at Schneider Electric with expertise in AI/ML, web development, and IoT. I love building innovative solutions that solve real-world problems.",
+    "social_links": {
+      "linkedin": "https://linkedin.com/in/mithra-n-gowda",
+      "github": "https://github.com/mithrangowda07"
+    }
+  },
+
+  "education": [
+    {
+      "institution": "R V College of Engineering",
+      "degree": "BE in Information Science and Engineering",
+      "location": "Bengaluru, Karnataka",
+      "start_date": "Aug 2023",
+      "end_date": "2027",
+      "cgpa": "9.10",
+      "description": "Currently pursuing Information Science and Engineering with focus on Data Structures, Algorithms, and Web Development"
+    },
+    {
+      "institution": "Sri Sathya Sai Loka Seva PU College, Alike",
+      "degree": "PUC - PCMB",
+      "location": "Dakshina Kannada, Karnataka",
+      "start_date": "Sep 2021",
+      "end_date": "Mar 2023",
+      "percentage": "97.77",
+      "description": "Completed Pre-University Course with Physics, Chemistry, Mathematics, and Biology"
+    }
+  ],
+
+  "relevant_coursework": [
+    "Data Structures",
+    "Algorithms Analysis",
+    "Data Science",
+    "Web Development",
+    "Operating Systems",
+    "Computer Networks"
+  ],
+
+  "experience": [
+    {
+      "role": "Software Development Intern",
+      "company": "Schneider Electric",
+      "location": "Bengaluru, Karnataka",
+      "start_date": "July 2025",
+      "end_date": "Present",
+      "description": "Developing AI-powered home automation system with error detection capabilities",
+      "responsibilities": [
+        "Collaborating in a team of 4 members under the guidance of a Senior Architect.",
+        "Developing a prototype for detecting errors in a home automation system using event sourcing logs and AI.",
+        "Collecting large-scale sensor and system event data, including deliberately introduced faults, to train AI models for anomaly detection and corrective action recommendations.",
+        "Integrating AI with system code access to enable autonomous optimization, real-time decision-making, and providing suggestions for detected errors."
+      ]
+    }
+  ],
+
+  "projects": [
+    {
+      "title": "College Match",
+      "tech_stack": ["Python", "HTML", "CSS", "JavaScript", "Django", "SQLite", "Twilio"],
+      "date": "Feb 2025",
+      "github_link": "https://github.com/mithrangowda07/college-match",
+      "demo_link": "",
+      "description": [
+        "Developed a web app using Django for KCET counseling aspirants, designed to produce a personalized list of colleges.",
+        "The data of previous year's cutoffs, used to recommend colleges, is stored in SQLite.",
+        "The app aims to reduce the need for personal counselors by allowing current college students to interact with users and provide information about their college."
+      ],
+      "features": [
+        "Personalized college recommendations based on KCET scores",
+        "Interactive platform for student-counselor communication",
+        "Historical cutoff data analysis"
+      ]
+    },
+    {
+      "title": "AI-Powered Smart Glasses for Glaucoma Detection",
+      "tech_stack": ["Flask", "TensorFlow", "Next.js", "CSS", "ESP32", "Sensors"],
+      "date": "Mar 2025",
+      "github_link": "https://github.com/mithrangowda07/smart-glasses",
+      "demo_link": "",
+      "description": [
+        "Smart glasses built with a high-speed camera and sensors using ESP32/SDM microcontroller to measure intraocular pressure (IOP) and cup-to-disc ratio.",
+        "Sensor data is sent to a TensorFlow-based ML model, and predictions are used by the Gemini API for automated report generation.",
+        "User interface developed using Next.js and CSS, with Flask and TensorFlow handling backend processing and model inference."
+      ],
+      "features": [
+        "Real-time IOP measurement",
+        "AI-powered glaucoma detection",
+        "Automated report generation",
+        "Mobile-responsive web interface"
+      ]
+    }
+  ],
+
+  "skills": {
+    "programming_languages": [
+      {"name": "Python", "level": 90},
+      {"name": "C", "level": 85},
+      {"name": "C++", "level": 80},
+      {"name": "HTML/CSS", "level": 85},
+      {"name": "JavaScript", "level": 75},
+      {"name": "Matlab", "level": 70}
+    ],
+    "frameworks_libraries": [
+      {"name": "Django", "level": 85},
+      {"name": "Flask", "level": 80},
+      {"name": "TensorFlow", "level": 75},
+      {"name": "Next.js", "level": 70}
+    ],
+    "tools_technologies": [
+      {"name": "Linux", "level": 85},
+      {"name": "GitHub", "level": 90},
+      {"name": "Power BI", "level": 75},
+      {"name": "ThingSpeak", "level": 80},
+      {"name": "SQLite", "level": 80}
+    ]
+  },
+
+  "leadership_extracurricular": [
+    {
+      "organization": "National Service Scheme (NSS)",
+      "role": "Volunteer",
+      "location": "RVCE",
+      "start_date": "Jan 2024",
+      "end_date": "Present",
+      "activities": [
+        "Engaged in community service initiatives by organizing and contributing to blood donation camps, cleanliness drives, and awareness programs.",
+        "Fostering social responsibility and civic engagement."
+      ]
+    }
+  ],
+
+  "achievements": [
+    {
+      "title": "VTU State level Volleyball Competition Winners",
+      "date": "Feb 2024",
+      "description": "Led team to victory in state-level volleyball competition"
+    },
+    {
+      "title": "Runner up - Avinya 2025 National Level Hackathon",
+      "date": "Mar 2025",
+      "description": "Secured runner-up position in national hackathon at MVGCE College of Engineering, Bengaluru"
+    },
+    {
+      "title": "Runner up - Hackwise 2025 National Level Hackathon",
+      "date": "April 2025",
+      "description": "Achieved runner-up position in national hackathon at KVGCE College of Engineering, Mangalore"
+    }
+  ],
+
+  "certifications": [
+    {
+      "name": "Python Programming",
+      "issuer": "Coursera",
+      "date": "2024",
+      "link": ""
+    }
+  ],
+
+  "languages": [
+    {"name": "English", "level": "Fluent"},
+    {"name": "Kannada", "level": "Native"},
+    {"name": "Hindi", "level": "Conversational"}
+  ],
+
+  "interests": [
+    "Artificial Intelligence & Machine Learning",
+    "IoT and Embedded Systems",
+    "Web Development",
+    "Competitive Programming",
+    "Volleyball",
+    "Community Service"
+  ]
+}
