@@ -1,5 +1,5 @@
 {
-  "name": "temp-nextjs",
+  "name": "portfolio-nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/nodemailer": "^7.0.1",
     "lucide-react": "^0.541.0",
     "next": "15.5.0",
+    "nodemailer": "^7.0.5",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },

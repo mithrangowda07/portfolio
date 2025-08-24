@@ -8,7 +8,9 @@
     "bio": "I am a passionate software development intern at Schneider Electric with expertise in AI/ML, web development, and IoT. I love building innovative solutions that solve real-world problems.",
     "social_links": {
       "linkedin": "https://linkedin.com/in/mithra-n-gowda",
-      "github": "https://github.com/mithrangowda07"
+      "github": "https://github.com/mithrangowda07",
+      "instagram": "https://instagram.com/mithrangowda_01",
+      "leetcode": "https://leetcode.com/u/mithrangowda_0101"
     }
   },
 
@@ -18,9 +20,9 @@
       "degree": "BE in Information Science and Engineering",
       "location": "Bengaluru, Karnataka",
       "start_date": "Aug 2023",
-      "end_date": "2027",
+      "end_date": "Present",
       "cgpa": "9.10",
-      "description": "Currently pursuing Information Science and Engineering with focus on Data Structures, Algorithms, and Web Development"
+      "description": "Currently pursuing Information Science and Engineering with focus on Data Structures, Algorithms, and Web Development."
     },
     {
       "institution": "Sri Sathya Sai Loka Seva PU College, Alike",
@@ -29,7 +31,25 @@
       "start_date": "Sep 2021",
       "end_date": "Mar 2023",
       "percentage": "97.77",
-      "description": "Completed Pre-University Course with Physics, Chemistry, Mathematics, and Biology"
+      "description": "Completed Pre-University Course with Physics, Chemistry, Mathematics, and Biology."
+    },
+    {
+      "institution": "Sri Sathya Sai Vidya Kendra High School, Chokkady Sullia",
+      "degree": "10th Standard",
+      "location": "Dakshina Kannada, Karnataka",
+      "start_date": "June 2017",
+      "end_date": "April 2021",
+      "percentage": "96.4",
+      "description": "Completed Secondary School Leaving Certificate (SSLC)."
+    },
+    {
+      "institution": "Stella Maris School, Tiptur",
+      "degree": "6th Standard",
+      "location": "Tumkur, Karnataka",
+      "start_date": "June 2010",
+      "end_date": "April 2017",
+      "percentage": "90+",
+      "description": "Completed my childhood education (6th Standard)."
     }
   ],
 
@@ -46,10 +66,10 @@
     {
       "role": "Software Development Intern",
       "company": "Schneider Electric",
-      "location": "Bengaluru, Karnataka",
+      "location": "BGRT Bengaluru, Karnataka",
       "start_date": "July 2025",
       "end_date": "Present",
-      "description": "Developing AI-powered home automation system with error detection capabilities",
+      "description": "Developing AI-powered home automation system with error detection capabilities using event sourcing and AI.",
       "responsibilities": [
         "Collaborating in a team of 4 members under the guidance of a Senior Architect.",
         "Developing a prototype for detecting errors in a home automation system using event sourcing logs and AI.",
@@ -168,12 +188,23 @@
     {"name": "Hindi", "level": "Conversational"}
   ],
 
-  "interests": [
-    "Artificial Intelligence & Machine Learning",
-    "IoT and Embedded Systems",
+  "relevant_coursework": [
+    "Data Structures",
+    "Algorithms Analysis",
+    "Data Science",
     "Web Development",
+    "Operating Systems",
+    "Computer Networks",
+    "Artificial Intelligence & Machine Learning",
+    "IoT and Embedded Systems"
+  ],
+  "hobbies": [
     "Competitive Programming",
     "Volleyball",
-    "Community Service"
+    "Community Service",
+    "Reading Tech Blogs",
+    "Open Source Contribution",
+    "Trekking",
+    "Reading Books"
   ]
 }
