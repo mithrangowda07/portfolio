@@ -68,8 +68,8 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
             Name *
@@ -81,7 +81,7 @@ function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors"
+            className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors text-sm lg:text-base"
             placeholder="Your name"
           />
         </div>
@@ -96,7 +96,7 @@ function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors"
+            className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors text-sm lg:text-base"
             placeholder="your.email@example.com"
           />
         </div>
@@ -113,7 +113,7 @@ function ContactForm() {
           value={formData.subject}
           onChange={handleChange}
           required
-          className="w-full px-4 py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors"
+          className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors text-sm lg:text-base"
           placeholder="What's this about?"
         />
       </div>
@@ -128,26 +128,26 @@ function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           required
-          rows={5}
-          className="w-full px-4 py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors resize-none"
+          rows={4}
+          className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors resize-none text-sm lg:text-base"
           placeholder="Tell me more about your project or opportunity..."
         />
       </div>
       
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="bg-[#4f46e5] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#6366f1] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto bg-[#4f46e5] text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-semibold hover:bg-[#6366f1] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
         >
           {isSubmitting ? 'Sending...' : 'Send Message'}
         </button>
         
         {submitStatus === 'success' && (
-          <p className="text-green-400 text-sm">Message sent successfully!</p>
+          <p className="text-green-400 text-sm text-center sm:text-left">Message sent successfully!</p>
         )}
         {submitStatus === 'error' && (
-          <p className="text-red-400 text-sm">Failed to send message. Please try again.</p>
+          <p className="text-red-400 text-sm text-center sm:text-left">Failed to send message. Please try again.</p>
         )}
       </div>
     </form>
@@ -252,139 +252,142 @@ export default function Portfolio() {
       <div className="pt-16">
         {/* Home Section */}
         <section ref={homeRef} className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto w-full flex items-center">
-            {/* Left Content */}
-            <div className="flex-1 text-left">
-              <h1 className="text-5xl sm:text-7xl font-bold mb-6 font-['Times New Roman']">
-                Hi, I&apos;m <span className="text-[#4f46e5]">{resumeData.personal_info.name}</span>
-              </h1>
-              <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl">
-                {resumeData.personal_info.tagline}
-              </p>
-              <p className="text-lg text-gray-400 mb-12 max-w-2xl">
-                {resumeData.personal_info.bio}
-              </p>
-              
-              {/* Contact Info */}
-              <div className="flex flex-wrap gap-6 mb-12">
-                <div className="flex items-center text-gray-300">
-                  <Mail className="w-5 h-5 mr-2" />
-                  <a href={`mailto:${resumeData.personal_info.email}`} className="hover:text-[#4f46e5]">
-                    {resumeData.personal_info.email}
-                  </a>
+          <div className="max-w-6xl mx-auto w-full">
+            {/* Mobile: Stack vertically, Desktop: Side by side */}
+            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
+              {/* Left Content */}
+              <div className="flex-1 text-center lg:text-left order-2 lg:order-1">
+                <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold mb-4 lg:mb-6 font-['Times New Roman']">
+                  Hi, I&apos;m <span className="text-[#4f46e5]">{resumeData.personal_info.name}</span>
+                </h1>
+                <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 mb-6 lg:mb-8 max-w-3xl mx-auto lg:mx-0">
+                  {resumeData.personal_info.tagline}
+                </p>
+                <p className="text-base sm:text-lg text-gray-400 mb-8 lg:mb-12 max-w-2xl mx-auto lg:mx-0">
+                  {resumeData.personal_info.bio}
+                </p>
+                
+                {/* Contact Info */}
+                <div className="flex flex-col sm:flex-row flex-wrap gap-4 lg:gap-6 mb-8 lg:mb-12 justify-center lg:justify-start">
+                  <div className="flex items-center text-gray-300 justify-center lg:justify-start">
+                    <Mail className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
+                    <a href={`mailto:${resumeData.personal_info.email}`} className="hover:text-[#4f46e5] text-sm lg:text-base">
+                      {resumeData.personal_info.email}
+                    </a>
+                  </div>
+                  <div className="flex items-center text-gray-300 justify-center lg:justify-start">
+                    <Linkedin className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
+                    <a href={resumeData.personal_info.social_links.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-[#4f46e5] text-sm lg:text-base">
+                      LinkedIn
+                    </a>
+                  </div>
+                  <div className="flex items-center text-gray-300 justify-center lg:justify-start">
+                    <MapPin className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
+                    <span className="text-sm lg:text-base">{resumeData.personal_info.location}</span>
+                  </div>
                 </div>
-                <div className="flex items-center text-gray-300">
-                  <Linkedin className="w-5 h-5 mr-2" />
-                  <a href={resumeData.personal_info.social_links.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-[#4f46e5]">
-                    LinkedIn
-                  </a>
-                </div>
-                <div className="flex items-center text-gray-300">
-                  <MapPin className="w-5 h-5 mr-2" />
-                  <span>{resumeData.personal_info.location}</span>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                  <button
+                    onClick={() => scrollToSection(projectsRef, 'projects')}
+                    className="bg-[#4f46e5] text-white px-6 lg:px-8 py-3 rounded-lg font-semibold hover:bg-[#6366f1] transition-colors text-sm lg:text-base"
+                  >
+                    View My Work
+                  </button>
+                  <button
+                    onClick={() => scrollToSection(contactRef, 'contact')}
+                    className="border-2 border-[#4f46e5] text-[#4f46e5] px-6 lg:px-8 py-3 rounded-lg font-semibold hover:bg-[#4f46e5] hover:text-white transition-colors text-sm lg:text-base"
+                  >
+                    Get In Touch
+                  </button>
                 </div>
               </div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => scrollToSection(projectsRef, 'projects')}
-                  className="bg-[#4f46e5] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#6366f1] transition-colors"
-                >
-                  View My Work
-                </button>
-                <button
-                  onClick={() => scrollToSection(contactRef, 'contact')}
-                  className="border-2 border-[#4f46e5] text-[#4f46e5] px-8 py-3 rounded-lg font-semibold hover:bg-[#4f46e5] hover:text-white transition-colors"
-                >
-                  Get In Touch
-                </button>
-              </div>
-            </div>
-
-            {/* Right Side - Profile Photo */}
-            <div className="flex-1 flex justify-center">
-              <div className="w-64 h-64">
-                <Image 
-                  src="/profile-photo.jpg" 
-                  alt="Profile Photo" 
-                  width={256}
-                  height={256}
-                  className="w-full h-full rounded-full object-cover"
-                />
+              {/* Right Side - Profile Photo */}
+              <div className="flex-1 flex justify-center order-1 lg:order-2">
+                <div className="w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64">
+                  <Image 
+                    src="/profile-photo.jpg" 
+                    alt="Profile Photo" 
+                    width={256}
+                    height={256}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* About Section */}
-        <section ref={aboutRef} className="py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
+        <section ref={aboutRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl sm:text-5xl font-bold mb-6">About Me</h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <div className="text-center mb-12 lg:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">About Me</h2>
+              <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto">
                 {resumeData.personal_info.bio}
               </p>
             </div>
 
             {/* Education Section */}
-            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-8 mb-12">
+            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-8 lg:mb-12">
               <div className="flex items-center mb-6">
-                <GraduationCap className="w-8 h-8 text-[#4f46e5] mr-3" />
-                <h3 className="text-2xl font-bold">Education</h3>
+                <GraduationCap className="w-6 h-6 lg:w-8 lg:h-8 text-[#4f46e5] mr-3" />
+                <h3 className="text-xl lg:text-2xl font-bold">Education</h3>
               </div>
-              <div className="space-y-8">
+              <div className="space-y-6 lg:space-y-8">
                 {resumeData.education.map((edu, index) => (
-                  <div key={index} className="border-l-4 border-[#4f46e5] pl-6">
+                  <div key={index} className="border-l-4 border-[#4f46e5] pl-4 lg:pl-6">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-                      <h4 className="text-xl font-semibold">{edu.institution}</h4>
+                      <h4 className="text-lg lg:text-xl font-semibold">{edu.institution}</h4>
                       <span className="text-sm text-gray-400 mt-1 sm:mt-0">
                         {edu.start_date} - {edu.end_date}
                       </span>
                     </div>
-                    <p className="text-lg text-[#4f46e5] font-medium mb-2">{edu.degree}</p>
-                    <p className="text-gray-300 mb-2">{edu.location}</p>
+                    <p className="text-base lg:text-lg text-[#4f46e5] font-medium mb-2">{edu.degree}</p>
+                    <p className="text-gray-300 mb-2 text-sm lg:text-base">{edu.location}</p>
                     {edu.cgpa && (
-                      <p className="text-gray-200 mb-2">
+                      <p className="text-gray-200 mb-2 text-sm lg:text-base">
                         <span className="font-semibold">CGPA:</span> {edu.cgpa}
                       </p>
                     )}
                     {edu.percentage && (
-                      <p className="text-gray-200 mb-2">
+                      <p className="text-gray-200 mb-2 text-sm lg:text-base">
                         <span className="font-semibold">Percentage:</span> {edu.percentage}%
                       </p>
                     )}
-                    <p className="text-gray-300">{edu.description}</p>
+                    <p className="text-gray-300 text-sm lg:text-base">{edu.description}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Relevant Coursework Section */}
-            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-8 mb-8">
+            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
               <div className="flex items-center mb-6">
-                <GraduationCap className="w-8 h-8 text-blue-400 mr-3" />
-                <h3 className="text-2xl font-bold">Relevant Coursework</h3>
+                <GraduationCap className="w-6 h-6 lg:w-8 lg:h-8 text-blue-400 mr-3" />
+                <h3 className="text-xl lg:text-2xl font-bold">Relevant Coursework</h3>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
                 {resumeData.relevant_coursework.map((course, index) => (
-                  <div key={index} className="bg-[#1a1a2e] p-4 rounded-lg text-center border border-[#2d2d44]">
-                    <span className="font-medium">{course}</span>
+                  <div key={index} className="bg-[#1a1a2e] p-3 lg:p-4 rounded-lg text-center border border-[#2d2d44]">
+                    <span className="font-medium text-sm lg:text-base">{course}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Hobbies Section */}
-            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-8">
+            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6 lg:p-8">
               <div className="flex items-center mb-6">
-                <Heart className="w-8 h-8 text-red-400 mr-3" />
-                <h3 className="text-2xl font-bold">Hobbies</h3>
+                <Heart className="w-6 h-6 lg:w-8 lg:h-8 text-red-400 mr-3" />
+                <h3 className="text-xl lg:text-2xl font-bold">Hobbies</h3>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
                 {resumeData.hobbies.map((hobby, index) => (
-                  <div key={index} className="bg-[#1a1a2e] p-4 rounded-lg text-center border border-[#2d2d44]">
-                    <span className="font-medium">{hobby}</span>
+                  <div key={index} className="bg-[#1a1a2e] p-3 lg:p-4 rounded-lg text-center border border-[#2d2d44]">
+                    <span className="font-medium text-sm lg:text-base">{hobby}</span>
                   </div>
                 ))}
               </div>
@@ -393,30 +396,30 @@ export default function Portfolio() {
         </section>
 
         {/* Experience Section */}
-        <section ref={experienceRef} className="py-20 px-4 sm:px-6 lg:px-8">
+        <section ref={experienceRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl sm:text-5xl font-bold mb-6">Experience</h2>
+            <div className="text-center mb-12 lg:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Experience</h2>
             </div>
 
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-8">
+            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8">
               <div className="flex items-center mb-6">
-                <Briefcase className="w-8 h-8 text-[#4f46e5] mr-3" />
-                <h3 className="text-2xl font-bold">Work Experience</h3>
+                <Briefcase className="w-6 h-6 lg:w-8 lg:h-8 text-[#4f46e5] mr-3" />
+                <h3 className="text-xl lg:text-2xl font-bold">Work Experience</h3>
               </div>
-              <div className="space-y-8">
+              <div className="space-y-6 lg:space-y-8">
                 {resumeData.experience.map((exp, index) => (
-                  <div key={index} className="border-l-4 border-green-400 pl-6">
+                  <div key={index} className="border-l-4 border-green-400 pl-4 lg:pl-6">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-                      <h4 className="text-xl font-semibold">{exp.role}</h4>
+                      <h4 className="text-lg lg:text-xl font-semibold">{exp.role}</h4>
                       <span className="text-sm text-gray-400 mt-1 sm:mt-0">
                         {exp.start_date} - {exp.end_date}
                       </span>
                     </div>
-                    <p className="text-lg text-green-400 font-medium mb-2">{exp.company}</p>
-                    <p className="text-gray-300 mb-4">{exp.location}</p>
-                    <p className="text-gray-200 mb-4">{exp.description}</p>
-                    <ul className="list-disc list-inside space-y-2 text-gray-300">
+                    <p className="text-base lg:text-lg text-green-400 font-medium mb-2">{exp.company}</p>
+                    <p className="text-gray-300 mb-4 text-sm lg:text-base">{exp.location}</p>
+                    <p className="text-gray-200 mb-4 text-sm lg:text-base">{exp.description}</p>
+                    <ul className="list-disc list-inside space-y-2 text-gray-300 text-sm lg:text-base">
                       {exp.responsibilities.map((resp, respIndex) => (
                         <li key={respIndex}>{resp}</li>
                       ))}
@@ -427,16 +430,16 @@ export default function Portfolio() {
             </div>
 
             {/* Leadership & Extracurricular */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-8 mt-8">
-              <h3 className="text-2xl font-bold mb-6">Leadership & Extracurricular</h3>
+            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mt-6 lg:mt-8">
+              <h3 className="text-xl lg:text-2xl font-bold mb-6">Leadership & Extracurricular</h3>
               <div className="space-y-6">
                 {resumeData.leadership_extracurricular.map((item, index) => (
-                  <div key={index} className="border-l-4 border-yellow-400 pl-6">
-                    <h4 className="text-lg font-semibold">{item.role}</h4>
-                    <p className="text-yellow-400 font-medium mb-2">{item.organization}</p>
-                    <p className="text-gray-300 mb-2">{item.location}</p>
+                  <div key={index} className="border-l-4 border-yellow-400 pl-4 lg:pl-6">
+                    <h4 className="text-base lg:text-lg font-semibold">{item.role}</h4>
+                    <p className="text-yellow-400 font-medium mb-2 text-sm lg:text-base">{item.organization}</p>
+                    <p className="text-gray-300 mb-2 text-sm lg:text-base">{item.location}</p>
                     <p className="text-sm text-gray-400 mb-2">{item.start_date} - {item.end_date}</p>
-                    <ul className="list-disc list-inside space-y-2 text-gray-300">
+                    <ul className="list-disc list-inside space-y-2 text-gray-300 text-sm lg:text-base">
                       {item.activities.map((activity, actIndex) => (
                         <li key={actIndex}>{activity}</li>
                       ))}
@@ -449,23 +452,23 @@ export default function Portfolio() {
         </section>
 
         {/* Projects Section */}
-        <section ref={projectsRef} className="py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
+        <section ref={projectsRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl sm:text-5xl font-bold mb-6">Projects</h2>
+            <div className="text-center mb-12 lg:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Projects</h2>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
               {resumeData.projects.map((project, index) => (
-                <div key={index} className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6 hover:border-[#4f46e5] transition-colors">
-                  <h3 className="text-xl font-bold mb-3">{project.title}</h3>
+                <div key={index} className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-4 lg:p-6 hover:border-[#4f46e5] transition-colors">
+                  <h3 className="text-lg lg:text-xl font-bold mb-3">{project.title}</h3>
                   <p className="text-sm text-gray-400 mb-4">{project.date}</p>
                   
                   <div className="mb-4">
-                    <h4 className="font-semibold mb-2">Tech Stack:</h4>
+                    <h4 className="font-semibold mb-2 text-sm lg:text-base">Tech Stack:</h4>
                     <div className="flex flex-wrap gap-2">
                       {project.tech_stack.map((tech, techIndex) => (
-                        <span key={techIndex} className="px-3 py-1 bg-[#2d2d44] rounded-full text-sm">
+                        <span key={techIndex} className="px-2 py-1 lg:px-3 lg:py-1 bg-[#2d2d44] rounded-full text-xs lg:text-sm">
                           {tech}
                         </span>
                       ))}
@@ -473,8 +476,8 @@ export default function Portfolio() {
                   </div>
 
                   <div className="mb-4">
-                    <h4 className="font-semibold mb-2">Description:</h4>
-                    <ul className="list-disc list-inside space-y-1 text-gray-300 text-sm">
+                    <h4 className="font-semibold mb-2 text-sm lg:text-base">Description:</h4>
+                    <ul className="list-disc list-inside space-y-1 text-gray-300 text-xs lg:text-sm">
                       {project.description.map((desc, descIndex) => (
                         <li key={descIndex}>{desc}</li>
                       ))}
@@ -482,21 +485,21 @@ export default function Portfolio() {
                   </div>
 
                   <div className="mb-4">
-                    <h4 className="font-semibold mb-2">Features:</h4>
-                    <ul className="list-disc list-inside space-y-1 text-gray-300 text-sm">
+                    <h4 className="font-semibold mb-2 text-sm lg:text-base">Features:</h4>
+                    <ul className="list-disc list-inside space-y-1 text-gray-300 text-xs lg:text-sm">
                       {project.features.map((feature, featureIndex) => (
                         <li key={featureIndex}>{feature}</li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="flex gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
                     {project.github_link && (
                       <a
                         href={project.github_link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-[#4f46e5] text-white py-2 px-4 rounded-lg text-center hover:bg-[#6366f1] transition-colors"
+                        className="flex-1 bg-[#4f46e5] text-white py-2 px-4 rounded-lg text-center hover:bg-[#6366f1] transition-colors text-sm"
                       >
                         View Code
                       </a>
@@ -506,7 +509,7 @@ export default function Portfolio() {
                         href={project.demo_link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 border border-[#4f46e5] text-[#4f46e5] py-2 px-4 rounded-lg text-center hover:bg-[#4f46e5] hover:text-white transition-colors"
+                        className="flex-1 border border-[#4f46e5] text-[#4f46e5] py-2 px-4 rounded-lg text-center hover:bg-[#4f46e5] hover:text-white transition-colors text-sm"
                       >
                         Live Demo
                       </a>
@@ -519,20 +522,20 @@ export default function Portfolio() {
         </section>
 
         {/* Skills Section */}
-        <section ref={skillsRef} className="py-20 px-4 sm:px-6 lg:px-8">
+        <section ref={skillsRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl sm:text-5xl font-bold mb-6">Skills & Expertise</h2>
+            <div className="text-center mb-12 lg:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Skills & Expertise</h2>
             </div>
             
             {/* Programming Languages */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-8 mb-8">
-              <h3 className="text-2xl font-bold mb-6">Programming Languages</h3>
+            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
+              <h3 className="text-xl lg:text-2xl font-bold mb-6">Programming Languages</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {resumeData.skills.programming_languages.map((skill) => (
                   <div key={skill.name} className="bg-[#0f0f23] p-4 rounded-lg border border-[#2d2d44]">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">{skill.name}</span>
+                      <span className="font-medium text-sm lg:text-base">{skill.name}</span>
                       <span className="text-sm text-gray-400">{skill.level}%</span>
                     </div>
                     <div className="w-full bg-[#2d2d44] rounded-full h-2">
@@ -547,13 +550,13 @@ export default function Portfolio() {
             </div>
 
             {/* Frameworks & Libraries */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-8 mb-8">
-              <h3 className="text-2xl font-bold mb-6">Frameworks & Libraries</h3>
+            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
+              <h3 className="text-xl lg:text-2xl font-bold mb-6">Frameworks & Libraries</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {resumeData.skills.frameworks_libraries.map((skill) => (
                   <div key={skill.name} className="bg-[#0f0f23] p-4 rounded-lg border border-[#2d2d44]">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">{skill.name}</span>
+                      <span className="font-medium text-sm lg:text-base">{skill.name}</span>
                       <span className="text-sm text-gray-400">{skill.level}%</span>
                     </div>
                     <div className="w-full bg-[#2d2d44] rounded-full h-2">
@@ -568,13 +571,13 @@ export default function Portfolio() {
             </div>
 
             {/* Tools & Technologies */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-8">
-              <h3 className="text-2xl font-bold mb-6">Tools & Technologies</h3>
+            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8">
+              <h3 className="text-xl lg:text-2xl font-bold mb-6">Tools & Technologies</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {resumeData.skills.tools_technologies.map((skill) => (
                   <div key={skill.name} className="bg-[#0f0f23] p-4 rounded-lg border border-[#2d2d44]">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">{skill.name}</span>
+                      <span className="font-medium text-sm lg:text-base">{skill.name}</span>
                       <span className="text-sm text-gray-400">{skill.level}%</span>
                     </div>
                     <div className="w-full bg-[#2d2d44] rounded-full h-2">
@@ -589,17 +592,17 @@ export default function Portfolio() {
             </div>
 
             {/* Achievements */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-8 mt-8">
+            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mt-6 lg:mt-8">
               <div className="flex items-center mb-6">
-                <Award className="w-8 h-8 text-yellow-400 mr-3" />
-                <h3 className="text-2xl font-bold">Achievements</h3>
+                <Award className="w-6 h-6 lg:w-8 lg:h-8 text-yellow-400 mr-3" />
+                <h3 className="text-xl lg:text-2xl font-bold">Achievements</h3>
               </div>
               <div className="space-y-6">
                 {resumeData.achievements.map((achievement, index) => (
-                  <div key={index} className="border-l-4 border-yellow-400 pl-6">
-                    <h4 className="text-lg font-semibold mb-2">{achievement.title}</h4>
+                  <div key={index} className="border-l-4 border-yellow-400 pl-4 lg:pl-6">
+                    <h4 className="text-base lg:text-lg font-semibold mb-2">{achievement.title}</h4>
                     <p className="text-sm text-gray-400 mb-2">{achievement.date}</p>
-                    <p className="text-gray-300">{achievement.description}</p>
+                    <p className="text-gray-300 text-sm lg:text-base">{achievement.description}</p>
                   </div>
                 ))}
               </div>
@@ -608,40 +611,40 @@ export default function Portfolio() {
         </section>
 
         {/* Contact Section */}
-        <section ref={contactRef} className="py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
+        <section ref={contactRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6">Get In Touch</h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Get In Touch</h2>
+            <p className="text-lg sm:text-xl text-gray-300 mb-8 lg:mb-12 max-w-2xl mx-auto">
               I&apos;m always interested in hearing about new opportunities and exciting projects. 
               Feel free to reach out if you&apos;d like to connect!
             </p>
 
             {/* Contact Form */}
-            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-8 mb-12">
-              <h3 className="text-2xl font-semibold mb-6">Send me a message</h3>
+            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-8 lg:mb-12">
+              <h3 className="text-xl lg:text-2xl font-semibold mb-6">Send me a message</h3>
               <ContactForm />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-8 lg:mb-12">
               <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6">
-                <Mail className="w-12 h-12 text-[#4f46e5] mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Email</h3>
+                <Mail className="w-10 h-10 lg:w-12 lg:h-12 text-[#4f46e5] mx-auto mb-4" />
+                <h3 className="text-lg lg:text-xl font-semibold mb-2">Email</h3>
                 <a 
                   href={`mailto:${resumeData.personal_info.email}`}
-                  className="text-[#4f46e5] hover:text-[#6366f1] transition-colors"
+                  className="text-[#4f46e5] hover:text-[#6366f1] transition-colors text-sm lg:text-base"
                 >
                   {resumeData.personal_info.email}
                 </a>
               </div>
 
               <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6">
-                <Linkedin className="w-12 h-12 text-[#4f46e5] mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">LinkedIn</h3>
+                <Linkedin className="w-10 h-10 lg:w-12 lg:h-12 text-[#4f46e5] mx-auto mb-4" />
+                <h3 className="text-lg lg:text-xl font-semibold mb-2">LinkedIn</h3>
                 <a 
                   href={resumeData.personal_info.social_links.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#4f46e5] hover:text-[#6366f1] transition-colors"
+                  className="text-[#4f46e5] hover:text-[#6366f1] transition-colors text-sm lg:text-base"
                 >
                   Connect on LinkedIn
                 </a>
@@ -649,16 +652,16 @@ export default function Portfolio() {
             </div>
 
             <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6">
-              <h3 className="text-xl font-semibold mb-4">Connect with me</h3>
-              <div className="flex justify-center space-x-4">
+              <h3 className="text-lg lg:text-xl font-semibold mb-4">Connect with me</h3>
+              <div className="flex justify-center space-x-3 lg:space-x-4">
                 {resumeData.personal_info.social_links.github && (
                   <a
                     href={resumeData.personal_info.social_links.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
+                    className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
                   >
-                    <Github size={24} />
+                    <Github size={20} className="lg:w-6 lg:h-6" />
                   </a>
                 )}
                 {resumeData.personal_info.social_links.linkedin && (
@@ -666,9 +669,9 @@ export default function Portfolio() {
                     href={resumeData.personal_info.social_links.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
+                    className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
                   >
-                    <Linkedin size={24} />
+                    <Linkedin size={20} className="lg:w-6 lg:h-6" />
                   </a>
                 )}
                 {resumeData.personal_info.social_links.instagram && (
@@ -676,9 +679,9 @@ export default function Portfolio() {
                     href={resumeData.personal_info.social_links.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
+                    className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
                   >
-                    <Instagram size={24} />
+                    <Instagram size={20} className="lg:w-6 lg:h-6" />
                   </a>
                 )}
                 {resumeData.personal_info.social_links.leetcode && (
@@ -686,9 +689,9 @@ export default function Portfolio() {
                     href={resumeData.personal_info.social_links.leetcode}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
+                    className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
                   >
-                    <Code size={24} />
+                    <Code size={20} className="lg:w-6 lg:h-6" />
                   </a>
                 )}
               </div>
@@ -697,9 +700,9 @@ export default function Portfolio() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-[#0f0f23] border-t border-[#2d2d44] py-8">
+        <footer className="bg-[#0f0f23] border-t border-[#2d2d44] py-6 lg:py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-gray-400">&copy; {new Date().getFullYear()} {resumeData.personal_info.name}. All rights reserved.</p>
+            <p className="text-gray-400 text-sm lg:text-base">&copy; {new Date().getFullYear()} {resumeData.personal_info.name}. All rights reserved.</p>
           </div>
         </footer>
       </div>
