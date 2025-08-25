@@ -7,7 +7,7 @@
     "email": "mithrangowda01@gmail.com",
     "bio": "I am a passionate software development intern at Schneider Electric with expertise in AI/ML, web development, and IoT. I love building innovative solutions that solve real-world problems.",
     "social_links": {
-      "linkedin": "https://linkedin.com/in/mithra-n-gowda",
+      "linkedin": "https://www.linkedin.com/in/mithra-n-gowda-30b053294",
       "github": "https://github.com/mithrangowda07",
       "instagram": "https://instagram.com/mithrangowda_01",
       "leetcode": "https://leetcode.com/u/mithrangowda_0101"
@@ -81,20 +81,60 @@
 
   "projects": [
     {
-      "title": "College Match",
-      "tech_stack": ["Python", "HTML", "CSS", "JavaScript", "Django", "SQLite", "Twilio"],
-      "date": "Feb 2025",
-      "github_link": "https://github.com/mithrangowda07/college-match",
-      "demo_link": "",
+      "title": "Portfolio Website",
+      "tech_stack": ["Next.js", "TypeScript", "Tailwind CSS", "React", "Node.js"],
+      "date": "Aug 2025",
+      "github_link": "https://github.com/mithrangowda07/portfolio",
+      "demo_link": "https://mithrangowda.vercel.app",
       "description": [
-        "Developed a web app using Django for KCET counseling aspirants, designed to produce a personalized list of colleges.",
-        "The data of previous year's cutoffs, used to recommend colleges, is stored in SQLite.",
-        "The app aims to reduce the need for personal counselors by allowing current college students to interact with users and provide information about their college."
+        "A modern, responsive portfolio website built with Next.js and TypeScript.",
+        "Features include dark mode design, smooth animations, and mobile-responsive layout.",
+        "Integrated with contact form, skills visualization, and project showcase."
       ],
       "features": [
-        "Personalized college recommendations based on KCET scores",
-        "Interactive platform for student-counselor communication",
-        "Historical cutoff data analysis"
+        "Modern responsive design with dark theme",
+        "Smooth scrolling and animations",
+        "Mobile-first responsive layout",
+        "Interactive skills visualization",
+        "Contact form with validation",
+        "Project showcase with tech stack"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        }
+      ]
+    },
+    {
+      "title": "Hybrid Communication System for Local and Cloud Networks",
+      "tech_stack": ["Python", "Flask", "Flask-SocketIO", "SQLite", "Zeroconf (mDNS)", "TCP/UDP", "WebSockets", "AWS S3 (or compatible cloud storage)"],
+      "date": "May 2025",
+      "github_link": "https://github.com/mithrangowda07/HybridCommunication",
+      "demo_link": "",
+      "description": [
+        "Developed a hybrid peer-to-peer communication system that integrates local networks (Bluetooth, Wi-Fi, LAN) with cloud infrastructure to optimize messaging and file transfer efficiency.",
+        "Enabled direct device-to-device communication to reduce ISP dependency, minimize latency, and lower data costs.",
+        "Implemented Go-Back-N ARQ for reliable data transmission, SQLite for persistent storage, and Flask-SocketIO for cloud-based fallback communication.",
+        "Ensured secure communication across all modes using End-to-End Encryption (E2EE) with a Double Ratchet-inspired protocol."
+      ],
+      "features": [
+        "Real-time messaging and file sharing across LAN, WAN, and offline modes",
+        "Automatic peer discovery using UDP broadcasts and mDNS",
+        "Seamless switching between local peer-to-peer and cloud-based communication",
+        "End-to-End Encryption with secure key exchange and forward secrecy",
+        "Offline queuing and deferred delivery using SQLite for reliability",
+        "Lightweight interface with scalable and low-latency performance"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        },
+        {
+          "name": "Bharath Kumar M S",
+          "profile": "https://www.linkedin.com/in/bharath-kumar-039034298"
+        }
       ]
     },
     {
@@ -113,6 +153,121 @@
         "AI-powered glaucoma detection",
         "Automated report generation",
         "Mobile-responsive web interface"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        },
+        {
+          "name": "Bharath Kumar M S",
+          "profile": "https://www.linkedin.com/in/bharath-kumar-039034298"
+        },
+        {
+          "name": "Moulya R",
+          "profile": "https://www.linkedin.com/in/moulya-ravi-328aba2a7"
+        },
+        {
+          "name": "Florence Solomon",
+          "profile": "https://www.linkedin.com/in/florence-solomon-1b2b62312"
+        }
+      ]
+    },
+    {
+      "title": "College Match",
+      "tech_stack": ["Python", "HTML", "CSS", "JavaScript", "Django", "SQLite", "Twilio"],
+      "date": "Feb 2025",
+      "github_link": "https://github.com/mithrangowda07/college-match",
+      "demo_link": "",
+      "description": [
+        "Developed a web app using Django for KCET counseling aspirants, designed to produce a personalized list of colleges.",
+        "The data of previous year's cutoffs, used to recommend colleges, is stored in SQLite.",
+        "The app aims to reduce the need for personal counselors by allowing current college students to interact with users and provide information about their college."
+      ],
+      "features": [
+        "Personalized college recommendations based on KCET scores",
+        "Interactive platform for student-counselor communication",
+        "Historical cutoff data analysis"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        },
+        {
+          "name": "Dhruthi D",
+          "profile": "https://www.linkedin.com/in/dhruthi-d-767235363"
+        }
+      ]
+    },
+    {
+      "title": "Water Monitoring System",
+      "tech_stack": ["Raspberry Pi", "Water Flow Sensor", "Python", "Django", "Twilio", "Smtplib", "ThinkSpeak"],
+      "date": "Dec 2024",
+      "github_link": "https://github.com/mithrangowda07/water-monitoring-system",
+      "demo_link": "",
+      "description": [
+        "Developed a Water Monitoring System leveraging IoT technologies to optimize water usage and mitigate wastage, using Raspberry Pi, water flow sensors, and Twilio.",
+        "It sends instant alerts via Twilio's communication API to notify users about abnormal water usage or potential issues.",
+        "The project integrates Python-based visualization tools and the ThingSpeak platform to provide actionable insights and track water consumption trends."
+      ],
+      "features": [
+        "Real-time water flow measurement and monitoring",
+        "Automatic alerts for abnormal or excess water usage",
+        "Data logging and visualization on ThingSpeak platform",
+        "Web interface built with Django for monitoring and reports",
+        "Email and SMS notifications using Twilio and Smtplib"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        },
+        {
+          "name": "Dhruthi D",
+          "profile": "https://www.linkedin.com/in/dhruthi-d-767235363"
+        },
+        {
+          "name": "Meghana J L",
+          "profile": "https://www.linkedin.com/in/meghana-j-l-27b219294"
+        }
+      ]
+    },
+    {
+      "title": "IoT Based Flood Detection System",
+      "tech_stack": ["Arduino Uno", "Water flow sensor", "Ultar sonic sensor", "Python", "Twilio"],
+      "date": "May 2024",
+      "github_link": "https://github.com/mithrangowda07/IoT_based_FloodDetection_and_DisasterManagements",
+      "demo_link": "",
+      "description": [
+        "Designed a sample banking transaction system using Java to simulate the common functions of using a bank account.",
+        "Used JavaFX to create a GUI that supports actions such as creating an account, deposit, withdraw, list all acounts, etc.",
+        "Implemented object-oriented programming practices such as inheritance to create different account types and databases."
+      ],
+      "features": [
+        "Real-time monitoring of water levels and flow rate",
+        "Automatic flood alerts via SMS using Twilio",
+        "Ultrasonic sensor for accurate distance and water level detection",
+        "Low-cost, scalable IoT-based design for disaster management",
+        "Data logging and visualization for trend analysis"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://linkedin.com/in/mithra-n-gowda"
+        },
+        {
+          "name": "Meghana J L",
+          "profile": "https://www.linkedin.com/in/meghana-j-l-27b219294"
+        },
+        {
+          "name": "Mnajunath Nayak B P",
+          "profile": "https://www.linkedin.com/in/manjunathnayakbp"
+        },
+        {
+          "name": "Hemanth H S",
+          "profile": "https://www.linkedin.com/in/hemanth-hs-876a53355"
+        }
       ]
     }
   ],

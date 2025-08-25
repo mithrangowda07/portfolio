@@ -458,32 +458,12 @@ export default function Portfolio() {
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Projects</h2>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
               {resumeData.projects.map((project, index) => (
                 <div key={index} className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-4 lg:p-6 hover:border-[#4f46e5] transition-colors">
                   <h3 className="text-lg lg:text-xl font-bold mb-3">{project.title}</h3>
                   <p className="text-sm text-gray-400 mb-4">{project.date}</p>
                   
-                  <div className="mb-4">
-                    <h4 className="font-semibold mb-2 text-sm lg:text-base">Tech Stack:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech_stack.map((tech, techIndex) => (
-                        <span key={techIndex} className="px-2 py-1 lg:px-3 lg:py-1 bg-[#2d2d44] rounded-full text-xs lg:text-sm">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <h4 className="font-semibold mb-2 text-sm lg:text-base">Description:</h4>
-                    <ul className="list-disc list-inside space-y-1 text-gray-300 text-xs lg:text-sm">
-                      {project.description.map((desc, descIndex) => (
-                        <li key={descIndex}>{desc}</li>
-                      ))}
-                    </ul>
-                  </div>
-
                   <div className="mb-4">
                     <h4 className="font-semibold mb-2 text-sm lg:text-base">Features:</h4>
                     <ul className="list-disc list-inside space-y-1 text-gray-300 text-xs lg:text-sm">
@@ -493,31 +473,145 @@ export default function Portfolio() {
                     </ul>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    {project.github_link && (
-                      <a
-                        href={project.github_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 bg-[#4f46e5] text-white py-2 px-4 rounded-lg text-center hover:bg-[#6366f1] transition-colors text-sm"
-                      >
-                        View Code
-                      </a>
-                    )}
-                    {project.demo_link && (
-                      <a
-                        href={project.demo_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 border border-[#4f46e5] text-[#4f46e5] py-2 px-4 rounded-lg text-center hover:bg-[#4f46e5] hover:text-white transition-colors text-sm"
-                      >
-                        Live Demo
-                      </a>
-                    )}
+                  <div className="mb-4">
+                    <button
+                      onClick={() => {
+                        const modal = document.getElementById(`modal-${index}`);
+                        if (modal) {
+                          modal.style.display = 'block';
+                        }
+                      }}
+                      className="text-[#4f46e5] hover:text-[#6366f1] transition-colors text-sm font-medium"
+                    >
+                      Show More
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
+
+            {/* Project Detail Modals */}
+            {resumeData.projects.map((project, index) => (
+              <div
+                key={`modal-${index}`}
+                id={`modal-${index}`}
+                className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm"
+                style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+                onClick={(e) => {
+                  if (e.target === e.currentTarget) {
+                    const modal = document.getElementById(`modal-${index}`);
+                    if (modal) {
+                      modal.style.display = 'none';
+                    }
+                  }
+                }}
+              >
+                <div className="bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] rounded-2xl border-2 border-[#4f46e5] shadow-2xl p-6 lg:p-8 xl:p-10 w-full max-w-4xl mx-auto max-h-[85vh] overflow-y-auto relative overflow-hidden">
+                  {/* Background Pattern */}
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#4f46e5] to-[#6366f1] transform rotate-12 scale-150"></div>
+                    <div className="absolute inset-0 bg-gradient-to-l from-[#8b5cf6] to-[#a855f7] transform -rotate-12 scale-150"></div>
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-start mb-6 lg:mb-8">
+                      <h3 className="text-2xl lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent pr-4">
+                        {project.title}
+                      </h3>
+                      <button
+                        onClick={() => {
+                          const modal = document.getElementById(`modal-${index}`);
+                          if (modal) {
+                            modal.style.display = 'none';
+                          }
+                        }}
+                        className="text-white hover:text-yellow-300 text-2xl lg:text-3xl font-bold transition-colors duration-200 hover:scale-110 flex-shrink-0"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    
+                    <p className="text-lg lg:text-xl text-gray-300 mb-6 lg:mb-8 font-medium">{project.date}</p>
+                    
+                    <div className="mb-6 lg:mb-8">
+                      <h4 className="font-bold mb-3 lg:mb-4 text-lg lg:text-xl text-white">Tech Stack</h4>
+                      <div className="flex flex-wrap gap-2 lg:gap-3">
+                        {project.tech_stack.map((tech, techIndex) => (
+                          <span key={techIndex} className="px-3 lg:px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm font-medium text-white hover:bg-white/20 transition-all duration-200">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mb-6 lg:mb-8">
+                      <h4 className="font-bold mb-3 lg:mb-4 text-lg lg:text-xl text-white">Features</h4>
+                      <ul className="space-y-2 lg:space-y-3 text-gray-200 text-base lg:text-lg">
+                        {project.features.map((feature, featureIndex) => (
+                          <li key={featureIndex} className="flex items-start">
+                            <span className="text-yellow-400 mr-3 text-lg lg:text-xl flex-shrink-0">•</span>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mb-6 lg:mb-8">
+                      <h4 className="font-bold mb-3 lg:mb-4 text-lg lg:text-xl text-white">Contributors</h4>
+                      <div className="flex flex-wrap gap-2 lg:gap-3">
+                        {project.contributors.map((contributor, contribIndex) => (
+                          <a
+                            key={contribIndex}
+                            href={contributor.profile}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 lg:px-4 py-2 bg-gradient-to-r from-[#4f46e5] to-[#6366f1] text-white rounded-full text-sm font-medium hover:from-[#6366f1] hover:to-[#8b5cf6] transition-all duration-200 transform hover:scale-105 shadow-lg"
+                          >
+                            {contributor.name}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mb-6 lg:mb-8">
+                      <h4 className="font-bold mb-3 lg:mb-4 text-lg lg:text-xl text-white">Description</h4>
+                      <ul className="space-y-2 lg:gap-3 text-gray-200 text-base lg:text-lg">
+                        {project.description.map((desc, descIndex) => (
+                          <li key={descIndex} className="flex items-start">
+                            <span className="text-yellow-400 mr-3 text-lg lg:text-xl flex-shrink-0">•</span>
+                            {desc}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
+                      {project.github_link && (
+                        <a
+                          href={project.github_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-300 text-black py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-center font-bold text-base lg:text-lg hover:from-yellow-300 hover:to-yellow-400 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                        >
+                          View Code
+                        </a>
+                      )}
+                      {project.demo_link && (
+                        <a
+                          href={project.demo_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 border-2 border-[#4f46e5] text-[#4f46e5] py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-center font-bold text-base lg:text-lg hover:bg-[#4f46e5] hover:text-white transition-all duration-200 transform hover:scale-105"
+                        >
+                          Live Demo
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
