@@ -68,7 +68,7 @@
       "company": "Schneider Electric",
       "location": "BGRT Bengaluru, Karnataka",
       "start_date": "July 2025",
-      "end_date": "Present",
+      "end_date": "September 2025",
       "description": "Developing AI-powered home automation system with error detection capabilities using event sourcing and AI.",
       "responsibilities": [
         "Collaborating in a team of 4 members under the guidance of a Senior Architect.",
@@ -292,7 +292,7 @@
       {"name": "GitHub", "level": 90},
       {"name": "Power BI", "level": 75},
       {"name": "ThingSpeak", "level": 80},
-      {"name": "SQLite", "level": 80}
+      {"name": "MySQL", "level": 80}
     ]
   },
 
@@ -325,6 +325,11 @@
       "title": "Runner up - Hackwise 2025 National Level Hackathon",
       "date": "April 2025",
       "description": "Achieved runner-up position in national hackathon at KVGCE College of Engineering, Mangalore"
+    },
+    {
+      "title": "Winners - Datathon 2025",
+      "date": "November 2025",
+      "description": "Winners at Dayananda Sagar Academy of Technology and Management, Bengaluru"
     }
   ],
 
@@ -351,7 +356,8 @@
     "Operating Systems",
     "Computer Networks",
     "Artificial Intelligence & Machine Learning",
-    "IoT and Embedded Systems"
+    "IoT and Embedded Systems",
+    "Database Management System"
   ],
   "hobbies": [
     "Competitive Programming",
