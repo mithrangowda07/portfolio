@@ -21,7 +21,7 @@
       "location": "Bengaluru, Karnataka",
       "start_date": "Aug 2023",
       "end_date": "Present",
-      "cgpa": "9.10",
+      "cgpa": "9.06",
       "description": "Currently pursuing Information Science and Engineering with focus on Data Structures, Algorithms, and Web Development."
     },
     {
@@ -30,7 +30,7 @@
       "location": "Dakshina Kannada, Karnataka",
       "start_date": "Sep 2021",
       "end_date": "Mar 2023",
-      "percentage": "97.77",
+      "percentage": "97.67",
       "description": "Completed Pre-University Course with Physics, Chemistry, Mathematics, and Biology."
     },
     {
@@ -41,25 +41,7 @@
       "end_date": "April 2021",
       "percentage": "96.4",
       "description": "Completed Secondary School Leaving Certificate (SSLC)."
-    },
-    {
-      "institution": "Stella Maris School, Tiptur",
-      "degree": "6th Standard",
-      "location": "Tumkur, Karnataka",
-      "start_date": "June 2010",
-      "end_date": "April 2017",
-      "percentage": "90+",
-      "description": "Completed my childhood education (6th Standard)."
     }
-  ],
-
-  "relevant_coursework": [
-    "Data Structures",
-    "Algorithms Analysis",
-    "Data Science",
-    "Web Development",
-    "Operating Systems",
-    "Computer Networks"
   ],
 
   "experience": [
@@ -175,8 +157,8 @@
     },
     {
       "title": "College Match",
-      "tech_stack": ["Python", "HTML", "CSS", "JavaScript", "Django", "SQLite", "Twilio"],
-      "date": "Feb 2025",
+      "tech_stack": ["Python", "Django", "MYSQL", "React", "CSS"],
+      "date": "Jan 2026",
       "github_link": "https://github.com/mithrangowda07/college-match",
       "demo_link": "",
       "description": [
@@ -351,20 +333,18 @@
   "relevant_coursework": [
     "Data Structures",
     "Algorithms Analysis",
-    "Data Science",
+    "Database Management System",
+    "Machine Learning",
     "Web Development",
     "Operating Systems",
     "Computer Networks",
-    "Artificial Intelligence & Machine Learning",
-    "IoT and Embedded Systems",
-    "Database Management System"
+    "Internet of Things (IoT)"
   ],
   "hobbies": [
     "Competitive Programming",
     "Volleyball",
     "Community Service",
     "Reading Tech Blogs",
-    "Open Source Contribution",
     "Trekking",
     "Reading Books"
   ]
