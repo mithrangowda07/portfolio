@@ -1,11 +1,11 @@
 {
   "personal_info": {
     "name": "Mithra N Gowda",
-    "tagline": "Software Development Intern | AI/ML Enthusiast | Full Stack Developer",
+    "tagline": "Software Development Intern | ML Enthusiast | Full Stack Developer",
     "location": "Bengaluru, Karnataka 560059",
     "phone": "9740569178",
     "email": "mithrangowda01@gmail.com",
-    "bio": "I am a passionate software development intern at Schneider Electric with expertise in AI/ML, web development, and IoT. I love building innovative solutions that solve real-world problems.",
+    "bio": "Ex-Software Development Intern at Schneider Electric with expertise in AI/ML, Web Development, and IoT. Passionate about building scalable, intelligent systems that solve real-world problems through data and innovation.",
     "social_links": {
       "linkedin": "https://www.linkedin.com/in/mithra-n-gowda-30b053294",
       "github": "https://github.com/mithrangowda07",
@@ -63,6 +63,72 @@
 
   "projects": [
     {
+      "title": "EduMate KCET-Personalized Rank-to-College Advisor",
+      "tech_stack": ["Django", "Django REST API", "React", "TypeScript", "MySQL", "Machine Learning", "JWT", "OCR"],
+      "date": "Jan 2026",
+      "github_link": "https://github.com/mithrangowda07/kcet-helper",
+      "demo_link": "",
+      "description": [
+        "A personalized KCET rank-to-college recommendation platform that helps students choose the best college and branch based on their rank.",
+        "Provides cutoff trends, peer reviews, and intelligent suggestions to reduce manual research time.",
+        "Integrates AI-driven validation and real-time features for a smarter counseling experience."
+      ],
+      "features": [
+        "Personalized college and branch recommendations based on KCET rank",
+        "Interactive cutoff trend visualization",
+        "Peer-to-peer counseling with Jitsi Meet integration",
+        "AI-based review validation using TF-IDF and Logistic Regression",
+        "OCR-based student ID verification system",
+        "Role-based authentication and secure JWT login",
+        "Drag-and-drop choice filling with real-time data persistence"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        },
+        {
+          "name": "Dhruthi D",
+          "profile": "https://www.linkedin.com/in/dhruthi-d-767235363"
+        },
+        {
+          "name": "Meghana J L",
+          "profile": "https://www.linkedin.com/in/meghana-j-l-27b219294"
+        }
+      ]
+    },
+    {
+      "title": "ML Powered Flood Prediction System",
+      "tech_stack": ["FastAPI", "React", "XGBoost", "LSTM", "Open-Meteo API", "NASA POWER API", "Machine Learning"],
+      "date": "Feb 2026",
+      "github_link": "https://github.com/Dhruthi-D/Flood_prediction",
+      "demo_link": "",
+      "description": [
+        "An AI-driven flood early warning system that provides real-time risk alerts and 3-day flood forecasts.",
+        "Leverages climate and disaster datasets to help authorities and communities take preventive actions.",
+        "Combines machine learning models with an interactive dashboard for visualization and decision support."
+      ],
+      "features": [
+        "Real-time flood risk prediction and alert system",
+        "3-day forecast using hybrid XGBoost and LSTM model",
+        "Integration with NASA POWER climate data and EM-DAT disaster records",
+        "Interactive dashboard with maps and area heatmaps",
+        "Multi-city monitoring and simulation capabilities",
+        "SHAP-based explainability for model predictions",
+        "Full-stack implementation with FastAPI backend and React frontend"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        },
+        {
+          "name": "Dhruthi D",
+          "profile": "https://www.linkedin.com/in/dhruthi-d-767235363"
+        }
+      ]
+    },
+    {
       "title": "Portfolio Website",
       "tech_stack": ["Next.js", "TypeScript", "Tailwind CSS", "React", "Node.js"],
       "date": "Aug 2025",
@@ -89,104 +155,10 @@
       ]
     },
     {
-      "title": "Hybrid Communication System for Local and Cloud Networks",
-      "tech_stack": ["Python", "Flask", "Flask-SocketIO", "SQLite", "Zeroconf (mDNS)", "TCP/UDP", "WebSockets", "AWS S3 (or compatible cloud storage)"],
-      "date": "May 2025",
-      "github_link": "https://github.com/mithrangowda07/HybridCommunication",
-      "demo_link": "",
-      "description": [
-        "Developed a hybrid peer-to-peer communication system that integrates local networks (Bluetooth, Wi-Fi, LAN) with cloud infrastructure to optimize messaging and file transfer efficiency.",
-        "Enabled direct device-to-device communication to reduce ISP dependency, minimize latency, and lower data costs.",
-        "Implemented Go-Back-N ARQ for reliable data transmission, SQLite for persistent storage, and Flask-SocketIO for cloud-based fallback communication.",
-        "Ensured secure communication across all modes using End-to-End Encryption (E2EE) with a Double Ratchet-inspired protocol."
-      ],
-      "features": [
-        "Real-time messaging and file sharing across LAN, WAN, and offline modes",
-        "Automatic peer discovery using UDP broadcasts and mDNS",
-        "Seamless switching between local peer-to-peer and cloud-based communication",
-        "End-to-End Encryption with secure key exchange and forward secrecy",
-        "Offline queuing and deferred delivery using SQLite for reliability",
-        "Lightweight interface with scalable and low-latency performance"
-      ],
-      "contributors": [
-        {
-          "name": "Mithra N Gowda",
-          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
-        },
-        {
-          "name": "Bharath Kumar M S",
-          "profile": "https://www.linkedin.com/in/bharath-kumar-039034298"
-        }
-      ]
-    },
-    {
-      "title": "AI-Powered Smart Glasses for Glaucoma Detection",
-      "tech_stack": ["Flask", "TensorFlow", "Next.js", "CSS", "ESP32", "Sensors"],
-      "date": "Mar 2025",
-      "github_link": "https://github.com/mithrangowda07/smart-glasses",
-      "demo_link": "",
-      "description": [
-        "Smart glasses built with a high-speed camera and sensors using ESP32/SDM microcontroller to measure intraocular pressure (IOP) and cup-to-disc ratio.",
-        "Sensor data is sent to a TensorFlow-based ML model, and predictions are used by the Gemini API for automated report generation.",
-        "User interface developed using Next.js and CSS, with Flask and TensorFlow handling backend processing and model inference."
-      ],
-      "features": [
-        "Real-time IOP measurement",
-        "AI-powered glaucoma detection",
-        "Automated report generation",
-        "Mobile-responsive web interface"
-      ],
-      "contributors": [
-        {
-          "name": "Mithra N Gowda",
-          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
-        },
-        {
-          "name": "Bharath Kumar M S",
-          "profile": "https://www.linkedin.com/in/bharath-kumar-039034298"
-        },
-        {
-          "name": "Moulya R",
-          "profile": "https://www.linkedin.com/in/moulya-ravi-328aba2a7"
-        },
-        {
-          "name": "Florence Solomon",
-          "profile": "https://www.linkedin.com/in/florence-solomon-1b2b62312"
-        }
-      ]
-    },
-    {
-      "title": "College Match",
-      "tech_stack": ["Python", "Django", "MYSQL", "React", "CSS"],
-      "date": "Jan 2026",
-      "github_link": "https://github.com/mithrangowda07/college-match",
-      "demo_link": "",
-      "description": [
-        "Developed a web app using Django for KCET counseling aspirants, designed to produce a personalized list of colleges.",
-        "The data of previous year's cutoffs, used to recommend colleges, is stored in SQLite.",
-        "The app aims to reduce the need for personal counselors by allowing current college students to interact with users and provide information about their college."
-      ],
-      "features": [
-        "Personalized college recommendations based on KCET scores",
-        "Interactive platform for student-counselor communication",
-        "Historical cutoff data analysis"
-      ],
-      "contributors": [
-        {
-          "name": "Mithra N Gowda",
-          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
-        },
-        {
-          "name": "Dhruthi D",
-          "profile": "https://www.linkedin.com/in/dhruthi-d-767235363"
-        }
-      ]
-    },
-    {
       "title": "Water Monitoring System",
       "tech_stack": ["Raspberry Pi", "Water Flow Sensor", "Python", "Django", "Twilio", "Smtplib", "ThinkSpeak"],
       "date": "Dec 2024",
-      "github_link": "https://github.com/mithrangowda07/water-monitoring-system",
+      "github_link": "https://github.com/mithrangowda07/WaterMon",
       "demo_link": "",
       "description": [
         "Developed a Water Monitoring System leveraging IoT technologies to optimize water usage and mitigate wastage, using Raspberry Pi, water flow sensors, and Twilio.",
@@ -214,43 +186,6 @@
           "profile": "https://www.linkedin.com/in/meghana-j-l-27b219294"
         }
       ]
-    },
-    {
-      "title": "IoT Based Flood Detection System",
-      "tech_stack": ["Arduino Uno", "Water flow sensor", "Ultar sonic sensor", "Python", "Twilio"],
-      "date": "May 2024",
-      "github_link": "https://github.com/mithrangowda07/IoT_based_FloodDetection_and_DisasterManagements",
-      "demo_link": "",
-      "description": [
-        "Designed a sample banking transaction system using Java to simulate the common functions of using a bank account.",
-        "Used JavaFX to create a GUI that supports actions such as creating an account, deposit, withdraw, list all acounts, etc.",
-        "Implemented object-oriented programming practices such as inheritance to create different account types and databases."
-      ],
-      "features": [
-        "Real-time monitoring of water levels and flow rate",
-        "Automatic flood alerts via SMS using Twilio",
-        "Ultrasonic sensor for accurate distance and water level detection",
-        "Low-cost, scalable IoT-based design for disaster management",
-        "Data logging and visualization for trend analysis"
-      ],
-      "contributors": [
-        {
-          "name": "Mithra N Gowda",
-          "profile": "https://linkedin.com/in/mithra-n-gowda"
-        },
-        {
-          "name": "Meghana J L",
-          "profile": "https://www.linkedin.com/in/meghana-j-l-27b219294"
-        },
-        {
-          "name": "Mnajunath Nayak B P",
-          "profile": "https://www.linkedin.com/in/manjunathnayakbp"
-        },
-        {
-          "name": "Hemanth H S",
-          "profile": "https://www.linkedin.com/in/hemanth-hs-876a53355"
-        }
-      ]
     }
   ],
 
@@ -266,15 +201,14 @@
     "frameworks_libraries": [
       {"name": "Django", "level": 85},
       {"name": "Flask", "level": 80},
-      {"name": "TensorFlow", "level": 75},
-      {"name": "Next.js", "level": 70}
+      {"name": "TensorFlow", "level": 75}
     ],
     "tools_technologies": [
       {"name": "Linux", "level": 85},
       {"name": "GitHub", "level": 90},
       {"name": "Power BI", "level": 75},
       {"name": "ThingSpeak", "level": 80},
-      {"name": "MySQL", "level": 80}
+      {"name": "MySQL", "level": 90}
     ]
   },
 
@@ -315,12 +249,18 @@
     }
   ],
 
-  "certifications": [
+  "certificates": [
     {
-      "name": "Python Programming",
-      "issuer": "Coursera",
-      "date": "2024",
-      "link": ""
+      "name": "Introduction to Graph Algorithms",
+      "organization": "IISc Bengalore (NPTEL Online Certification)",
+      "date": "July-Sep 2025",
+      "image": "/certificates/Introduction_to_graph_algorithm.png"
+    },
+    {
+      "name": "Data Science for Engineers",
+      "organization": "IIT Madras (NPTEL Online Certification)",
+      "date": "Jan-Mar 2025",
+      "image": "/certificates/Data_Science.png"
     }
   ],
 

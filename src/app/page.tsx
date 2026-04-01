@@ -157,16 +157,19 @@ function ContactForm() {
 export default function Portfolio() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const [selectedCert, setSelectedCert] = useState<typeof resumeData.certificates[number] | null>(null)
   
   const homeRef = useRef<HTMLDivElement>(null)
   const aboutRef = useRef<HTMLDivElement>(null)
   const experienceRef = useRef<HTMLDivElement>(null)
   const projectsRef = useRef<HTMLDivElement>(null)
   const skillsRef = useRef<HTMLDivElement>(null)
+  const certificatesRef = useRef<HTMLDivElement>(null)
   const contactRef = useRef<HTMLDivElement>(null)
 
-  const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement | null>, sectionName: string) => {
-    sectionRef.current?.scrollIntoView({ behavior: 'smooth' })
+  const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement | null> | null, sectionName: string) => {
+    if (!sectionRef?.current) return
+    sectionRef.current.scrollIntoView({ behavior: 'smooth' })
     setActiveSection(sectionName)
     setIsSidebarOpen(false)
   }
@@ -177,6 +180,7 @@ export default function Portfolio() {
     { id: 'experience', label: 'Experience', icon: Briefcase, ref: experienceRef },
     { id: 'projects', label: 'Projects', icon: FolderOpen, ref: projectsRef },
     { id: 'skills', label: 'Skills', icon: Code, ref: skillsRef },
+    { id: 'certificates', label: 'Certificates', icon: Award, ref: certificatesRef },
     { id: 'contact', label: 'Contact', icon: MessageCircle, ref: contactRef },
   ]
 
@@ -306,13 +310,13 @@ export default function Portfolio() {
 
               {/* Right Side - Profile Photo */}
               <div className="flex-1 flex justify-center order-1 lg:order-2">
-                <div className="w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64">
+                <div className="w-56 h-56 sm:w-72 sm:h-72 lg:w-[380px] lg:h-[380px]">
                   <Image 
                     src="/profile-photo.jpg" 
                     alt="Profile Photo" 
-                    width={256}
-                    height={256}
-                    className="w-full h-full rounded-full object-cover"
+                    width={400}
+                    height={400}
+                    className="w-full h-full rounded-full object-cover shadow-xl border-4 border-indigo-400"
                   />
                 </div>
               </div>
@@ -625,20 +629,15 @@ export default function Portfolio() {
             {/* Programming Languages */}
             <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
               <h3 className="text-xl lg:text-2xl font-bold mb-6">Programming Languages</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <div className="flex flex-wrap gap-3">
                 {resumeData.skills.programming_languages.map((skill) => (
-                  <div key={skill.name} className="bg-[#0f0f23] p-4 rounded-lg border border-[#2d2d44]">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium text-sm lg:text-base">{skill.name}</span>
-                      <span className="text-sm text-gray-400">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-[#2d2d44] rounded-full h-2">
-                      <div
-                        className="bg-[#4f46e5] h-2 rounded-full transition-all duration-1000"
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
-                  </div>
+                  <span
+                    key={skill.name}
+                    className="px-4 py-2 bg-[#0f0f23] border border-[#2d2d44] rounded-full text-sm lg:text-base hover:bg-[#4f46e5] transition"
+                  >
+                    {skill.name}
+                  </span>
                 ))}
               </div>
             </div>
@@ -646,44 +645,59 @@ export default function Portfolio() {
             {/* Frameworks & Libraries */}
             <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
               <h3 className="text-xl lg:text-2xl font-bold mb-6">Frameworks & Libraries</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <div className="flex flex-wrap gap-3">
                 {resumeData.skills.frameworks_libraries.map((skill) => (
-                  <div key={skill.name} className="bg-[#0f0f23] p-4 rounded-lg border border-[#2d2d44]">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium text-sm lg:text-base">{skill.name}</span>
-                      <span className="text-sm text-gray-400">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-[#2d2d44] rounded-full h-2">
-                      <div
-                        className="bg-green-400 h-2 rounded-full transition-all duration-1000"
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
-                  </div>
+                  <span
+                    key={skill.name}
+                    className="px-4 py-2 bg-[#0f0f23] border border-[#2d2d44] rounded-full text-sm lg:text-base hover:bg-[#4f46e5] transition"
+                  >
+                    {skill.name}
+                  </span>
                 ))}
               </div>
             </div>
 
             {/* Tools & Technologies */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8">
+            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
               <h3 className="text-xl lg:text-2xl font-bold mb-6">Tools & Technologies</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <div className="flex flex-wrap gap-3">
                 {resumeData.skills.tools_technologies.map((skill) => (
-                  <div key={skill.name} className="bg-[#0f0f23] p-4 rounded-lg border border-[#2d2d44]">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium text-sm lg:text-base">{skill.name}</span>
-                      <span className="text-sm text-gray-400">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-[#2d2d44] rounded-full h-2">
-                      <div
-                        className="bg-purple-400 h-2 rounded-full transition-all duration-1000"
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
-                  </div>
+                  <span
+                    key={skill.name}
+                    className="px-4 py-2 bg-[#0f0f23] border border-[#2d2d44] rounded-full text-sm lg:text-base hover:bg-[#4f46e5] transition"
+                  >
+                    {skill.name}
+                  </span>
                 ))}
               </div>
             </div>
+
+          {/* Certificates Section */}
+            <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center mb-12 lg:mb-16">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">
+                    Certificates
+                  </h2>
+                </div>
+
+                <section ref={certificatesRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {resumeData.certificates.map((cert, index) => (
+                    <div
+                      key={index}
+                      onClick={() => setSelectedCert(cert)}
+                      className="cursor-pointer bg-[#1a1a2e] p-6 rounded-lg border border-[#2d2d44] hover:scale-105 transition-all"
+                    >
+                      <h3 className="text-lg font-semibold mb-2">{cert.name}</h3>
+                      <p className="text-sm text-gray-400">{cert.organization}</p>
+                      <p className="text-sm text-gray-500">{cert.date}</p>
+                    </div>
+                  ))}
+                </section>
+              </div>
+            </section>
 
             {/* Achievements */}
             <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mt-6 lg:mt-8">
@@ -799,6 +813,29 @@ export default function Portfolio() {
             <p className="text-gray-400 text-sm lg:text-base">&copy; {new Date().getFullYear()} {resumeData.personal_info.name}. All rights reserved.</p>
           </div>
         </footer>
+
+        {selectedCert && (
+          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+            <div className="bg-[#1a1a2e] p-6 rounded-lg max-w-3xl w-full relative">
+              <button
+                onClick={() => setSelectedCert(null)}
+                className="absolute top-3 right-3 text-white text-xl"
+              >
+                ✕
+              </button>
+
+              <h3 className="text-xl font-bold mb-4 text-center">
+                {selectedCert.name}
+              </h3>
+
+              <img
+                src={selectedCert.image}
+                alt="certificate"
+                className="w-full rounded-lg border border-[#2d2d44]"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
