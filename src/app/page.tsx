@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Image from 'next/image'
+import Script from 'next/script'
 import { 
   Menu, 
   X, 
@@ -18,9 +19,40 @@ import {
   User,
   FolderOpen,
   MessageCircle,
-  Home
+  Home as HomeIcon
 } from 'lucide-react'
 import resumeData from '../../resume_data.json'
+
+const siteUrl = 'https://mithrangowda.vercel.app'
+
+const personStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: resumeData.personal_info.name,
+  url: siteUrl,
+  image: `${siteUrl}/profile-photo.jpg`,
+  email: `mailto:${resumeData.personal_info.email}`,
+  telephone: resumeData.personal_info.phone,
+  jobTitle: 'Software Development Intern | Full Stack Developer | ML Enthusiast',
+  description: resumeData.personal_info.bio,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Bengaluru',
+    addressRegion: 'Karnataka',
+    postalCode: '560059',
+    addressCountry: 'IN',
+  },
+  alumniOf: resumeData.education.map((edu) => ({
+    '@type': 'EducationalOrganization',
+    name: edu.institution,
+  })),
+  sameAs: [
+    resumeData.personal_info.social_links.linkedin,
+    resumeData.personal_info.social_links.github,
+    resumeData.personal_info.social_links.leetcode,
+    resumeData.personal_info.social_links.instagram,
+  ].filter(Boolean),
+}
 
 // Contact Form Component
 function ContactForm() {
@@ -175,7 +207,7 @@ export default function Portfolio() {
   }
 
   const navItems = [
-    { id: 'home', label: 'Home', icon: Home, ref: homeRef },
+    { id: 'home', label: 'Home', icon: HomeIcon, ref: homeRef },
     { id: 'about', label: 'About', icon: User, ref: aboutRef },
     { id: 'experience', label: 'Experience', icon: Briefcase, ref: experienceRef },
     { id: 'projects', label: 'Projects', icon: FolderOpen, ref: projectsRef },
@@ -186,15 +218,21 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white">
+      <Script
+        id="mithra-ngowda-person-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personStructuredData) }}
+      />
+
       {/* Horizontal Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#1a1a2e] border-b border-[#2d2d44]">
+      <nav aria-label="Primary" className="fixed top-0 left-0 right-0 z-50 bg-[#1a1a2e] border-b border-[#2d2d44]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo/Name */}
             <div className="flex-shrink-0">
-              <h1 className="text-xl font-bold text-white font-['Times New Roman']">
+              <p className="text-xl font-bold text-white font-['Times New Roman']">
                 {resumeData.personal_info.name}
-              </h1>
+              </p>
             </div>
             
             {/* Desktop Navigation */}
@@ -253,9 +291,9 @@ export default function Portfolio() {
       </nav>
 
       {/* Main Content */}
-      <div className="pt-16">
+      <main className="pt-16">
         {/* Home Section */}
-        <section ref={homeRef} className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
+        <section id="home" ref={homeRef} className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto w-full">
             {/* Mobile: Stack vertically, Desktop: Side by side */}
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
@@ -272,7 +310,7 @@ export default function Portfolio() {
                 </p>
                 
                 {/* Contact Info */}
-                <div className="flex flex-col sm:flex-row flex-wrap gap-4 lg:gap-6 mb-8 lg:mb-12 justify-center lg:justify-start">
+                <address className="not-italic flex flex-col sm:flex-row flex-wrap gap-4 lg:gap-6 mb-8 lg:mb-12 justify-center lg:justify-start">
                   <div className="flex items-center text-gray-300 justify-center lg:justify-start">
                     <Mail className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
                     <a href={`mailto:${resumeData.personal_info.email}`} className="hover:text-[#4f46e5] text-sm lg:text-base">
@@ -289,7 +327,7 @@ export default function Portfolio() {
                     <MapPin className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
                     <span className="text-sm lg:text-base">{resumeData.personal_info.location}</span>
                   </div>
-                </div>
+                </address>
 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -313,9 +351,10 @@ export default function Portfolio() {
                 <div className="w-56 h-56 sm:w-72 sm:h-72 lg:w-[380px] lg:h-[380px]">
                   <Image 
                     src="/profile-photo.jpg" 
-                    alt="Profile Photo" 
+                    alt="Portrait of Mithra N Gowda" 
                     width={400}
                     height={400}
+                    priority
                     className="w-full h-full rounded-full object-cover shadow-xl border-4 border-indigo-400"
                   />
                 </div>
@@ -325,7 +364,7 @@ export default function Portfolio() {
         </section>
 
         {/* About Section */}
-        <section ref={aboutRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
+        <section id="about" ref={aboutRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12 lg:mb-16">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">About Me</h2>
@@ -400,7 +439,7 @@ export default function Portfolio() {
         </section>
 
         {/* Experience Section */}
-        <section ref={experienceRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+        <section id="experience" ref={experienceRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12 lg:mb-16">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Experience</h2>
@@ -456,7 +495,7 @@ export default function Portfolio() {
         </section>
 
         {/* Projects Section */}
-        <section ref={projectsRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
+        <section id="projects" ref={projectsRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12 lg:mb-16">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Projects</h2>
@@ -620,7 +659,7 @@ export default function Portfolio() {
         </section>
 
         {/* Skills Section */}
-        <section ref={skillsRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+        <section id="skills" ref={skillsRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12 lg:mb-16">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Skills & Expertise</h2>
@@ -683,7 +722,7 @@ export default function Portfolio() {
                   </h2>
                 </div>
 
-                <section ref={certificatesRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <section id="certificates" ref={certificatesRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {resumeData.certificates.map((cert, index) => (
                     <div
                       key={index}
@@ -719,7 +758,7 @@ export default function Portfolio() {
         </section>
 
         {/* Contact Section */}
-        <section ref={contactRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
+        <section id="contact" ref={contactRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Get In Touch</h2>
             <p className="text-lg sm:text-xl text-gray-300 mb-8 lg:mb-12 max-w-2xl mx-auto">
@@ -767,6 +806,7 @@ export default function Portfolio() {
                     href={resumeData.personal_info.social_links.github}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Visit Mithra N Gowda on GitHub"
                     className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
                   >
                     <Github size={20} className="lg:w-6 lg:h-6" />
@@ -777,6 +817,7 @@ export default function Portfolio() {
                     href={resumeData.personal_info.social_links.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Visit Mithra N Gowda on LinkedIn"
                     className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
                   >
                     <Linkedin size={20} className="lg:w-6 lg:h-6" />
@@ -787,6 +828,7 @@ export default function Portfolio() {
                     href={resumeData.personal_info.social_links.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Visit Mithra N Gowda on Instagram"
                     className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
                   >
                     <Instagram size={20} className="lg:w-6 lg:h-6" />
@@ -797,6 +839,7 @@ export default function Portfolio() {
                     href={resumeData.personal_info.social_links.leetcode}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Visit Mithra N Gowda on LeetCode"
                     className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
                   >
                     <Code size={20} className="lg:w-6 lg:h-6" />
@@ -836,7 +879,7 @@ export default function Portfolio() {
             </div>
           </div>
         )}
-      </div>
+      </main>
     </div>
   )
 }
