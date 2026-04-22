@@ -9,6 +9,9 @@ const siteDescription =
   'Official portfolio of Mithra N Gowda, Software Development Intern and Full Stack Developer from Bengaluru. Explore projects, experience, skills, certifications, and contact details.'
 
 export const metadata: Metadata = {
+  verification: {
+    google: "H62Z8ryS1k8_yMuUrA1aJcg5S5dy5Ls8scvbX0C-SD0"
+  },
   metadataBase: new URL(siteUrl),
   title: {
     default: siteTitle,
