@@ -657,6 +657,127 @@ export default function Portfolio() {
             ))}
           </div>
         </section>
+        
+        {/* GitHub Contributions Section */}
+        <section
+          id="github-contributions"
+          className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#0f0f23]"
+        >
+          <div className="max-w-6xl mx-auto">
+
+            {/* Section Heading */}
+            <div className="text-center mb-12 lg:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent mb-4">
+                GitHub Contributions
+              </h2>
+
+              <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-3xl mx-auto">
+                A snapshot of my coding consistency, open-source contributions,
+                and development activity across projects.
+              </p>
+            </div>
+
+            {/* Contribution Cards */}
+            <div className="space-y-8">
+
+              {/* GitHub Streak */}
+              <div className="bg-[#1a1a2e] border border-[#2d2d44] rounded-2xl p-4 sm:p-6 lg:p-8 hover:border-[#4f46e5] transition-all duration-300 shadow-lg">
+                <h3 className="text-xl lg:text-2xl font-semibold text-center mb-6 text-white">
+                  Contribution Streak
+                </h3>
+
+                <div className="flex justify-center">
+                  <a
+                    href="https://git.io/streak-stats"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="https://streak-stats.demolab.com?user=mithrangowda07&theme=tokyonight&hide_border=true"
+                      alt="GitHub Streak"
+                      className="w-full max-w-5xl rounded-xl"
+                    />
+                  </a>
+                </div>
+              </div>
+
+              {/* Activity Graph */}
+              <div className="bg-[#1a1a2e] border border-[#2d2d44] rounded-2xl p-4 sm:p-6 lg:p-8 hover:border-[#4f46e5] transition-all duration-300 shadow-lg">
+                <h3 className="text-xl lg:text-2xl font-semibold text-center mb-6 text-white">
+                  Contribution Activity Heatmap
+                </h3>
+
+                <div className="flex justify-center">
+                  <a
+                    href="https://github.com/ashutosh00710/github-readme-activity-graph"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="https://github-readme-activity-graph.vercel.app/graph?username=mithrangowda07&theme=tokyo-night&hide_border=true&area=true"
+                      alt="GitHub Activity Graph"
+                      className="w-full max-w-5xl rounded-xl"
+                    />
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        {/* LeetCode Section */}
+        <section
+          id="leetcode"
+          className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]"
+        >
+          <div className="max-w-6xl mx-auto">
+
+            {/* Heading */}
+            <div className="text-center mb-12 lg:mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent mb-4">
+                LeetCode Journey
+              </h2>
+
+              <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-3xl mx-auto">
+                Problem-solving statistics, coding consistency, and algorithmic practice
+                showcased through my LeetCode profile.
+              </p>
+            </div>
+
+            <div className="space-y-8">
+
+              {/* LeetCode Heatmap */}
+              <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 lg:p-8 hover:border-orange-500 transition-all duration-300 shadow-lg">
+                <h3 className="text-xl lg:text-2xl font-semibold text-center mb-6 text-white">
+                  LeetCode Statistics
+                </h3>
+
+                <div className="flex justify-center">
+                  <img
+                    src="https://leetcard.jacoblin.cool/SilentNeedle?ext=heatmap"
+                    alt="LeetCode Heatmap"
+                    className="w-full max-w-4xl rounded-xl"
+                  />
+                </div>
+              </div>
+
+              {/* Profile Button */}
+              <div className="flex justify-center">
+                <a
+                  href="https://leetcode.com/u/SilentNeedle/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg"
+                >
+                  View LeetCode Profile
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </section>
 
         {/* Skills Section */}
         <section id="skills" ref={skillsRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
