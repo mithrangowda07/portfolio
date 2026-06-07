@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Script from 'next/script'
 import { 
@@ -187,6 +187,60 @@ function ContactForm() {
 }
 
 export default function Portfolio() {
+  // Contest-specific state for alfa-leetcode-api
+  const [contestData, setContestData] = useState<any | null>(null)
+  const [contestLoading, setContestLoading] = useState(true)
+  const [contestError, setContestError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchContestData = async () => {
+      setContestLoading(true)
+      setContestError(null)
+
+      const url = "https://alfa-leetcode-api.onrender.com/SilentNeedle/contest"
+      const maxRetries = 3
+      let attempt = 0
+
+      while (attempt < maxRetries) {
+        try {
+          const response = await fetch(url)
+
+          if (response.ok) {
+            const data = await response.json()
+            setContestData(data)
+            setContestLoading(false)
+            return
+          }
+
+          // Handle rate limiting with retries/backoff
+          if (response.status === 429) {
+            attempt += 1
+            const backoff = 500 * Math.pow(2, attempt) // exponential backoff
+            console.warn(`Rate limited, retrying in ${backoff}ms (attempt ${attempt})`)
+            await new Promise((r) => setTimeout(r, backoff))
+            continue
+          }
+
+          const text = await response.text().catch(() => '')
+          throw new Error(`HTTP ${response.status} ${text}`)
+        } catch (err: any) {
+          attempt += 1
+          if (attempt >= maxRetries) {
+            setContestError(err?.message || String(err))
+            console.error('Error fetching contest data:', err)
+            setContestLoading(false)
+            return
+          }
+
+          const backoff = 500 * Math.pow(2, attempt)
+          await new Promise((r) => setTimeout(r, backoff))
+        }
+      }
+    }
+
+    fetchContestData()
+  }, [])
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [selectedCert, setSelectedCert] = useState<typeof resumeData.certificates[number] | null>(null)
@@ -748,6 +802,51 @@ export default function Portfolio() {
 
             <div className="space-y-8">
 
+              {/* Profile Button */}
+              <div className="flex justify-center">
+                <a
+                  href="https://leetcode.com/u/SilentNeedle/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg"
+                >
+                  View LeetCode Profile
+                </a>
+              </div>
+
+              {/* Contest Stats (from alfa-leetcode-api) */}
+              <div className="mt-8">
+                {contestLoading ? (
+                  <div className="text-center text-gray-300">Loading contest statistics...</div>
+                ) : contestError ? (
+                  <div className="text-center text-red-400">Unable to load LeetCode contest statistics.</div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                      <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 text-center hover:border-orange-500 transition-all duration-300 shadow-lg">
+                        <h4 className="text-gray-400 mb-2">Contest Rating</h4>
+                        <p className="text-4xl font-bold text-orange-400">{contestData?.contestRating ? Math.round(contestData.contestRating) : 'N/A'}</p>
+                      </div>
+
+                      <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 text-center hover:border-yellow-500 transition-all duration-300 shadow-lg">
+                        <h4 className="text-gray-400 mb-2">Global Contest Rank</h4>
+                        <p className="text-4xl font-bold text-yellow-400">{contestData?.contestGlobalRanking ? contestData.contestGlobalRanking.toLocaleString() : 'N/A'}</p>
+                      </div>
+
+                      <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 text-center hover:border-amber-500 transition-all duration-300 shadow-lg">
+                        <h4 className="text-gray-400 mb-2">Top Percentage</h4>
+                        <p className="text-4xl font-bold text-amber-400">{contestData?.contestTopPercentage ? `${contestData.contestTopPercentage}%` : 'N/A'}</p>
+                      </div>
+
+                      <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 text-center hover:border-green-500 transition-all duration-300 shadow-lg">
+                        <h4 className="text-gray-400 mb-2">Contests Attended</h4>
+                        <p className="text-4xl font-bold text-green-400">{contestData?.contestAttend ?? 'N/A'}</p>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
               {/* LeetCode Heatmap */}
               <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 lg:p-8 hover:border-orange-500 transition-all duration-300 shadow-lg">
                 <h3 className="text-xl lg:text-2xl font-semibold text-center mb-6 text-white">
@@ -761,18 +860,6 @@ export default function Portfolio() {
                     className="w-full max-w-4xl rounded-xl"
                   />
                 </div>
-              </div>
-
-              {/* Profile Button */}
-              <div className="flex justify-center">
-                <a
-                  href="https://leetcode.com/u/SilentNeedle/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg"
-                >
-                  View LeetCode Profile
-                </a>
               </div>
 
             </div>
