@@ -23,6 +23,13 @@ import {
 } from 'lucide-react'
 import resumeData from '../../resume_data.json'
 
+interface ContestData {
+  contestAttend?: number
+  contestRating?: number
+  contestGlobalRanking?: number
+  contestTopPercentage?: number
+}
+
 const siteUrl = 'https://mithrangowda.vercel.app'
 
 const personStructuredData = {
@@ -188,9 +195,12 @@ function ContactForm() {
 
 export default function Portfolio() {
   // Contest-specific state for alfa-leetcode-api
-  const [contestData, setContestData] = useState<any | null>(null)
+  const [contestData, setContestData] = useState<ContestData | null>(null)
   const [contestLoading, setContestLoading] = useState(true)
   const [contestError, setContestError] = useState<string | null>(null)
+
+  const getErrorMessage = (error: unknown) =>
+    error instanceof Error ? error.message : String(error)
 
   useEffect(() => {
     const fetchContestData = async () => {
@@ -223,10 +233,11 @@ export default function Portfolio() {
 
           const text = await response.text().catch(() => '')
           throw new Error(`HTTP ${response.status} ${text}`)
-        } catch (err: any) {
+        } catch (err: unknown) {
           attempt += 1
+          const errorMessage = getErrorMessage(err)
           if (attempt >= maxRetries) {
-            setContestError(err?.message || String(err))
+            setContestError(errorMessage)
             console.error('Error fetching contest data:', err)
             setContestLoading(false)
             return
