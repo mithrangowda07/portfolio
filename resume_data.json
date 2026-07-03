@@ -231,8 +231,7 @@
     ],
     "frameworks_libraries": [
       {"name": "Django", "level": 85},
-      {"name": "Flask", "level": 80},
-      {"name": "TensorFlow", "level": 75}
+      {"name": "Flask", "level": 80}
     ],
     "tools_technologies": [
       {"name": "Linux", "level": 85},
