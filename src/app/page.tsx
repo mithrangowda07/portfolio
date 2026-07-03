@@ -700,7 +700,7 @@ export default function Portfolio() {
                           href={project.github_link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-300 text-black py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-center font-bold text-base lg:text-lg hover:from-yellow-300 hover:to-yellow-400 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                          className="flex-1 border-2 border-[#4f46e5] text-[#4f46e5] py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-center font-bold text-base lg:text-lg hover:bg-[#4f46e5] hover:text-white transition-all duration-200 transform hover:scale-105"
                         >
                           View Code
                         </a>

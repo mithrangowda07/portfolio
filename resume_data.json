@@ -1,15 +1,15 @@
 {
   "personal_info": {
     "name": "Mithra N Gowda",
-    "tagline": "Software Development Intern | ML Enthusiast | Full Stack Developer",
+    "tagline": "Software Development Intern | Full Stack Developer | Competitive Programmer",
     "location": "Bengaluru, Karnataka 560059",
     "phone": "9740569178",
     "email": "mithrangowda01@gmail.com",
-    "bio": "Ex-Software Development Intern at Schneider Electric with expertise in AI/ML, Web Development, and IoT. Passionate about building scalable, intelligent systems that solve real-world problems through data and innovation.",
+    "bio": "Information Science undergraduate passionate about building scalable full-stack applications and solving real-world problems with modern web technologies. Experienced in React, Node.js, Django, and AWS, with a focus on creating impactful, user-centric software.",
     "social_links": {
       "linkedin": "https://www.linkedin.com/in/mithra-n-gowda-30b053294",
       "github": "https://github.com/mithrangowda07",
-      "instagram": "https://canva.link/6r5self3z8fdzxc",
+      "instagram": "https://www.instagram.com/mithrangowda_01?igsh=N3d6OTZvcXI2Z2Jp",
       "leetcode": "https://leetcode.com/u/SilentNeedle/"
     }
   },
@@ -30,7 +30,7 @@
       "location": "Dakshina Kannada, Karnataka",
       "start_date": "Sep 2021",
       "end_date": "Mar 2023",
-      "percentage": "97.67",
+      "percentage": "97.66",
       "description": "Completed Pre-University Course with Physics, Chemistry, Mathematics, and Biology."
     },
     {
@@ -63,24 +63,26 @@
 
   "projects": [
     {
-      "title": "EduMate KCET-Personalized Rank-to-College Advisor",
-      "tech_stack": ["Django", "Django REST API", "React", "TypeScript", "MySQL", "Machine Learning", "JWT", "OCR"],
-      "date": "Jan 2026",
-      "github_link": "https://github.com/mithrangowda07/kcet-helper",
-      "demo_link": "",
+      "title": "KCET EduGuide-Personalized Rank-to-College Advisor",
+      "tech_stack": ["React", "Node.js", "Express.js", "MongoDB", "EC2", "S3", "Vercel", "TypeScript", "Tailwind CSS"],
+      "date": "April 2026",
+      "github_link": "https://github.com/mithrangowda07/frontend-kcet",
+      "demo_link": "https://kcet-eduguide.vercel.app/",
       "description": [
-        "A personalized KCET rank-to-college recommendation platform that helps students choose the best college and branch based on their rank.",
-        "Provides cutoff trends, peer reviews, and intelligent suggestions to reduce manual research time.",
-        "Integrates AI-driven validation and real-time features for a smarter counseling experience."
+        "Developed KCET EduGuide, a full-stack counselling platform used by 70+ students, that helps students to prepare KCET counselling choice lists through personalized rank-based recommendations and automated choice management.",
+        "Built frontend using React, TypeScript, Tailwind CSS, and with responsive UI, interactive cutoff visualizations with Recharts, PDF choice list generation, JWT-based authentication, and advanced filtering for colleges, branches, categories, locations, and counselling rounds.",
+        "Developed a Node.js and Express backend with MongoDB, implementing recommendation algorithms, secure JWT authentication, mentor verification, meeting management, and RESTful APIs for real-time data access.",
+        "Deployed the application using Amazon EC2 for the backend, Vercel for the frontend, and Amazon S3 for hosting images and branch insight JSON files."
       ],
       "features": [
-        "Personalized college and branch recommendations based on KCET rank",
-        "Interactive cutoff trend visualization",
-        "Peer-to-peer counseling with Jitsi Meet integration",
-        "AI-based review validation using TF-IDF and Logistic Regression",
-        "OCR-based student ID verification system",
-        "Role-based authentication and secure JWT login",
-        "Drag-and-drop choice filling with real-time data persistence"
+        "Personalized college and branch recommendations based on KCET rank, reservation category, and preferred locations",
+        "Interactive counselling choice list builder with drag-and-drop reordering, bulk actions, PDF export, and mock allotment prediction",
+        "Advanced search and filtering by category, counselling round, year, cluster, location, and rank range with historical cutoff trend visualization",
+        "College and branch explorer with verified student reviews, branch insights, career information, and placement details",
+        "Peer-to-peer mentoring platform with verified student mentors, Jitsi Meet integration, and admin-approved webinars",
+        "OCR-based student ID verification and admin approval workflow for mentor authentication",
+        "Role-based authentication using JWT with secure access control, persistent sessions, and profile management",
+        "Cloud-native deployment using Amazon EC2, Vercel, MongoDB Atlas, and Amazon S3 for storing images and branch insight JSON files"
       ],
       "contributors": [
         {
@@ -90,10 +92,39 @@
         {
           "name": "Dhruthi D",
           "profile": "https://www.linkedin.com/in/dhruthi-d-767235363"
+        }
+      ]
+    },
+    {
+      "title": "Topic-Based Micro-Subscription Learning Platform",
+      "tech_stack": ["React", "Django", "MYSQL", "TypeScript", "MinIO"],
+      "date": "March 2026",
+      "github_link": "https://github.com/mithrangowda07/Topic-Based-Micro-Subscription-Learning-Platform",
+      "demo_link": "",
+      "description": [
+        "Developed a topic-based micro-subscription learning platform enabling users to purchase individual topics instead of full courses, providing a flexible and cost-effective learning experience.",
+        "Built a full-stack application using Django REST Framework and React + TypeScript with JWT authentication, integrating wallet-based payments, atomic transactions, and MinIO-based storage for markdown content and videos.",
+        "Implemented role-based access control, real-time discussion using WebSockets, problem contribution and admin verification system with reward mechanism, and progress tracking with a professional dashboard UI.",
+        "Designed a comprehensive admin dashboard for managing courses, topics, problems, subscriptions, and analytics, ensuring efficient platform administration and user engagement."
+      ],
+      "features": [
+        "Topic-based learning platform with pay-per-topic subscriptions instead of full-course purchases",
+        "Premium content access control with subscription-based topic, problem, and discussion unlocking",
+        "Real-time topic discussions using Django Channels and WebSocket integration",
+        "Role-based authentication with JWT, secure wallet PIN, and admin/student access control",
+        "Interactive coding problems and practice management with progress tracking",
+        "Digital wallet system for purchasing topics and managing student credits",
+        "Comprehensive admin dashboard for managing courses, topics, problems, subscriptions, and analytics",
+        "Responsive full-stack application built with Django REST Framework, React, TypeScript, Tailwind CSS, Zustand, and MySQL"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
         },
         {
-          "name": "Meghana J L",
-          "profile": "https://www.linkedin.com/in/meghana-j-l-27b219294"
+          "name": "Dhruthi D",
+          "profile": "https://www.linkedin.com/in/dhruthi-d-767235363"
         }
       ]
     },
