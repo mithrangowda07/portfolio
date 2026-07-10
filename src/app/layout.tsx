@@ -1,12 +1,29 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-heading',
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+})
+
 const siteUrl = 'https://mithrangowda.vercel.app'
 const siteTitle = 'Mithra N Gowda | Software Developer Portfolio'
 const siteDescription =
-  'Official portfolio of Mithra N Gowda, Software Development Intern and Full Stack Developer from Bengaluru. Explore projects, experience, skills, certifications, and contact details.'
+  'Official retro OS-themed portfolio of Mithra N Gowda, Software Development Intern, Full Stack Developer and AI Engineer. Explore projects, experience, skills, and certifications.'
 
 export const metadata: Metadata = {
   icons: {
@@ -28,8 +45,9 @@ export const metadata: Metadata = {
     'Mithra N Gowda developer',
     'Software Development Intern',
     'Full Stack Developer',
-    'Machine Learning',
+    'AI Engineer',
     'Next.js portfolio',
+    'Retro portfolio',
     'Bengaluru developer',
   ],
   authors: [{ name: 'Mithra N Gowda' }],
@@ -76,7 +94,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0f0f23',
+  themeColor: '#F8F8F5',
 }
 
 export default function RootLayout({
@@ -85,11 +103,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="min-h-screen bg-[#0f0f23]">
-          {children}
-        </div>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
+      <body className="antialiased bg-[#F8F8F5] text-[#111111] font-sans selection:bg-[#2563EB] selection:text-white">
+        {children}
       </body>
     </html>
   )

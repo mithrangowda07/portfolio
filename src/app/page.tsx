@@ -1,25 +1,28 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Script from 'next/script'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Menu, 
   X, 
-  Mail, 
-  MapPin, 
   Github, 
   Linkedin, 
   Instagram,
   Code,
   GraduationCap, 
-  Briefcase, 
-  Award, 
   Heart,
   User,
-  FolderOpen,
-  MessageCircle,
-  Home as HomeIcon
+  ChevronUp,
+  Terminal,
+  Monitor,
+  AlertCircle,
+  ExternalLink,
+  FileText,
+  CheckCircle,
+  BookOpen,
+  Inbox
 } from 'lucide-react'
 import resumeData from '../../resume_data.json'
 
@@ -28,6 +31,22 @@ interface ContestData {
   contestRating?: number
   contestGlobalRanking?: number
   contestTopPercentage?: number
+}
+
+interface Contributor {
+  name: string
+  profile: string
+}
+
+interface Project {
+  title: string
+  tech_stack: string[]
+  date: string
+  github_link?: string
+  demo_link?: string
+  description: string[]
+  features: string[]
+  contributors: Contributor[]
 }
 
 const siteUrl = 'https://mithrangowda.vercel.app'
@@ -59,6 +78,97 @@ const personStructuredData = {
     resumeData.personal_info.social_links.leetcode,
     resumeData.personal_info.social_links.instagram,
   ].filter(Boolean),
+}
+
+// Window component representing retro OS window
+interface RetroWindowProps {
+  title: string
+  children: React.ReactNode
+  className?: string
+  titleBarColor?: string
+  controls?: string[] // e.g. ['●', '○', '□']
+  onClose?: () => void
+  onMinimize?: () => void
+  onMaximize?: () => void
+}
+
+function RetroWindow({
+  title,
+  children,
+  className = '',
+  titleBarColor = 'bg-[#111111] text-white',
+  controls = ['●', '○', '□'],
+  onClose,
+  onMinimize,
+  onMaximize
+}: RetroWindowProps) {
+  return (
+    <motion.div 
+      initial={{ scale: 0.95, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className={`border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col overflow-hidden ${className}`}
+    >
+      {/* Title Bar */}
+      <div className={`border-b-2 border-black ${titleBarColor} px-3 py-2 flex items-center justify-between font-mono select-none`}>
+        <div className="flex items-center space-x-1">
+          {controls.map((ctrl, i) => (
+            <button
+              key={i}
+              onClick={i === 0 ? onClose : i === 1 ? onMinimize : onMaximize}
+              className={`w-3.5 h-3.5 border border-black flex items-center justify-center text-[8px] font-bold rounded-full transition-colors cursor-pointer ${
+                i === 0 
+                  ? 'bg-[#111111] text-white hover:bg-red-500' 
+                  : i === 1 
+                    ? 'bg-white text-black hover:bg-yellow-400' 
+                    : 'bg-white text-black hover:bg-green-400'
+              }`}
+            >
+              {ctrl}
+            </button>
+          ))}
+        </div>
+        <span className="text-xs font-bold font-mono tracking-wider truncate px-4">{title}</span>
+        <div className="w-12 text-right text-[9px] opacity-60 hidden sm:block">Active</div>
+      </div>
+      {/* Content */}
+      <div className="p-4 sm:p-6 flex-1 bg-white select-text">
+        {children}
+      </div>
+    </motion.div>
+  )
+}
+
+// Retro Button Component
+interface RetroButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'retro' | 'primary' | 'secondary' | 'accent'
+  children: React.ReactNode
+}
+
+function RetroButton({
+  variant = 'retro',
+  children,
+  className = '',
+  ...props
+}: RetroButtonProps) {
+  let baseStyle = 'border-2 border-black font-bold font-mono transition-all select-none px-4 py-2 text-sm text-center inline-flex items-center justify-center '
+  
+  if (variant === 'primary') {
+    baseStyle += 'bg-[#111111] text-white hover:bg-[#333333] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-[2px] active:translate-x-[2px]'
+  } else if (variant === 'secondary') {
+    baseStyle += 'bg-[#444444] text-white hover:bg-[#555555] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-[2px] active:translate-x-[2px]'
+  } else if (variant === 'accent') {
+    baseStyle += 'bg-[#2563EB] text-white hover:bg-blue-700 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-[2px] active:translate-x-[2px]'
+  } else {
+    // Standard Retro Active Button
+    baseStyle += 'bg-white text-[#111111] hover:bg-[#EFEFEF] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-[3px] active:translate-x-[3px]'
+  }
+
+  return (
+    <button className={`${baseStyle} ${className}`} {...props}>
+      {children}
+    </button>
+  )
 }
 
 // Contact Form Component
@@ -107,11 +217,11 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+    <form onSubmit={handleSubmit} className="space-y-4 font-mono">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-            Name *
+          <label htmlFor="name" className="block text-xs font-bold text-[#111111] mb-1">
+            Sender Name:
           </label>
           <input
             type="text"
@@ -120,13 +230,13 @@ function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors text-sm lg:text-base"
-            placeholder="Your name"
+            className="w-full px-3 py-2 bg-white border-2 border-black rounded-none text-black placeholder-gray-400 focus:outline-none focus:bg-[#EFEFEF] transition-colors text-sm"
+            placeholder="John Doe"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-            Email *
+          <label htmlFor="email" className="block text-xs font-bold text-[#111111] mb-1">
+            Sender Email:
           </label>
           <input
             type="email"
@@ -135,15 +245,15 @@ function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors text-sm lg:text-base"
-            placeholder="your.email@example.com"
+            className="w-full px-3 py-2 bg-white border-2 border-black rounded-none text-black placeholder-gray-400 focus:outline-none focus:bg-[#EFEFEF] transition-colors text-sm"
+            placeholder="john@example.com"
           />
         </div>
       </div>
       
       <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
-          Subject *
+        <label htmlFor="subject" className="block text-xs font-bold text-[#111111] mb-1">
+          Subject Line:
         </label>
         <input
           type="text"
@@ -152,14 +262,14 @@ function ContactForm() {
           value={formData.subject}
           onChange={handleChange}
           required
-          className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors text-sm lg:text-base"
-          placeholder="What's this about?"
+          className="w-full px-3 py-2 bg-white border-2 border-black rounded-none text-black placeholder-gray-400 focus:outline-none focus:bg-[#EFEFEF] transition-colors text-sm"
+          placeholder="Collaboration Inquiry"
         />
       </div>
       
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-          Message *
+        <label htmlFor="message" className="block text-xs font-bold text-[#111111] mb-1">
+          Message Body:
         </label>
         <textarea
           id="message"
@@ -167,26 +277,33 @@ function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           required
-          rows={4}
-          className="w-full px-3 lg:px-4 py-2 lg:py-3 bg-[#1a1a2e] border border-[#2d2d44] rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#4f46e5] transition-colors resize-none text-sm lg:text-base"
-          placeholder="Tell me more about your project or opportunity..."
+          rows={5}
+          className="w-full px-3 py-2 bg-white border-2 border-black rounded-none text-black placeholder-gray-400 focus:outline-none focus:bg-[#EFEFEF] transition-colors resize-none text-sm"
+          placeholder="Write your email body here..."
         />
       </div>
       
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <button
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+        <RetroButton
           type="submit"
           disabled={isSubmitting}
-          className="w-full sm:w-auto bg-[#4f46e5] text-white px-6 lg:px-8 py-2 lg:py-3 rounded-lg font-semibold hover:bg-[#6366f1] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
+          variant="primary"
+          className="w-full sm:w-auto"
         >
           {isSubmitting ? 'Sending...' : 'Send Message'}
-        </button>
+        </RetroButton>
         
         {submitStatus === 'success' && (
-          <p className="text-green-400 text-sm text-center sm:text-left">Message sent successfully!</p>
+          <div className="flex items-center space-x-2 text-green-600 bg-green-50 border border-green-300 px-3 py-1.5 text-xs font-bold">
+            <CheckCircle size={14} />
+            <span>Success: Message sent!</span>
+          </div>
         )}
         {submitStatus === 'error' && (
-          <p className="text-red-400 text-sm text-center sm:text-left">Failed to send message. Please try again.</p>
+          <div className="flex items-center space-x-2 text-red-600 bg-red-50 border border-red-300 px-3 py-1.5 text-xs font-bold">
+            <AlertCircle size={14} />
+            <span>Error: Failed to send message.</span>
+          </div>
         )}
       </div>
     </form>
@@ -194,7 +311,7 @@ function ContactForm() {
 }
 
 export default function Portfolio() {
-  // Contest-specific state for alfa-leetcode-api
+  // LeetCode Contest Stats
   const [contestData, setContestData] = useState<ContestData | null>(null)
   const [contestLoading, setContestLoading] = useState(true)
   const [contestError, setContestError] = useState<string | null>(null)
@@ -222,11 +339,9 @@ export default function Portfolio() {
             return
           }
 
-          // Handle rate limiting with retries/backoff
           if (response.status === 429) {
             attempt += 1
-            const backoff = 500 * Math.pow(2, attempt) // exponential backoff
-            console.warn(`Rate limited, retrying in ${backoff}ms (attempt ${attempt})`)
+            const backoff = 500 * Math.pow(2, attempt)
             await new Promise((r) => setTimeout(r, backoff))
             continue
           }
@@ -238,7 +353,6 @@ export default function Portfolio() {
           const errorMessage = getErrorMessage(err)
           if (attempt >= maxRetries) {
             setContestError(errorMessage)
-            console.error('Error fetching contest data:', err)
             setContestLoading(false)
             return
           }
@@ -252,853 +366,1164 @@ export default function Portfolio() {
     fetchContestData()
   }, [])
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  // Navigation states
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
-  const [selectedCert, setSelectedCert] = useState<typeof resumeData.certificates[number] | null>(null)
   
-  const homeRef = useRef<HTMLDivElement>(null)
-  const aboutRef = useRef<HTMLDivElement>(null)
-  const experienceRef = useRef<HTMLDivElement>(null)
-  const projectsRef = useRef<HTMLDivElement>(null)
-  const skillsRef = useRef<HTMLDivElement>(null)
-  const certificatesRef = useRef<HTMLDivElement>(null)
-  const contactRef = useRef<HTMLDivElement>(null)
+  // Custom dialog notifications
+  const [systemAlert, setSystemAlert] = useState<string | null>(null)
 
-  const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement | null> | null, sectionName: string) => {
-    if (!sectionRef?.current) return
-    sectionRef.current.scrollIntoView({ behavior: 'smooth' })
-    setActiveSection(sectionName)
-    setIsSidebarOpen(false)
+  // Experience stacking order (last element = highest zIndex / top card)
+  const [experienceStack, setExperienceStack] = useState(['nss', 'schneider'])
+
+  // Certificates Folder control states
+  const [expandedFolder, setExpandedFolder] = useState<number | null>(null)
+
+  // Skills filter Category
+  const [selectedSkillCategory, setSelectedSkillCategory] = useState<string>('ALL')
+
+  // Selected project for details modal popup
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+
+  // Resume Viewer modal state
+  const [isResumeOpen, setIsResumeOpen] = useState(false)
+
+  // Smooth scroll helper
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+      setActiveSection(id)
+      setIsMenuOpen(false)
+    }
   }
 
-  const navItems = [
-    { id: 'home', label: 'Home', icon: HomeIcon, ref: homeRef },
-    { id: 'about', label: 'About', icon: User, ref: aboutRef },
-    { id: 'experience', label: 'Experience', icon: Briefcase, ref: experienceRef },
-    { id: 'projects', label: 'Projects', icon: FolderOpen, ref: projectsRef },
-    { id: 'skills', label: 'Skills', icon: Code, ref: skillsRef },
-    { id: 'certificates', label: 'Certificates', icon: Award, ref: certificatesRef },
-    { id: 'contact', label: 'Contact', icon: MessageCircle, ref: contactRef },
+  // Grouping skills
+  const skillsCategories = [
+    { id: 'ALL', name: 'All Files' },
+    { id: 'LANGUAGES', name: 'Languages' },
+    { id: 'FRAMEWORKS', name: 'Frameworks' },
+    { id: 'TOOLS', name: 'Tools & DBs' }
+  ]
+
+  const getFilteredSkills = () => {
+    if (selectedSkillCategory === 'LANGUAGES') {
+      return resumeData.skills.programming_languages
+    }
+    if (selectedSkillCategory === 'FRAMEWORKS') {
+      return resumeData.skills.frameworks_libraries
+    }
+    if (selectedSkillCategory === 'TOOLS') {
+      return resumeData.skills.tools_technologies
+    }
+    return [
+      ...resumeData.skills.programming_languages,
+      ...resumeData.skills.frameworks_libraries,
+      ...resumeData.skills.tools_technologies
+    ]
+  }
+
+  // About tab switching state
+  const [activeAboutTab, setActiveAboutTab] = useState('profile')
+  const aboutTabs = [
+    { id: 'profile', name: 'About Me', icon: User },
+    { id: 'education', name: 'Education', icon: GraduationCap },
+    { id: 'coursework', name: 'Coursework', icon: BookOpen },
+    { id: 'hobbies', name: 'Interests', icon: Heart },
+    { id: 'facts', name: 'Quick Facts', icon: FileText }
   ]
 
   return (
-    <div className="min-h-screen bg-[#0f0f23] text-white">
+    <div className="min-h-screen retro-grid bg-[#F8F8F5] text-[#111111] pb-16 selection:bg-[#2563EB] selection:text-white relative">
       <Script
         id="mithra-ngowda-person-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personStructuredData) }}
       />
 
-      {/* Horizontal Navigation Bar */}
-      <nav aria-label="Primary" className="fixed top-0 left-0 right-0 z-50 bg-[#1a1a2e] border-b border-[#2d2d44]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo/Name */}
-            <div className="flex-shrink-0">
-              <p className="text-xl font-bold text-white font-['Times New Roman']">
-                {resumeData.personal_info.name}
-              </p>
-            </div>
+      {/* Floating Retro Toolbar Navbar */}
+      <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-white border-2 border-black px-4 py-2.5 flex items-center justify-between max-w-5xl w-[90%] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-mono">
+        {/* Navbar Logo */}
+        <button onClick={() => scrollTo('home')} className="flex items-center space-x-2 text-sm font-bold border-r-2 border-black pr-4 cursor-pointer hover:underline">
+          <Terminal size={16} />
+          <span>Mithra N Gowda</span>
+        </button>
+
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center space-x-6 text-xs font-bold pl-4">
+          <button onClick={() => scrollTo('about')} className={`hover:underline cursor-pointer ${activeSection === 'about' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>About</button>
+          <button onClick={() => scrollTo('skills')} className={`hover:underline cursor-pointer ${activeSection === 'skills' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Skills</button>
+          <button onClick={() => scrollTo('projects')} className={`hover:underline cursor-pointer ${activeSection === 'projects' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Projects</button>
+          <button onClick={() => scrollTo('experience')} className={`hover:underline cursor-pointer ${activeSection === 'experience' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Experience</button>
+          <button onClick={() => scrollTo('certificates')} className={`hover:underline cursor-pointer ${activeSection === 'certificates' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Folders</button>
+          <button onClick={() => scrollTo('metrics')} className={`hover:underline cursor-pointer ${activeSection === 'metrics' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Dashboard</button>
+          <button onClick={() => scrollTo('contact')} className={`hover:underline cursor-pointer ${activeSection === 'contact' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Contact</button>
+        </div>
+
+        {/* Action Button */}
+        <div className="hidden md:block">
+          <button
+            onClick={() => setIsResumeOpen(true)}
+            className="border-2 border-black bg-white text-xs font-bold px-3 py-1 hover:bg-[#EFEFEF] active:translate-y-[1px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none transition-all block font-mono cursor-pointer"
+          >
+            📄 View Resume
+          </button>
+        </div>
+
+        {/* Mobile menu trigger */}
+        <button 
+          onClick={() => setIsMenuOpen(!isMenuOpen)} 
+          className="md:hidden border-2 border-black p-1 hover:bg-[#EFEFEF] cursor-pointer"
+          aria-label="Toggle retro menu"
+        >
+          {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+        </button>
+      </nav>
+
+      {/* Mobile Menu Drawer */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-18 left-1/2 transform -translate-x-1/2 z-40 bg-white border-2 border-black w-[90%] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 flex flex-col space-y-3 font-mono md:hidden"
+          >
+            <button onClick={() => scrollTo('about')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 About Me</button>
+            <button onClick={() => scrollTo('skills')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Technical Skills</button>
+            <button onClick={() => scrollTo('projects')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Project Windows</button>
+            <button onClick={() => scrollTo('experience')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Stacked Experience</button>
+            <button onClick={() => scrollTo('certificates')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Certificates</button>
+            <button onClick={() => scrollTo('metrics')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Dev Dashboard</button>
+            <button onClick={() => scrollTo('contact')} className="text-left py-1 text-sm font-bold hover:bg-[#EFEFEF] px-2">📂 Contact Terminal</button>
+            <button
+              onClick={() => {
+                setIsResumeOpen(true)
+                setIsMenuOpen(false)
+              }}
+              className="border-2 border-black bg-white text-center py-2 text-xs font-bold hover:bg-[#EFEFEF] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] block w-full cursor-pointer font-mono"
+            >
+              📄 View Resume
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main OS desktop */}
+      <main className="max-w-6xl mx-auto px-4 pt-28 space-y-24">
+        
+        {/* HERO SECTION */}
+        <section id="home" className="min-h-[80vh] flex items-center pt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full items-stretch">
             
-            {/* Desktop Navigation */}
-            <div className="hidden md:block">
-              <div className="flex items-center space-x-8">
-                {navItems.map((item, index) => (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.ref, item.id)}
-                    className={`text-sm font-mono transition-colors ${
-                      activeSection === item.id
-                        ? 'text-[#4f46e5]'
-                        : 'text-gray-300 hover:text-white'
-                    }`}
-                  >
-                    <span className="text-gray-400">{String(index).padStart(2, '0')} : </span>
-                    {item.label}
-                  </button>
-                ))}
+            {/* Left Info Panel */}
+            <div className="lg:col-span-7 flex flex-col justify-center space-y-8">
+              <div className="space-y-4">
+                <span className="font-mono text-xs font-bold px-2.5 py-1 border-2 border-black bg-white inline-block shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  Welcome
+                </span>
+                
+                {/* Space Grotesk Heading */}
+                <h1 className="text-5xl sm:text-7xl font-bold tracking-tight font-heading leading-tight text-[#111111]">
+                  Hello.<br />
+                  I&apos;m <span className="underline decoration-2 underline-offset-8 decoration-[#2563EB]">{resumeData.personal_info.name}</span>
+                </h1>
+              </div>
+
+              {/* Badges */}
+              <div className="flex flex-wrap gap-2">
+                <span className="px-3 py-1 border-2 border-black bg-[#EFEFEF] font-mono text-xs font-bold rounded-none">
+                  ⚡ Full Stack Developer
+                </span>
+                <span className="px-3 py-1 border-2 border-black bg-[#EFEFEF] font-mono text-xs font-bold rounded-none">
+                  🧠 AI Engineer
+                </span>
+                <span className="px-3 py-1 border-2 border-black bg-[#EFEFEF] font-mono text-xs font-bold rounded-none">
+                  💻 Software Engineer
+                </span>
+              </div>
+
+              <p className="text-base text-[#444444] font-sans max-w-xl leading-relaxed">
+                Information Science student from RV College of Engineering. I engineer web platforms with Next.js, Django, databases, and build AI models with fault-tolerant systems.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <RetroButton onClick={() => scrollTo('projects')} variant="primary">
+                  View Projects
+                </RetroButton>
+                <RetroButton onClick={() => setIsResumeOpen(true)}>
+                  View Resume
+                </RetroButton>
               </div>
             </div>
 
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="text-gray-300 hover:text-white focus:outline-none"
+            {/* Right Profile Window */}
+            <div className="lg:col-span-5 flex items-center justify-center">
+              <RetroWindow 
+                title="Profile Viewer" 
+                className="w-full max-w-md"
               >
-                {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isSidebarOpen && (
-          <div className="md:hidden bg-[#0f0f23] border-t border-[#2d2d44]">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {navItems.map((item, index) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.ref, item.id)}
-                  className={`w-full text-left px-3 py-2 rounded-md text-sm font-mono transition-colors ${
-                    activeSection === item.id
-                      ? 'text-[#4f46e5] bg-[#1a1a2e]'
-                      : 'text-gray-300 hover:text-white hover:bg-[#1a1a2e]'
-                  }`}
-                >
-                  <span className="text-gray-400">{String(index).padStart(2, '0')} : </span>
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </nav>
-
-      {/* Main Content */}
-      <main className="pt-16">
-        {/* Home Section */}
-        <section id="home" ref={homeRef} className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto w-full">
-            {/* Mobile: Stack vertically, Desktop: Side by side */}
-            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
-              {/* Left Content */}
-              <div className="flex-1 text-center lg:text-left order-2 lg:order-1">
-                <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold mb-4 lg:mb-6 font-['Times New Roman']">
-                  Hi, I&apos;m <span className="text-[#4f46e5]">{resumeData.personal_info.name}</span>
-                </h1>
-                <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 mb-6 lg:mb-8 max-w-3xl mx-auto lg:mx-0">
-                  {resumeData.personal_info.tagline}
-                </p>
-                <p className="text-base sm:text-lg text-gray-400 mb-8 lg:mb-12 max-w-2xl mx-auto lg:mx-0">
-                  {resumeData.personal_info.bio}
-                </p>
-                
-                {/* Contact Info */}
-                <address className="not-italic flex flex-col sm:flex-row flex-wrap gap-4 lg:gap-6 mb-8 lg:mb-12 justify-center lg:justify-start">
-                  <div className="flex items-center text-gray-300 justify-center lg:justify-start">
-                    <Mail className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
-                    <a href={`mailto:${resumeData.personal_info.email}`} className="hover:text-[#4f46e5] text-sm lg:text-base">
-                      {resumeData.personal_info.email}
-                    </a>
+                <div className="space-y-6">
+                  {/* Photo Container */}
+                  <div className="border-2 border-black p-1 bg-white relative">
+                    <div className="absolute top-2 right-2 bg-green-500 border-2 border-black text-[9px] font-bold text-white px-2 py-0.5 z-10 font-mono shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                      ONLINE
+                    </div>
+                    <div className="bg-[#EFEFEF] flex justify-center items-center overflow-hidden aspect-square border-2 border-black">
+                      <Image 
+                        src="/profile-photo.jpg" 
+                        alt="Portrait of Mithra N Gowda" 
+                        width={380}
+                        height={380}
+                        priority
+                        className="w-full h-full object-cover filter grayscale"
+                      />
+                    </div>
                   </div>
-                  <div className="flex items-center text-gray-300 justify-center lg:justify-start">
-                    <Linkedin className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
-                    <a href={resumeData.personal_info.social_links.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-[#4f46e5] text-sm lg:text-base">
+
+                  {/* Profile Metadata */}
+                  <div className="font-mono text-xs space-y-2 border-t-2 border-dashed border-black pt-4">
+                    <div className="flex justify-between">
+                      <span className="font-bold opacity-60">NAME:</span>
+                      <span className="font-bold">{resumeData.personal_info.name}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-bold opacity-60">LOCATION:</span>
+                      <span className="font-bold">{resumeData.personal_info.location}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-bold opacity-60">STATUS:</span>
+                      <span className="font-bold text-[#2563EB]">Available for Work</span>
+                    </div>
+                  </div>
+
+                  {/* Social Buttons */}
+                  <div className="grid grid-cols-2 gap-2 border-t-2 border-dashed border-black pt-4">
+                    <a
+                      href={resumeData.personal_info.social_links.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border-2 border-black p-2 text-center text-xs font-bold font-mono hover:bg-[#EFEFEF] flex items-center justify-center gap-2 active:translate-y-[1px]"
+                    >
+                      <Github size={14} />
+                      GitHub
+                    </a>
+                    <a
+                      href={resumeData.personal_info.social_links.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border-2 border-black p-2 text-center text-xs font-bold font-mono hover:bg-[#EFEFEF] flex items-center justify-center gap-2 active:translate-y-[1px]"
+                    >
+                      <Linkedin size={14} />
                       LinkedIn
                     </a>
                   </div>
-                  <div className="flex items-center text-gray-300 justify-center lg:justify-start">
-                    <MapPin className="w-4 h-4 lg:w-5 lg:h-5 mr-2" />
-                    <span className="text-sm lg:text-base">{resumeData.personal_info.location}</span>
-                  </div>
-                </address>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                  <button
-                    onClick={() => scrollToSection(projectsRef, 'projects')}
-                    className="bg-[#4f46e5] text-white px-6 lg:px-8 py-3 rounded-lg font-semibold hover:bg-[#6366f1] transition-colors text-sm lg:text-base"
-                  >
-                    View My Work
-                  </button>
-                  <button
-                    onClick={() => scrollToSection(contactRef, 'contact')}
-                    className="border-2 border-[#4f46e5] text-[#4f46e5] px-6 lg:px-8 py-3 rounded-lg font-semibold hover:bg-[#4f46e5] hover:text-white transition-colors text-sm lg:text-base"
-                  >
-                    Get In Touch
-                  </button>
                 </div>
-              </div>
-
-              {/* Right Side - Profile Photo */}
-              <div className="flex-1 flex justify-center order-1 lg:order-2">
-                <div className="w-56 h-56 sm:w-72 sm:h-72 lg:w-[380px] lg:h-[380px]">
-                  <Image 
-                    src="/profile-photo.jpg" 
-                    alt="Portrait of Mithra N Gowda" 
-                    width={400}
-                    height={400}
-                    priority
-                    className="w-full h-full rounded-full object-cover shadow-xl border-4 border-indigo-400"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* About Section */}
-        <section id="about" ref={aboutRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">About Me</h2>
-              <p className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto">
-                {resumeData.personal_info.bio}
-              </p>
-            </div>
-
-            {/* Education Section */}
-            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-8 lg:mb-12">
-              <div className="flex items-center mb-6">
-                <GraduationCap className="w-6 h-6 lg:w-8 lg:h-8 text-[#4f46e5] mr-3" />
-                <h3 className="text-xl lg:text-2xl font-bold">Education</h3>
-              </div>
-              <div className="space-y-6 lg:space-y-8">
-                {resumeData.education.map((edu, index) => (
-                  <div key={index} className="border-l-4 border-[#4f46e5] pl-4 lg:pl-6">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-                      <h4 className="text-lg lg:text-xl font-semibold">{edu.institution}</h4>
-                      <span className="text-sm text-gray-400 mt-1 sm:mt-0">
-                        {edu.start_date} - {edu.end_date}
-                      </span>
-                    </div>
-                    <p className="text-base lg:text-lg text-[#4f46e5] font-medium mb-2">{edu.degree}</p>
-                    <p className="text-gray-300 mb-2 text-sm lg:text-base">{edu.location}</p>
-                    {edu.cgpa && (
-                      <p className="text-gray-200 mb-2 text-sm lg:text-base">
-                        <span className="font-semibold">CGPA:</span> {edu.cgpa}
-                      </p>
-                    )}
-                    {edu.percentage && (
-                      <p className="text-gray-200 mb-2 text-sm lg:text-base">
-                        <span className="font-semibold">Percentage:</span> {edu.percentage}%
-                      </p>
-                    )}
-                    <p className="text-gray-300 text-sm lg:text-base">{edu.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Relevant Coursework Section */}
-            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
-              <div className="flex items-center mb-6">
-                <GraduationCap className="w-6 h-6 lg:w-8 lg:h-8 text-blue-400 mr-3" />
-                <h3 className="text-xl lg:text-2xl font-bold">Relevant Coursework</h3>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
-                {resumeData.relevant_coursework.map((course, index) => (
-                  <div key={index} className="bg-[#1a1a2e] p-3 lg:p-4 rounded-lg text-center border border-[#2d2d44]">
-                    <span className="font-medium text-sm lg:text-base">{course}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Hobbies Section */}
-            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6 lg:p-8">
-              <div className="flex items-center mb-6">
-                <Heart className="w-6 h-6 lg:w-8 lg:h-8 text-red-400 mr-3" />
-                <h3 className="text-xl lg:text-2xl font-bold">Hobbies</h3>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
-                {resumeData.hobbies.map((hobby, index) => (
-                  <div key={index} className="bg-[#1a1a2e] p-3 lg:p-4 rounded-lg text-center border border-[#2d2d44]">
-                    <span className="font-medium text-sm lg:text-base">{hobby}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Experience Section */}
-        <section id="experience" ref={experienceRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Experience</h2>
-            </div>
-
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8">
-              <div className="flex items-center mb-6">
-                <Briefcase className="w-6 h-6 lg:w-8 lg:h-8 text-[#4f46e5] mr-3" />
-                <h3 className="text-xl lg:text-2xl font-bold">Work Experience</h3>
-              </div>
-              <div className="space-y-6 lg:space-y-8">
-                {resumeData.experience.map((exp, index) => (
-                  <div key={index} className="border-l-4 border-green-400 pl-4 lg:pl-6">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-                      <h4 className="text-lg lg:text-xl font-semibold">{exp.role}</h4>
-                      <span className="text-sm text-gray-400 mt-1 sm:mt-0">
-                        {exp.start_date} - {exp.end_date}
-                      </span>
-                    </div>
-                    <p className="text-base lg:text-lg text-green-400 font-medium mb-2">{exp.company}</p>
-                    <p className="text-gray-300 mb-4 text-sm lg:text-base">{exp.location}</p>
-                    <p className="text-gray-200 mb-4 text-sm lg:text-base">{exp.description}</p>
-                    <ul className="list-disc list-inside space-y-2 text-gray-300 text-sm lg:text-base">
-                      {exp.responsibilities.map((resp, respIndex) => (
-                        <li key={respIndex}>{resp}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Leadership & Extracurricular */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mt-6 lg:mt-8">
-              <h3 className="text-xl lg:text-2xl font-bold mb-6">Leadership & Extracurricular</h3>
-              <div className="space-y-6">
-                {resumeData.leadership_extracurricular.map((item, index) => (
-                  <div key={index} className="border-l-4 border-yellow-400 pl-4 lg:pl-6">
-                    <h4 className="text-base lg:text-lg font-semibold">{item.role}</h4>
-                    <p className="text-yellow-400 font-medium mb-2 text-sm lg:text-base">{item.organization}</p>
-                    <p className="text-gray-300 mb-2 text-sm lg:text-base">{item.location}</p>
-                    <p className="text-sm text-gray-400 mb-2">{item.start_date} - {item.end_date}</p>
-                    <ul className="list-disc list-inside space-y-2 text-gray-300 text-sm lg:text-base">
-                      {item.activities.map((activity, actIndex) => (
-                        <li key={actIndex}>{activity}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Projects Section */}
-        <section id="projects" ref={projectsRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Projects</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
-              {resumeData.projects.map((project, index) => (
-                <div key={index} className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-4 lg:p-6 hover:border-[#4f46e5] transition-colors">
-                  <h3 className="text-lg lg:text-xl font-bold mb-3">{project.title}</h3>
-                  <p className="text-sm text-gray-400 mb-4">{project.date}</p>
-                  
-                  <div className="mb-4">
-                    <h4 className="font-semibold mb-2 text-sm lg:text-base">Features:</h4>
-                    <ul className="list-disc list-inside space-y-1 text-gray-300 text-xs lg:text-sm">
-                      {project.features.map((feature, featureIndex) => (
-                        <li key={featureIndex}>{feature}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="mb-4">
-                    <button
-                      onClick={() => {
-                        const modal = document.getElementById(`modal-${index}`);
-                        if (modal) {
-                          modal.style.display = 'block';
-                        }
-                      }}
-                      className="text-[#4f46e5] hover:text-[#6366f1] transition-colors text-sm font-medium"
-                    >
-                      Show More
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Project Detail Modals */}
-            {resumeData.projects.map((project, index) => (
-              <div
-                key={`modal-${index}`}
-                id={`modal-${index}`}
-                className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm"
-                style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
-                onClick={(e) => {
-                  if (e.target === e.currentTarget) {
-                    const modal = document.getElementById(`modal-${index}`);
-                    if (modal) {
-                      modal.style.display = 'none';
-                    }
-                  }
-                }}
-              >
-                <div className="bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] rounded-2xl border-2 border-[#4f46e5] shadow-2xl p-6 lg:p-8 xl:p-10 w-full max-w-4xl mx-auto max-h-[85vh] overflow-y-auto relative overflow-hidden">
-                  {/* Background Pattern */}
-                  <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#4f46e5] to-[#6366f1] transform rotate-12 scale-150"></div>
-                    <div className="absolute inset-0 bg-gradient-to-l from-[#8b5cf6] to-[#a855f7] transform -rotate-12 scale-150"></div>
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="relative z-10">
-                    <div className="flex justify-between items-start mb-6 lg:mb-8">
-                      <h3 className="text-2xl lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent pr-4">
-                        {project.title}
-                      </h3>
-                      <button
-                        onClick={() => {
-                          const modal = document.getElementById(`modal-${index}`);
-                          if (modal) {
-                            modal.style.display = 'none';
-                          }
-                        }}
-                        className="text-white hover:text-yellow-300 text-2xl lg:text-3xl font-bold transition-colors duration-200 hover:scale-110 flex-shrink-0"
-                      >
-                        ×
-                      </button>
-                    </div>
-                    
-                    <p className="text-lg lg:text-xl text-gray-300 mb-6 lg:mb-8 font-medium">{project.date}</p>
-                    
-                    <div className="mb-6 lg:mb-8">
-                      <h4 className="font-bold mb-3 lg:mb-4 text-lg lg:text-xl text-white">Tech Stack</h4>
-                      <div className="flex flex-wrap gap-2 lg:gap-3">
-                        {project.tech_stack.map((tech, techIndex) => (
-                          <span key={techIndex} className="px-3 lg:px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm font-medium text-white hover:bg-white/20 transition-all duration-200">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mb-6 lg:mb-8">
-                      <h4 className="font-bold mb-3 lg:mb-4 text-lg lg:text-xl text-white">Features</h4>
-                      <ul className="space-y-2 lg:space-y-3 text-gray-200 text-base lg:text-lg">
-                        {project.features.map((feature, featureIndex) => (
-                          <li key={featureIndex} className="flex items-start">
-                            <span className="text-yellow-400 mr-3 text-lg lg:text-xl flex-shrink-0">•</span>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="mb-6 lg:mb-8">
-                      <h4 className="font-bold mb-3 lg:mb-4 text-lg lg:text-xl text-white">Contributors</h4>
-                      <div className="flex flex-wrap gap-2 lg:gap-3">
-                        {project.contributors.map((contributor, contribIndex) => (
-                          <a
-                            key={contribIndex}
-                            href={contributor.profile}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-3 lg:px-4 py-2 bg-gradient-to-r from-[#4f46e5] to-[#6366f1] text-white rounded-full text-sm font-medium hover:from-[#6366f1] hover:to-[#8b5cf6] transition-all duration-200 transform hover:scale-105 shadow-lg"
-                          >
-                            {contributor.name}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mb-6 lg:mb-8">
-                      <h4 className="font-bold mb-3 lg:mb-4 text-lg lg:text-xl text-white">Description</h4>
-                      <ul className="space-y-2 lg:gap-3 text-gray-200 text-base lg:text-lg">
-                        {project.description.map((desc, descIndex) => (
-                          <li key={descIndex} className="flex items-start">
-                            <span className="text-yellow-400 mr-3 text-lg lg:text-xl flex-shrink-0">•</span>
-                            {desc}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
-                      {project.github_link && (
-                        <a
-                          href={project.github_link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 border-2 border-[#4f46e5] text-[#4f46e5] py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-center font-bold text-base lg:text-lg hover:bg-[#4f46e5] hover:text-white transition-all duration-200 transform hover:scale-105"
-                        >
-                          View Code
-                        </a>
-                      )}
-                      {project.demo_link && (
-                        <a
-                          href={project.demo_link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 border-2 border-[#4f46e5] text-[#4f46e5] py-3 lg:py-4 px-6 lg:px-8 rounded-xl text-center font-bold text-base lg:text-lg hover:bg-[#4f46e5] hover:text-white transition-all duration-200 transform hover:scale-105"
-                        >
-                          Live Demo
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-        
-        {/* GitHub Contributions Section */}
-        <section
-          id="github-contributions"
-          className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#0f0f23]"
-        >
-          <div className="max-w-6xl mx-auto">
-
-            {/* Section Heading */}
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent mb-4">
-                GitHub Contributions
-              </h2>
-
-              <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-3xl mx-auto">
-                A snapshot of my coding consistency, open-source contributions,
-                and development activity across projects.
-              </p>
-            </div>
-
-            {/* Contribution Cards */}
-            <div className="space-y-8">
-
-              {/* GitHub Streak */}
-              <div className="bg-[#1a1a2e] border border-[#2d2d44] rounded-2xl p-4 sm:p-6 lg:p-8 hover:border-[#4f46e5] transition-all duration-300 shadow-lg">
-                <h3 className="text-xl lg:text-2xl font-semibold text-center mb-6 text-white">
-                  Contribution Streak
-                </h3>
-
-                <div className="flex justify-center">
-                  <a
-                    href="https://git.io/streak-stats"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src="https://streak-stats.demolab.com?user=mithrangowda07&theme=tokyonight&hide_border=true"
-                      alt="GitHub Streak"
-                      className="w-full max-w-5xl rounded-xl"
-                    />
-                  </a>
-                </div>
-              </div>
-
-              {/* Activity Graph */}
-              <div className="bg-[#1a1a2e] border border-[#2d2d44] rounded-2xl p-4 sm:p-6 lg:p-8 hover:border-[#4f46e5] transition-all duration-300 shadow-lg">
-                <h3 className="text-xl lg:text-2xl font-semibold text-center mb-6 text-white">
-                  Contribution Activity Heatmap
-                </h3>
-
-                <div className="flex justify-center">
-                  <a
-                    href="https://github.com/ashutosh00710/github-readme-activity-graph"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src="https://github-readme-activity-graph.vercel.app/graph?username=mithrangowda07&theme=tokyo-night&hide_border=true&area=true"
-                      alt="GitHub Activity Graph"
-                      className="w-full max-w-5xl rounded-xl"
-                    />
-                  </a>
-                </div>
-              </div>
-
+              </RetroWindow>
             </div>
 
           </div>
         </section>
 
-        {/* LeetCode Section */}
-        <section
-          id="leetcode"
-          className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]"
-        >
-          <div className="max-w-6xl mx-auto">
-
-            {/* Heading */}
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent mb-4">
-                LeetCode Journey
-              </h2>
-
-              <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-3xl mx-auto">
-                Problem-solving statistics, coding consistency, and algorithmic practice
-                showcased through my LeetCode profile.
-              </p>
-            </div>
-
-            <div className="space-y-8">
-
-              {/* Profile Button */}
-              <div className="flex justify-center">
-                <a
-                  href="https://leetcode.com/u/SilentNeedle/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg"
-                >
-                  View LeetCode Profile
-                </a>
-              </div>
-
-              {/* Contest Stats (from alfa-leetcode-api) */}
-              <div className="mt-8">
-                {contestLoading ? (
-                  <div className="text-center text-gray-300">Loading contest statistics...</div>
-                ) : contestError ? (
-                  <div className="text-center text-red-400">Unable to load LeetCode contest statistics.</div>
-                ) : (
-                  <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                      <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 text-center hover:border-orange-500 transition-all duration-300 shadow-lg">
-                        <h4 className="text-gray-400 mb-2">Contest Rating</h4>
-                        <p className="text-4xl font-bold text-orange-400">{contestData?.contestRating ? Math.round(contestData.contestRating) : 'N/A'}</p>
-                      </div>
-
-                      <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 text-center hover:border-yellow-500 transition-all duration-300 shadow-lg">
-                        <h4 className="text-gray-400 mb-2">Global Contest Rank</h4>
-                        <p className="text-4xl font-bold text-yellow-400">{contestData?.contestGlobalRanking ? contestData.contestGlobalRanking.toLocaleString() : 'N/A'}</p>
-                      </div>
-
-                      <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 text-center hover:border-amber-500 transition-all duration-300 shadow-lg">
-                        <h4 className="text-gray-400 mb-2">Top Percentage</h4>
-                        <p className="text-4xl font-bold text-amber-400">{contestData?.contestTopPercentage ? `${contestData.contestTopPercentage}%` : 'N/A'}</p>
-                      </div>
-
-                      <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 text-center hover:border-green-500 transition-all duration-300 shadow-lg">
-                        <h4 className="text-gray-400 mb-2">Contests Attended</h4>
-                        <p className="text-4xl font-bold text-green-400">{contestData?.contestAttend ?? 'N/A'}</p>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {/* LeetCode Heatmap */}
-              <div className="bg-[#0f0f23] border border-[#2d2d44] rounded-2xl p-6 lg:p-8 hover:border-orange-500 transition-all duration-300 shadow-lg">
-                <h3 className="text-xl lg:text-2xl font-semibold text-center mb-6 text-white">
-                  LeetCode Statistics
-                </h3>
-
-                <div className="flex justify-center">
-                  <img
-                    src="https://leetcard.jacoblin.cool/SilentNeedle?ext=heatmap"
-                    alt="LeetCode Heatmap"
-                    className="w-full max-w-4xl rounded-xl"
-                  />
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* Skills Section */}
-        <section id="skills" ref={skillsRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Skills & Expertise</h2>
-            </div>
+        {/* ABOUT SECTION (WINDOW TABBED PANEL) */}
+        <section id="about" className="scroll-mt-24">
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading">
+              📂 01. About System
+            </h2>
             
-            {/* Programming Languages */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
-              <h3 className="text-xl lg:text-2xl font-bold mb-6">Programming Languages</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
               
-              <div className="flex flex-wrap gap-3">
-                {resumeData.skills.programming_languages.map((skill) => (
-                  <span
-                    key={skill.name}
-                    className="px-4 py-2 bg-[#0f0f23] border border-[#2d2d44] rounded-full text-sm lg:text-base hover:bg-[#4f46e5] transition"
-                  >
-                    {skill.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Frameworks & Libraries */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
-              <h3 className="text-xl lg:text-2xl font-bold mb-6">Frameworks & Libraries</h3>
-              
-              <div className="flex flex-wrap gap-3">
-                {resumeData.skills.frameworks_libraries.map((skill) => (
-                  <span
-                    key={skill.name}
-                    className="px-4 py-2 bg-[#0f0f23] border border-[#2d2d44] rounded-full text-sm lg:text-base hover:bg-[#4f46e5] transition"
-                  >
-                    {skill.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Tools & Technologies */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-6 lg:mb-8">
-              <h3 className="text-xl lg:text-2xl font-bold mb-6">Tools & Technologies</h3>
-              
-              <div className="flex flex-wrap gap-3">
-                {resumeData.skills.tools_technologies.map((skill) => (
-                  <span
-                    key={skill.name}
-                    className="px-4 py-2 bg-[#0f0f23] border border-[#2d2d44] rounded-full text-sm lg:text-base hover:bg-[#4f46e5] transition"
-                  >
-                    {skill.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-          {/* Certificates Section */}
-            <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
-              <div className="max-w-6xl mx-auto">
-                <div className="text-center mb-12 lg:mb-16">
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">
-                    Certificates
-                  </h2>
-                </div>
-
-                <section id="certificates" ref={certificatesRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {resumeData.certificates.map((cert, index) => (
-                    <div
-                      key={index}
-                      onClick={() => setSelectedCert(cert)}
-                      className="cursor-pointer bg-[#1a1a2e] p-6 rounded-lg border border-[#2d2d44] hover:scale-105 transition-all"
+              {/* Tab Selector Links (Left) */}
+              <div className="lg:col-span-3 flex lg:flex-col flex-wrap gap-2">
+                {aboutTabs.map((tab) => {
+                  const Icon = tab.icon
+                  const isActive = activeAboutTab === tab.id
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveAboutTab(tab.id)}
+                      className={`flex-1 lg:flex-none border-2 border-black font-mono font-bold text-xs p-3 text-left transition-all flex items-center space-x-3 cursor-pointer ${
+                        isActive 
+                          ? 'bg-[#111111] text-white shadow-[2px_2px_0px_0px_rgba(37,99,235,1)] translate-y-[-2px] translate-x-[-2px]' 
+                          : 'bg-white text-black hover:bg-[#EFEFEF] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]'
+                      }`}
                     >
-                      <h3 className="text-lg font-semibold mb-2">{cert.name}</h3>
-                      <p className="text-sm text-gray-400">{cert.organization}</p>
-                      <p className="text-sm text-gray-500">{cert.date}</p>
-                    </div>
-                  ))}
-                </section>
+                      <Icon size={16} />
+                      <span className="truncate">{tab.name}</span>
+                    </button>
+                  )
+                })}
               </div>
-            </section>
 
-            {/* Achievements */}
-            <div className="bg-[#1a1a2e] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mt-6 lg:mt-8">
-              <div className="flex items-center mb-6">
-                <Award className="w-6 h-6 lg:w-8 lg:h-8 text-yellow-400 mr-3" />
-                <h3 className="text-xl lg:text-2xl font-bold">Achievements</h3>
+              {/* Tab Display Window (Right) */}
+              <div className="lg:col-span-9">
+                <RetroWindow 
+                  title={`About Me - ${aboutTabs.find(t => t.id === activeAboutTab)?.name || 'Info'}`}
+                  className="h-full min-h-[360px]"
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeAboutTab}
+                      initial={{ opacity: 0, x: 5 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -5 }}
+                      transition={{ duration: 0.15 }}
+                      className="space-y-6"
+                    >
+                      {activeAboutTab === 'profile' && (
+                        <div className="space-y-4 font-sans text-sm sm:text-base leading-relaxed text-[#444444]">
+                          <h3 className="text-xl font-bold font-heading text-[#111111]">Biographical Summary</h3>
+                          <p>{resumeData.personal_info.bio}</p>
+                          <div className="border-2 border-black p-4 bg-[#F8F8F5] border-dashed font-mono text-xs">
+                            <span className="font-bold block mb-1">SYSTEM CONFIG:</span>
+                            • Undergrad in Information Science & Engineering (RVCE)<br />
+                            • Specialized in Full Stack & Anomaly Detection (Schneider Electric)<br />
+                            • Frameworks: Django REST, React, Next.js, FastAPI
+                          </div>
+                        </div>
+                      )}
+
+                      {activeAboutTab === 'education' && (
+                        <div className="space-y-6">
+                          <h3 className="text-xl font-bold font-heading text-[#111111]">Educational Background</h3>
+                          <div className="space-y-4">
+                            {resumeData.education.map((edu, idx) => (
+                              <div key={idx} className="border-2 border-black p-4 bg-white relative">
+                                <div className="absolute top-2 right-2 border border-black bg-[#EFEFEF] font-mono text-[9px] px-2 py-0.5">
+                                  {edu.start_date} - {edu.end_date}
+                                </div>
+                                <h4 className="font-bold text-sm sm:text-base pr-20">{edu.institution}</h4>
+                                <p className="text-xs text-[#2563EB] font-bold font-mono mt-1">{edu.degree}</p>
+                                <p className="text-xs text-gray-500 font-mono mt-1">{edu.location}</p>
+                                {edu.cgpa && (
+                                  <p className="text-xs font-mono font-bold mt-2 text-green-700 bg-green-50 inline-block px-2 py-0.5 border border-green-200">
+                                    CGPA: {edu.cgpa}
+                                  </p>
+                                )}
+                                {edu.percentage && (
+                                  <p className="text-xs font-mono font-bold mt-2 text-green-700 bg-green-50 inline-block px-2 py-0.5 border border-green-200">
+                                    Percentage: {edu.percentage}%
+                                  </p>
+                                )}
+                                <p className="text-xs text-gray-600 mt-2 font-sans">{edu.description}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {activeAboutTab === 'coursework' && (
+                        <div className="space-y-4">
+                          <h3 className="text-xl font-bold font-heading text-[#111111]">Academic Focus Area</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                            {resumeData.relevant_coursework.map((course, index) => (
+                              <div key={index} className="border-2 border-black bg-white p-3 font-mono text-xs flex items-center space-x-2">
+                                <span className="text-[#2563EB]">●</span>
+                                <span className="font-bold">{course}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {activeAboutTab === 'hobbies' && (
+                        <div className="space-y-4">
+                          <h3 className="text-xl font-bold font-heading text-[#111111]">Interests & Recreation</h3>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            {resumeData.hobbies.map((hobby, index) => (
+                              <div key={index} className="border-2 border-black bg-white p-3 text-center font-mono text-xs font-bold hover:bg-[#EFEFEF]">
+                                🎯 {hobby}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {activeAboutTab === 'facts' && (
+                        <div className="space-y-4">
+                          <h3 className="text-xl font-bold font-heading text-[#111111]">Core Metrics</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="border-2 border-black p-4 bg-white font-mono">
+                              <span className="text-xs font-bold text-[#2563EB] block border-b border-black pb-2 mb-2">COMMUNICATION</span>
+                              <ul className="text-xs space-y-1.5 font-bold">
+                                <li>🗣️ English - Fluent</li>
+                                <li>🗣️ Kannada - Native</li>
+                                <li>🗣️ Hindi - Conversational</li>
+                              </ul>
+                            </div>
+                            <div className="border-2 border-black p-4 bg-white font-mono">
+                              <span className="text-xs font-bold text-[#2563EB] block border-b border-black pb-2 mb-2">TECHNICAL INDEX</span>
+                              <ul className="text-xs space-y-1.5 font-bold">
+                                <li>⚙️ Event Sourcing Logs Analysis</li>
+                                <li>⚙️ RESTful API Architecture</li>
+                                <li>⚙️ ML Model Training & Forecasts</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                    </motion.div>
+                  </AnimatePresence>
+                </RetroWindow>
               </div>
-              <div className="space-y-6">
-                {resumeData.achievements.map((achievement, index) => (
-                  <div key={index} className="border-l-4 border-yellow-400 pl-4 lg:pl-6">
-                    <h4 className="text-base lg:text-lg font-semibold mb-2">{achievement.title}</h4>
-                    <p className="text-sm text-gray-400 mb-2">{achievement.date}</p>
-                    <p className="text-gray-300 text-sm lg:text-base">{achievement.description}</p>
-                  </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* SKILLS SECTION */}
+        <section id="skills" className="scroll-mt-24">
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading">
+              📂 02. Skills Folder
+            </h2>
+            
+            <div className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col">
+              {/* Folder Top Menu Bar */}
+              <div className="border-b-2 border-black bg-[#EFEFEF] px-4 py-2 flex flex-wrap gap-2 items-center">
+                <span className="font-mono text-xs font-bold mr-4 text-gray-500">Categories:</span>
+                {skillsCategories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedSkillCategory(cat.id)}
+                    className={`px-3 py-1 font-mono text-xs font-bold border-2 border-black cursor-pointer transition-all ${
+                      selectedSkillCategory === cat.id 
+                        ? 'bg-[#111111] text-white' 
+                        : 'bg-white text-black hover:bg-[#EFEFEF]'
+                    }`}
+                  >
+                    {cat.name}
+                  </button>
                 ))}
+              </div>
+
+              {/* Folder Contents Grid */}
+              <div className="p-6 min-h-[250px] bg-white">
+                <motion.div 
+                  layout
+                  className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4"
+                >
+                  <AnimatePresence mode="popLayout">
+                    {getFilteredSkills().map((skill) => (
+                      <motion.button
+                        layout
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        whileHover={{ y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        key={skill.name}
+                        onClick={() => setSystemAlert(`Skill: ${skill.name} (Proficiency: ${skill.level}%)`)}
+                        className="flex flex-col items-center justify-center p-3 border-2 border-transparent hover:border-black hover:bg-[#EFEFEF] transition-all cursor-pointer rounded-none group"
+                      >
+                        {/* Retro Icon Container */}
+                        <div className="w-12 h-12 border-2 border-black bg-white flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[4px_4px_0px_0px_rgba(37,99,235,1)] group-active:shadow-none transition-all mb-2">
+                          <Code size={20} className="text-[#111111]" />
+                        </div>
+                        <span className="text-xs font-mono font-bold text-center truncate w-full">{skill.name}</span>
+                        <div className="w-full bg-gray-200 h-1.5 mt-2 border border-black overflow-hidden max-w-[60px]">
+                          <div className="bg-[#2563EB] h-full" style={{ width: `${skill.level}%` }}></div>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Contact Section */}
-        <section id="contact" ref={contactRef} className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#1a1a2e]">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 lg:mb-6">Get In Touch</h2>
-            <p className="text-lg sm:text-xl text-gray-300 mb-8 lg:mb-12 max-w-2xl mx-auto">
-              I&apos;m always interested in hearing about new opportunities and exciting projects. 
-              Feel free to reach out if you&apos;d like to connect!
+        {/* PROJECTS SECTION */}
+        <section id="projects" className="scroll-mt-24">
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading">
+              📂 03. Project Windows
+            </h2>
+
+            {/* Bento Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+              {resumeData.projects.map((project, index) => {
+                const isFeatured = index === 0; // KCET advisor
+                return (
+                  <div 
+                    key={index} 
+                    className={`${isFeatured ? 'md:col-span-12 lg:col-span-8' : 'md:col-span-6 lg:col-span-4'} flex flex-col h-full`}
+                  >
+                    <RetroWindow 
+                      title={project.title}
+                      className="h-full flex flex-col flex-1"
+                    >
+                      <div className="flex flex-col h-full space-y-4">
+                        {/* Project Header block / Visual representation */}
+                        <div className="border-2 border-black bg-[#F8F8F5] relative p-4 flex items-center justify-center min-h-[160px] overflow-hidden select-none border-dashed">
+                          {/* Retro Grid Background inside visual representation */}
+                          <div className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,rgba(0,0,0,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.1)_1px,transparent_1px)] bg-[size:10px_10px]" />
+                          <div className="relative text-center z-10 space-y-2">
+                            <Monitor size={36} className="mx-auto text-[#2563EB]" />
+                            <span className="font-mono text-[10px] font-bold block bg-white px-2 py-0.5 border border-black inline-block shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
+                              RELEASED: {project.date.toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Project Title */}
+                        <h3 className="text-lg font-bold font-heading mt-2">{project.title}</h3>
+                        
+                        {/* Project Brief description */}
+                        <p className="text-xs text-[#444444] font-sans flex-grow leading-relaxed">
+                          {project.description[0]}
+                        </p>
+
+                        {/* Tech Stack */}
+                        <div className="flex flex-wrap gap-1 py-2">
+                          {project.tech_stack.slice(0, isFeatured ? 9 : 5).map((tech, techIdx) => (
+                            <span key={techIdx} className="px-2 py-0.5 bg-[#EFEFEF] border border-black font-mono text-[9px] font-bold">
+                              {tech}
+                            </span>
+                          ))}
+                          {project.tech_stack.length > (isFeatured ? 9 : 5) && (
+                            <span className="px-2 py-0.5 bg-white border border-black border-dashed font-mono text-[9px] font-bold opacity-60">
+                              +{project.tech_stack.length - (isFeatured ? 9 : 5)} more
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="flex flex-col space-y-2 pt-2 border-t border-black/10">
+                          <button 
+                            onClick={() => setSelectedProject(project)}
+                            className="w-full text-center px-3 py-1.5 border-2 border-black bg-white text-[#111111] font-mono text-xs font-bold hover:bg-[#EFEFEF] active:translate-y-[1px] flex items-center justify-center gap-1.5 cursor-pointer shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none"
+                          >
+                            Know More
+                          </button>
+                          <div className="flex items-center space-x-2">
+                            {project.github_link && (
+                              <a 
+                                href={project.github_link} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="flex-1"
+                              >
+                                <button className="w-full text-center px-3 py-1.5 border-2 border-black font-mono text-xs font-bold hover:bg-[#EFEFEF] active:translate-y-[1px] flex items-center justify-center gap-1.5 cursor-pointer">
+                                  <Github size={12} />
+                                  Src Code
+                                </button>
+                              </a>
+                            )}
+                            {project.demo_link && (
+                              <a 
+                                href={project.demo_link} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="flex-1"
+                              >
+                                <button className="w-full text-center px-3 py-1.5 border-2 border-black bg-[#111111] text-white font-mono text-xs font-bold hover:bg-[#333333] active:translate-y-[1px] flex items-center justify-center gap-1.5 cursor-pointer">
+                                  <ExternalLink size={12} />
+                                  Live Demo
+                                </button>
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </RetroWindow>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* EXPERIENCE SECTION */}
+        <section id="experience" className="scroll-mt-24">
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading">
+              📂 04. Stacked Experience
+            </h2>
+
+            <p className="text-sm text-[#444444] font-mono">
+              💡 Click on any background card to bring that window directory to the front.
             </p>
 
-            {/* Contact Form */}
-            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6 lg:p-8 mb-8 lg:mb-12">
-              <h3 className="text-xl lg:text-2xl font-semibold mb-6">Send me a message</h3>
-              <ContactForm />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-8 lg:mb-12">
-              <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6">
-                <Mail className="w-10 h-10 lg:w-12 lg:h-12 text-[#4f46e5] mx-auto mb-4" />
-                <h3 className="text-lg lg:text-xl font-semibold mb-2">Email</h3>
-                <a 
-                  href={`mailto:${resumeData.personal_info.email}`}
-                  className="text-[#4f46e5] hover:text-[#6366f1] transition-colors text-sm lg:text-base"
+            {/* Overlapping Stack Containers */}
+            <div className="relative min-h-[460px] sm:min-h-[400px] mt-6 w-full max-w-2xl">
+              
+              {/* NSS Experience Card */}
+              <motion.div
+                layout
+                onClick={() => setExperienceStack(['schneider', 'nss'])}
+                style={{ zIndex: experienceStack.indexOf('nss') + 10 }}
+                animate={{
+                  x: experienceStack.indexOf('nss') * 16,
+                  y: experienceStack.indexOf('nss') * 16,
+                }}
+                transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                className="absolute top-0 left-0 w-full cursor-pointer"
+              >
+                <RetroWindow 
+                  title="NSS Volunteer" 
+                  titleBarColor={experienceStack[1] === 'nss' ? 'bg-[#111111] text-white' : 'bg-[#D6D6D6] text-[#444444]'}
                 >
-                  {resumeData.personal_info.email}
-                </a>
-              </div>
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b-2 border-black pb-2 border-dashed">
+                      <div>
+                        <h3 className="text-base sm:text-lg font-bold font-heading">National Service Scheme (NSS)</h3>
+                        <p className="text-xs text-[#2563EB] font-bold font-mono">Volunteer Officer</p>
+                      </div>
+                      <span className="text-xs font-mono font-bold bg-[#EFEFEF] border border-black px-2 py-0.5 mt-2 sm:mt-0">
+                        Jan 2024 - Present
+                      </span>
+                    </div>
 
-              <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6">
-                <Linkedin className="w-10 h-10 lg:w-12 lg:h-12 text-[#4f46e5] mx-auto mb-4" />
-                <h3 className="text-lg lg:text-xl font-semibold mb-2">LinkedIn</h3>
-                <a 
-                  href={resumeData.personal_info.social_links.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#4f46e5] hover:text-[#6366f1] transition-colors text-sm lg:text-base"
+                    <ul className="list-disc list-inside space-y-2 text-xs text-[#444444] font-sans">
+                      <li>Engaged in community service initiatives by organizing and contributing to blood donation camps, cleanliness drives, and awareness programs.</li>
+                      <li>Fostered social responsibility and civic engagement within the student community.</li>
+                    </ul>
+                  </div>
+                </RetroWindow>
+              </motion.div>
+
+              {/* Schneider Electric Card */}
+              <motion.div
+                layout
+                onClick={() => setExperienceStack(['nss', 'schneider'])}
+                style={{ zIndex: experienceStack.indexOf('schneider') + 10 }}
+                animate={{
+                  x: experienceStack.indexOf('schneider') * 16,
+                  y: experienceStack.indexOf('schneider') * 16,
+                }}
+                transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                className="absolute top-0 left-0 w-full cursor-pointer"
+              >
+                <RetroWindow 
+                  title="Schneider Electric Internship" 
+                  titleBarColor={experienceStack[1] === 'schneider' ? 'bg-[#111111] text-white' : 'bg-[#D6D6D6] text-[#444444]'}
                 >
-                  Connect on LinkedIn
-                </a>
-              </div>
-            </div>
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b-2 border-black pb-2 border-dashed">
+                      <div>
+                        <h3 className="text-base sm:text-lg font-bold font-heading">Schneider Electric</h3>
+                        <p className="text-xs text-[#2563EB] font-bold font-mono">Software Development Intern</p>
+                      </div>
+                      <span className="text-xs font-mono font-bold bg-[#EFEFEF] border border-black px-2 py-0.5 mt-2 sm:mt-0">
+                        July 2025 - September 2025
+                      </span>
+                    </div>
 
-            <div className="bg-[#0f0f23] rounded-lg border border-[#2d2d44] p-6">
-              <h3 className="text-lg lg:text-xl font-semibold mb-4">Connect with me</h3>
-              <div className="flex justify-center space-x-3 lg:space-x-4">
-                {resumeData.personal_info.social_links.github && (
-                  <a
-                    href={resumeData.personal_info.social_links.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Visit Mithra N Gowda on GitHub"
-                    className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
-                  >
-                    <Github size={20} className="lg:w-6 lg:h-6" />
-                  </a>
-                )}
-                {resumeData.personal_info.social_links.linkedin && (
-                  <a
-                    href={resumeData.personal_info.social_links.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Visit Mithra N Gowda on LinkedIn"
-                    className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
-                  >
-                    <Linkedin size={20} className="lg:w-6 lg:h-6" />
-                  </a>
-                )}
-                {resumeData.personal_info.social_links.instagram && (
-                  <a
-                    href={resumeData.personal_info.social_links.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Visit Mithra N Gowda on Instagram"
-                    className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
-                  >
-                    <Instagram size={20} className="lg:w-6 lg:h-6" />
-                  </a>
-                )}
-                {resumeData.personal_info.social_links.leetcode && (
-                  <a
-                    href={resumeData.personal_info.social_links.leetcode}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Visit Mithra N Gowda on LeetCode"
-                    className="p-2 lg:p-3 bg-[#2d2d44] rounded-lg hover:bg-[#4f46e5] transition-colors"
-                  >
-                    <Code size={20} className="lg:w-6 lg:h-6" />
-                  </a>
-                )}
-              </div>
+                    <ul className="list-disc list-inside space-y-2 text-xs text-[#444444] font-sans">
+                      <li>Collaborated in a team of 4 members under the guidance of a Senior Architect.</li>
+                      <li>Developed a prototype for detecting errors in a home automation system using event sourcing logs and AI.</li>
+                      <li>Collected large-scale sensor and system event data, including deliberately introduced faults, to train AI models for anomaly detection and corrective action recommendations.</li>
+                      <li>Integrated AI with system code access to enable autonomous optimization and real-time decision-making.</li>
+                    </ul>
+                  </div>
+                </RetroWindow>
+              </motion.div>
+
             </div>
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="bg-[#0f0f23] border-t border-[#2d2d44] py-6 lg:py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-gray-400 text-sm lg:text-base">&copy; {new Date().getFullYear()} {resumeData.personal_info.name}. All rights reserved.</p>
-          </div>
-        </footer>
+        {/* CERTIFICATES SECTION */}
+        <section id="certificates" className="scroll-mt-24">
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading">
+              📂 05. Folder Credentials
+            </h2>
 
-        {selectedCert && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="bg-[#1a1a2e] p-6 rounded-lg max-w-3xl w-full relative">
-              <button
-                onClick={() => setSelectedCert(null)}
-                className="absolute top-3 right-3 text-white text-xl"
-              >
-                ✕
-              </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {resumeData.certificates.map((cert, index) => {
+                const isOpen = expandedFolder === index
+                return (
+                  <div key={index} className="flex flex-col">
+                    {/* Folder Tab Shape */}
+                    <div className="flex items-end">
+                      <button
+                        onClick={() => setExpandedFolder(isOpen ? null : index)}
+                        className={`h-7 px-4 border-2 border-b-0 border-black rounded-t-sm font-mono text-xs font-bold transition-all cursor-pointer ${
+                          isOpen ? 'bg-white translate-y-[2px] z-10' : 'bg-[#D6D6D6] hover:bg-[#EFEFEF]'
+                        }`}
+                      >
+                        📂 {isOpen ? 'Close Folder' : `Certificate ${index + 1}`}
+                      </button>
+                    </div>
 
-              <h3 className="text-xl font-bold mb-4 text-center">
-                {selectedCert.name}
-              </h3>
+                    {/* Folder Body Container */}
+                    <div className="border-2 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col space-y-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-bold text-sm sm:text-base font-heading">{cert.name}</h3>
+                          <p className="text-xs text-[#2563EB] font-bold font-mono mt-1">{cert.organization}</p>
+                          <p className="text-[10px] text-gray-500 font-mono mt-0.5">ISSUED: {cert.date.toUpperCase()}</p>
+                        </div>
+                        <RetroButton 
+                          onClick={() => setExpandedFolder(isOpen ? null : index)}
+                          className="text-[10px] px-2 py-0.5"
+                        >
+                          {isOpen ? 'Fold' : 'Unfold'}
+                        </RetroButton>
+                      </div>
 
-              <img
-                src={selectedCert.image}
-                alt="certificate"
-                className="w-full rounded-lg border border-[#2d2d44]"
-              />
+                      {/* Folder Content Panel */}
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden border-t-2 border-dashed border-black pt-4 space-y-4"
+                          >
+                            <div className="bg-[#EFEFEF] border-2 border-black p-1">
+                              <img
+                                src={cert.image}
+                                alt={`Certificate copy for ${cert.name}`}
+                                className="w-full h-auto filter grayscale border border-black"
+                              />
+                            </div>
+
+                            <div className="flex gap-2">
+                              <a
+                                href={cert.image}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 border-2 border-black p-2 text-center text-xs font-bold font-mono bg-[#111111] text-white hover:bg-[#333333] active:translate-y-[1px]"
+                              >
+                                View Large Image
+                              </a>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
-        )}
+        </section>
+
+        {/* METRICS & LEETCODE / GITHUB DASHBOARD */}
+        <section id="metrics" className="scroll-mt-24">
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading">
+              📂 06. Developer Monitor
+            </h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* LeetCode Widget Container */}
+              <div className="lg:col-span-6 space-y-6">
+                <RetroWindow title="LeetCode Statistics">
+                  <div className="space-y-6 font-mono text-xs">
+                    <div className="flex justify-between items-center border-b-2 border-black pb-2">
+                      <span className="font-bold text-sm">LeetCode Stats</span>
+                      <a 
+                        href="https://leetcode.com/u/SilentNeedle/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-[10px] text-[#2563EB] hover:underline"
+                      >
+                        profile/SilentNeedle/ ↗
+                      </a>
+                    </div>
+
+                    {contestLoading ? (
+                      <div className="text-center py-6 text-gray-500 font-bold">LOADING CONTEST STATISTICS...</div>
+                    ) : contestError ? (
+                      <div className="text-center py-6 text-red-500 font-bold">API TIMEOUT: FALLBACK METRICS DISPLAYED</div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="border-2 border-black p-3 bg-[#F8F8F5]">
+                          <span className="opacity-60 block">RATING:</span>
+                          <span className="text-lg font-bold text-[#2563EB]">
+                            {contestData?.contestRating ? Math.round(contestData.contestRating) : '1600+'}
+                          </span>
+                        </div>
+                        <div className="border-2 border-black p-3 bg-[#F8F8F5]">
+                          <span className="opacity-60 block">GLOBAL RANK:</span>
+                          <span className="text-lg font-bold">
+                            {contestData?.contestGlobalRanking ? contestData.contestGlobalRanking.toLocaleString() : 'Top 9%'}
+                          </span>
+                        </div>
+                        <div className="border-2 border-black p-3 bg-[#F8F8F5]">
+                          <span className="opacity-60 block">TOP PERCENT:</span>
+                          <span className="text-lg font-bold text-green-700">
+                            {contestData?.contestTopPercentage ? `${contestData.contestTopPercentage}%` : '8.6%'}
+                          </span>
+                        </div>
+                        <div className="border-2 border-black p-3 bg-[#F8F8F5]">
+                          <span className="opacity-60 block">ATTENDED:</span>
+                          <span className="text-lg font-bold">
+                            {contestData?.contestAttend ?? '10+'}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="border-2 border-black p-2 bg-white">
+                      <span className="block font-bold opacity-60 mb-2">SOLVED ACTIVITY HEATMAP:</span>
+                      <img
+                        src="https://leetcard.jacoblin.cool/SilentNeedle?ext=heatmap"
+                        alt="LeetCode Heatmap Activity"
+                        className="w-full rounded-none filter grayscale border border-black"
+                      />
+                    </div>
+                  </div>
+                </RetroWindow>
+              </div>
+
+              {/* GitHub Widget Container */}
+              <div className="lg:col-span-6 space-y-6">
+                <RetroWindow title="GitHub Activity">
+                  <div className="space-y-6 font-mono text-xs">
+                    <div className="flex justify-between items-center border-b-2 border-black pb-2">
+                      <span className="font-bold text-sm">GitHub Activity</span>
+                      <a 
+                        href="https://github.com/mithrangowda07" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-[10px] text-[#2563EB] hover:underline"
+                      >
+                        github/mithrangowda07/ ↗
+                      </a>
+                    </div>
+
+                    <div className="border-2 border-black p-2 bg-white">
+                      <span className="block font-bold opacity-60 mb-2">COMMITS STREAK STATS:</span>
+                      <img
+                        src="https://streak-stats.demolab.com?user=mithrangowda07&theme=github-light&hide_border=true"
+                        alt="GitHub Commits Streak Stats"
+                        className="w-full rounded-none filter grayscale border border-black"
+                      />
+                    </div>
+
+                    <div className="border-2 border-black p-2 bg-white">
+                      <span className="block font-bold opacity-60 mb-2">ACTIVITY HEATMAP:</span>
+                      <img
+                        src="https://github-readme-activity-graph.vercel.app/graph?username=mithrangowda07&theme=github-light&hide_border=true&area=true"
+                        alt="GitHub Contributions Heatmap"
+                        className="w-full rounded-none filter grayscale border border-black"
+                      />
+                    </div>
+                  </div>
+                </RetroWindow>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* CONTACT SECTION (MAIL CLIENT VIEW) */}
+        <section id="contact" className="scroll-mt-24">
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading">
+              📂 07. Contact Terminal
+            </h2>
+            
+            <RetroWindow 
+              title="Email Composer" 
+              className="w-full"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                {/* Left side details */}
+                <div className="lg:col-span-5 flex flex-col justify-between space-y-6 font-mono text-xs">
+                  <div className="space-y-4">
+                    <div className="border-2 border-black p-4 bg-[#F8F8F5]">
+                      <span className="font-bold text-[#2563EB] block border-b border-black pb-1.5 mb-2">
+                        📨 ROUTE DESCRIPTOR
+                      </span>
+                      <div className="space-y-1.5 font-bold">
+                        <div className="flex justify-between">
+                          <span className="opacity-60">HOST:</span>
+                          <span>mithrangowda01@gmail.com</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="opacity-60">PORT:</span>
+                          <span>BENGALURU_IN</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border-2 border-black p-4 bg-white border-dashed">
+                      <span className="font-bold text-green-700 block mb-1">● STATUS: AVAILABLE FOR WORK</span>
+                      Open for full-stack engineering roles, automation prototypes, and ML system integrations.
+                    </div>
+                  </div>
+
+                  {/* Icon directories */}
+                  <div className="space-y-2 border-t-2 border-dashed border-black pt-4">
+                    <span className="font-bold opacity-60 block">SOCIAL CHANNELS:</span>
+                    <div className="flex flex-wrap gap-2">
+                      <a
+                        href={resumeData.personal_info.social_links.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 border border-black bg-[#EFEFEF] hover:bg-[#D6D6D6] font-bold text-[10px] inline-flex items-center gap-1 active:translate-y-[1px]"
+                      >
+                        <Linkedin size={10} />
+                        LinkedIn
+                      </a>
+                      <a
+                        href={resumeData.personal_info.social_links.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 border border-black bg-[#EFEFEF] hover:bg-[#D6D6D6] font-bold text-[10px] inline-flex items-center gap-1 active:translate-y-[1px]"
+                      >
+                        <Github size={10} />
+                        GitHub
+                      </a>
+                      <a
+                        href={resumeData.personal_info.social_links.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 border border-black bg-[#EFEFEF] hover:bg-[#D6D6D6] font-bold text-[10px] inline-flex items-center gap-1 active:translate-y-[1px]"
+                      >
+                        <Instagram size={10} />
+                        Instagram
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right side form */}
+                <div className="lg:col-span-7 border-t-2 border-black pt-6 lg:border-t-0 lg:pt-0 lg:border-l-2 lg:pl-8">
+                  <div className="flex items-center space-x-2 pb-3 mb-3 border-b border-black/10">
+                    <Inbox size={16} className="text-[#2563EB]" />
+                    <span className="font-mono text-xs font-bold">Compose Email:</span>
+                  </div>
+                  <ContactForm />
+                </div>
+
+              </div>
+            </RetroWindow>
+          </div>
+        </section>
+
       </main>
+
+      {/* SYSTEM POPUP ALERT OVERLAY */}
+      <AnimatePresence>
+        {systemAlert && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-[1px]">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] max-w-sm w-full font-mono text-xs"
+            >
+              {/* Alert Title bar */}
+              <div className="bg-[#111111] text-white px-3 py-1.5 flex items-center justify-between">
+                <span>System Notification</span>
+                <button 
+                  onClick={() => setSystemAlert(null)}
+                  className="font-bold hover:text-red-500 cursor-pointer"
+                >
+                  [X]
+                </button>
+              </div>
+              {/* Alert Body */}
+              <div className="p-4 space-y-4">
+                <p className="font-bold text-[#111111] leading-relaxed">{systemAlert}</p>
+                <div className="text-right">
+                  <RetroButton 
+                    onClick={() => setSystemAlert(null)}
+                    className="px-4 py-1 text-xs"
+                  >
+                    Dismiss
+                  </RetroButton>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* PROJECT DETAILED POPUP MODAL */}
+      <AnimatePresence>
+        {selectedProject && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-[1px]">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] max-w-2xl w-full max-h-[85vh] flex flex-col font-mono text-xs"
+            >
+              {/* Title Bar */}
+              <div className="bg-[#111111] text-white px-3 py-2 flex items-center justify-between select-none">
+                <span className="font-bold">{selectedProject.title}</span>
+                <button 
+                  onClick={() => setSelectedProject(null)}
+                  className="font-bold hover:text-red-500 cursor-pointer"
+                >
+                  [X]
+                </button>
+              </div>
+
+              {/* Scrollable details */}
+              <div className="p-6 overflow-y-auto space-y-6 text-[#111111]">
+                {/* Date */}
+                <div className="flex items-center justify-between border-b border-black/10 pb-2">
+                  <span className="font-bold opacity-60">RELEASE DATE:</span>
+                  <span className="font-bold bg-[#EFEFEF] border border-black px-2 py-0.5">{selectedProject.date}</span>
+                </div>
+
+                {/* Description bullet list */}
+                <div className="space-y-2">
+                  <span className="font-bold text-[#2563EB] block border-b border-black pb-1">DESCRIPTION</span>
+                  <ul className="list-disc list-inside space-y-1.5 text-[#444444] font-sans text-xs leading-relaxed">
+                    {selectedProject.description.map((desc: string, i: number) => (
+                      <li key={i} className="align-top">{desc}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Key Features */}
+                <div className="space-y-2">
+                  <span className="font-bold text-[#2563EB] block border-b border-black pb-1">KEY FEATURES</span>
+                  <ul className="list-disc list-inside space-y-1.5 text-[#444444] font-sans text-xs leading-relaxed">
+                    {selectedProject.features.map((feature: string, i: number) => (
+                      <li key={i} className="align-top">{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Tech Stack */}
+                <div className="space-y-2">
+                  <span className="font-bold text-[#2563EB] block border-b border-black pb-1">TECH STACK DIRECTORY</span>
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {selectedProject.tech_stack.map((tech: string, i: number) => (
+                      <span key={i} className="px-2 py-0.5 bg-[#EFEFEF] border border-black font-mono text-[10px] font-bold">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Contributors */}
+                {selectedProject.contributors && selectedProject.contributors.length > 0 && (
+                  <div className="space-y-2">
+                    <span className="font-bold text-[#2563EB] block border-b border-black pb-1">TEAM MEMBERS</span>
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {selectedProject.contributors.map((contrib: Contributor, i: number) => (
+                        <a
+                          key={i}
+                          href={contrib.profile}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1 border border-black hover:bg-[#EFEFEF] transition-all font-mono text-[10px] font-bold flex items-center space-x-1.5 bg-white shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:shadow-none"
+                        >
+                          <span>👤 {contrib.name}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Modal footer links */}
+              <div className="border-t-2 border-black p-4 bg-[#EFEFEF] flex justify-between items-center">
+                <div className="flex space-x-2">
+                  {selectedProject.github_link && (
+                    <a 
+                      href={selectedProject.github_link} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                    >
+                      <RetroButton className="px-3 py-1 text-xs">
+                        View Source Code
+                      </RetroButton>
+                    </a>
+                  )}
+                  {selectedProject.demo_link && (
+                    <a 
+                      href={selectedProject.demo_link} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                    >
+                      <RetroButton variant="accent" className="px-3 py-1 text-xs">
+                        Live Demo
+                      </RetroButton>
+                    </a>
+                  )}
+                </div>
+                <RetroButton 
+                  onClick={() => setSelectedProject(null)}
+                  className="px-4 py-1 text-xs"
+                >
+                  Close
+                </RetroButton>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* RESUME VIEWER POPUP MODAL */}
+      <AnimatePresence>
+        {isResumeOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-[1px]">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] max-w-4xl w-full h-[85vh] flex flex-col font-mono text-xs"
+            >
+              {/* Title Bar */}
+              <div className="bg-[#111111] text-white px-3 py-2 flex items-center justify-between select-none">
+                <span className="font-bold">Resume Viewer</span>
+                <button 
+                  onClick={() => setIsResumeOpen(false)}
+                  className="font-bold hover:text-red-500 cursor-pointer"
+                >
+                  [X]
+                </button>
+              </div>
+
+              {/* Embedded PDF Viewer */}
+              <div className="flex-1 bg-white p-2">
+                <iframe 
+                  src="/Resume.pdf" 
+                  className="w-full h-full border-2 border-black" 
+                  title="Resume PDF"
+                />
+              </div>
+
+              {/* Footer */}
+              <div className="border-t-2 border-black p-4 bg-[#EFEFEF] flex justify-end">
+                <RetroButton 
+                  onClick={() => setIsResumeOpen(false)}
+                  className="px-4 py-1 text-xs"
+                >
+                  Close
+                </RetroButton>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* FOOTER SYSTEM STATUS BAR */}
+      <footer className="fixed bottom-0 left-0 right-0 z-30 bg-[#EFEFEF] border-t-2 border-black h-8 px-4 flex items-center justify-between font-mono text-[10px] font-bold select-none text-[#111111]">
+        <div className="flex items-center space-x-4">
+          <span>© {new Date().getFullYear()} All rights reserved.</span>
+        </div>
+
+        {/* Links */}
+        <div className="flex items-center space-x-3">
+          <a href={resumeData.personal_info.social_links.github} target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a>
+          <span>|</span>
+          <a href={resumeData.personal_info.social_links.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a>
+          <span>|</span>
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:underline flex items-center cursor-pointer">
+            Back to Top
+            <ChevronUp size={10} className="ml-1" />
+          </button>
+        </div>
+      </footer>
     </div>
   )
 }
