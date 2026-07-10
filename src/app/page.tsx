@@ -209,7 +209,11 @@ function RetroButton({
   className = '',
   ...props
 }: RetroButtonProps) {
-  let baseStyle = 'border-2 border-black font-bold font-mono transition-all select-none px-4 py-2 text-sm text-center inline-flex items-center justify-center '
+  let baseStyle = 'border-2 border-black font-bold font-mono transition-all select-none text-sm text-center inline-flex items-center justify-center '
+  
+  if (!/(^|\s)p(x|y)?-/.test(className)) {
+    baseStyle += 'px-4 py-2 '
+  }
   
   if (variant === 'primary') {
     baseStyle += 'bg-[#111111] text-white hover:bg-[#333333] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-[2px] active:translate-x-[2px]'
@@ -1084,10 +1088,10 @@ export default function Portfolio() {
               <div className="flex items-center justify-center space-x-4 mt-4 font-mono">
                 <RetroButton
                   onClick={() => swiper?.slidePrev()}
-                  className="w-10 h-10 flex items-center justify-center p-0"
+                  className="w-14 h-14 flex items-center justify-center p-0"
                   aria-label="Previous slide"
                 >
-                  <ChevronLeft size={18} className="fi fi-rs-arrow-small-left" />
+                  <ChevronLeft size={36} className="fi fi-rs-arrow-small-left" />
                 </RetroButton>
 
                 <RetroButton
@@ -1100,22 +1104,22 @@ export default function Portfolio() {
                       setIsPlaying(true)
                     }
                   }}
-                  className="w-10 h-10 flex items-center justify-center p-0"
+                  className="w-14 h-14 flex items-center justify-center p-0"
                   aria-label={isPlaying ? 'Pause autoplay' : 'Play autoplay'}
                 >
                   {isPlaying ? (
-                    <Pause size={18} className="fi fi-rs-pause-circle" />
+                    <Pause size={36} className="fi fi-rs-pause-circle" />
                   ) : (
-                    <Play size={18} className="fi fi-rs-play-circle" />
+                    <Play size={36} className="fi fi-rs-play-circle" />
                   )}
                 </RetroButton>
 
                 <RetroButton
                   onClick={() => swiper?.slideNext()}
-                  className="w-10 h-10 flex items-center justify-center p-0"
+                  className="w-14 h-14 flex items-center justify-center p-0"
                   aria-label="Next slide"
                 >
-                  <ChevronRight size={18} className="fi fi-rs-arrow-small-right" />
+                  <ChevronRight size={36} className="fi fi-rs-arrow-small-right" />
                 </RetroButton>
               </div>
             </div>
