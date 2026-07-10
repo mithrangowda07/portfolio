@@ -82,3 +82,20 @@ html {
 .retro-shadow-active:active {
   box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 1);
 }
+
+/* Swiper retro pagination styling */
+.swiper-pagination-bullet {
+  background: #FFFFFF !important;
+  border: 2px solid #000000 !important;
+  border-radius: 0px !important;
+  width: 10px !important;
+  height: 10px !important;
+  opacity: 1 !important;
+  box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 1) !important;
+  margin: 0 6px !important;
+  transition: all 0.15s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #111111 !important;
+}

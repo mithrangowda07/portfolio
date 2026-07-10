@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Script from 'next/script'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -22,9 +22,67 @@ import {
   FileText,
   CheckCircle,
   BookOpen,
-  Inbox
+  Inbox,
+  Play,
+  Pause,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react'
 import resumeData from '../../resume_data.json'
+import ShapeGrid from '@/components/ShapeGrid'
+import {
+  SiC,
+  SiCplusplus,
+  SiJavascript,
+  SiPython,
+  SiHtml5,
+  SiCss,
+  SiDjango,
+  SiFlask,
+  SiLinux,
+  SiGithub,
+  SiMysql,
+  SiWolframmathematica,
+  SiSmartthings
+} from 'react-icons/si'
+
+// Custom SVG for Power BI since it is not present in this version of react-icons/si
+const SiPowerbi = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg role="img" viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M9.002 6.75h4.5v17.25h-4.5V6.75zM18.004 0h4.5v24h-4.5V0zM0 13.5h4.5v10.5H0V13.5z"/>
+  </svg>
+)
+
+const skillIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  'C': SiC,
+  'C++': SiCplusplus,
+  'HTML/CSS': ({ className }) => {
+    const adjustedClassName = className?.replace(/w-\d+|h-\d+/g, '') + ' w-5 h-5'
+    return (
+      <div className="flex gap-0.5 items-center justify-center">
+        <SiHtml5 className={adjustedClassName} />
+        <SiCss className={adjustedClassName} />
+      </div>
+    )
+  },
+  'JavaScript': SiJavascript,
+  'Python (Basics)': SiPython,
+  'Matlab': SiWolframmathematica,
+  'Django': SiDjango,
+  'Flask': SiFlask,
+  'Linux': SiLinux,
+  'GitHub': SiGithub,
+  'Power BI': SiPowerbi,
+  'ThingSpeak': SiSmartthings,
+  'MySQL': SiMysql
+}
+
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+import type { Swiper as SwiperClass } from 'swiper'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 interface ContestData {
   contestAttend?: number
@@ -373,14 +431,15 @@ export default function Portfolio() {
   // Custom dialog notifications
   const [systemAlert, setSystemAlert] = useState<string | null>(null)
 
-  // Experience stacking order (last element = highest zIndex / top card)
-  const [experienceStack, setExperienceStack] = useState(['nss', 'schneider'])
+  // Swiper state
+  const [swiper, setSwiper] = useState<SwiperClass | null>(null)
+  const [isPlaying, setIsPlaying] = useState(true)
 
   // Certificates Folder control states
   const [expandedFolder, setExpandedFolder] = useState<number | null>(null)
 
   // Skills filter Category
-  const [selectedSkillCategory, setSelectedSkillCategory] = useState<string>('ALL')
+  const [selectedSkillCategory, setSelectedSkillCategory] = useState<string>('LANGUAGES')
 
   // Selected project for details modal popup
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
@@ -400,28 +459,38 @@ export default function Portfolio() {
 
   // Grouping skills
   const skillsCategories = [
-    { id: 'ALL', name: 'All Files' },
     { id: 'LANGUAGES', name: 'Languages' },
     { id: 'FRAMEWORKS', name: 'Frameworks' },
     { id: 'TOOLS', name: 'Tools & DBs' }
   ]
 
   const getFilteredSkills = () => {
-    if (selectedSkillCategory === 'LANGUAGES') {
-      return resumeData.skills.programming_languages
-    }
     if (selectedSkillCategory === 'FRAMEWORKS') {
       return resumeData.skills.frameworks_libraries
     }
     if (selectedSkillCategory === 'TOOLS') {
       return resumeData.skills.tools_technologies
     }
-    return [
-      ...resumeData.skills.programming_languages,
-      ...resumeData.skills.frameworks_libraries,
-      ...resumeData.skills.tools_technologies
-    ]
+    return resumeData.skills.programming_languages
   }
+
+  // Dynamic normalization of experience and leadership/extracurricular activities from resume_data.json
+  const experiences = [
+    ...resumeData.experience.map(exp => ({
+      company: exp.company,
+      role: exp.role,
+      duration: `${exp.start_date} - ${exp.end_date}`,
+      title: `${exp.company} Internship`,
+      responsibilities: exp.responsibilities
+    })),
+    ...resumeData.leadership_extracurricular.map(lead => ({
+      company: lead.organization,
+      role: lead.role === 'Volunteer' ? 'Volunteer Officer' : lead.role,
+      duration: `${lead.start_date} - ${lead.end_date}`,
+      title: lead.organization === 'National Service Scheme (NSS)' ? 'NSS Volunteer' : `${lead.organization} Volunteer`,
+      responsibilities: lead.activities
+    }))
+  ]
 
   // About tab switching state
   const [activeAboutTab, setActiveAboutTab] = useState('profile')
@@ -434,7 +503,16 @@ export default function Portfolio() {
   ]
 
   return (
-    <div className="min-h-screen retro-grid bg-[#F8F8F5] text-[#111111] pb-16 selection:bg-[#2563EB] selection:text-white relative">
+    <div className="min-h-screen text-[#111111] pb-16 selection:bg-[#2563EB] selection:text-white relative">
+      <ShapeGrid 
+        speed={0.4} 
+        squareSize={40}
+        direction="diagonal"
+        borderColor="rgba(0, 0, 0, 0.08)"
+        hoverFillColor="rgba(0, 0, 0, 0.05)"
+        shape="square"
+        hoverTrailAmount={6}
+      />
       <Script
         id="mithra-ngowda-person-schema"
         type="application/ld+json"
@@ -455,8 +533,8 @@ export default function Portfolio() {
           <button onClick={() => scrollTo('skills')} className={`hover:underline cursor-pointer ${activeSection === 'skills' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Skills</button>
           <button onClick={() => scrollTo('projects')} className={`hover:underline cursor-pointer ${activeSection === 'projects' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Projects</button>
           <button onClick={() => scrollTo('experience')} className={`hover:underline cursor-pointer ${activeSection === 'experience' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Experience</button>
-          <button onClick={() => scrollTo('certificates')} className={`hover:underline cursor-pointer ${activeSection === 'certificates' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Folders</button>
-          <button onClick={() => scrollTo('metrics')} className={`hover:underline cursor-pointer ${activeSection === 'metrics' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Dashboard</button>
+          <button onClick={() => scrollTo('certificates')} className={`hover:underline cursor-pointer ${activeSection === 'certificates' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Certificates</button>
+          <button onClick={() => scrollTo('metrics')} className={`hover:underline cursor-pointer ${activeSection === 'metrics' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Code Metrics</button>
           <button onClick={() => scrollTo('contact')} className={`hover:underline cursor-pointer ${activeSection === 'contact' ? 'bg-[#111111] text-white px-2 py-0.5' : ''}`}>Contact</button>
         </div>
 
@@ -492,9 +570,9 @@ export default function Portfolio() {
             <button onClick={() => scrollTo('about')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 About Me</button>
             <button onClick={() => scrollTo('skills')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Technical Skills</button>
             <button onClick={() => scrollTo('projects')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Project Windows</button>
-            <button onClick={() => scrollTo('experience')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Stacked Experience</button>
+            <button onClick={() => scrollTo('experience')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Experience</button>
             <button onClick={() => scrollTo('certificates')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Certificates</button>
-            <button onClick={() => scrollTo('metrics')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Dev Dashboard</button>
+            <button onClick={() => scrollTo('metrics')} className="text-left py-1 text-sm font-bold border-b border-black/10 hover:bg-[#EFEFEF] px-2">📂 Code Metrics</button>
             <button onClick={() => scrollTo('contact')} className="text-left py-1 text-sm font-bold hover:bg-[#EFEFEF] px-2">📂 Contact Terminal</button>
             <button
               onClick={() => {
@@ -536,7 +614,7 @@ export default function Portfolio() {
                   ⚡ Full Stack Developer
                 </span>
                 <span className="px-3 py-1 border-2 border-black bg-[#EFEFEF] font-mono text-xs font-bold rounded-none">
-                  🧠 AI Engineer
+                  🧠 Competitive programming
                 </span>
                 <span className="px-3 py-1 border-2 border-black bg-[#EFEFEF] font-mono text-xs font-bold rounded-none">
                   💻 Software Engineer
@@ -629,7 +707,7 @@ export default function Portfolio() {
         <section id="about" className="scroll-mt-24">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading">
-              📂 01. About System
+              📂 01. User Profile
             </h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
@@ -820,7 +898,18 @@ export default function Portfolio() {
                       >
                         {/* Retro Icon Container */}
                         <div className="w-12 h-12 border-2 border-black bg-white flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[4px_4px_0px_0px_rgba(37,99,235,1)] group-active:shadow-none transition-all mb-2">
-                          <Code size={20} className="text-[#111111]" />
+                          {(() => {
+                            const Icon = skillIcons[skill.name]
+                            return (
+                              <div className="skill-icon flex items-center justify-center">
+                                {Icon ? (
+                                  <Icon className="w-10 h-10 text-[#111111] group-hover:text-[#2563eb] group-hover:scale-110 transition-all duration-200" />
+                                ) : (
+                                  <Code className="w-10 h-10 text-[#111111] group-hover:text-[#2563eb] group-hover:scale-110 transition-all duration-200" />
+                                )}
+                              </div>
+                            )
+                          })()}
                         </div>
                         <span className="text-xs font-mono font-bold text-center truncate w-full">{skill.name}</span>
                         <div className="w-full bg-gray-200 h-1.5 mt-2 border border-black overflow-hidden max-w-[60px]">
@@ -940,88 +1029,95 @@ export default function Portfolio() {
         <section id="experience" className="scroll-mt-24">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading">
-              📂 04. Stacked Experience
+              📂 04. Experience
             </h2>
 
-            <p className="text-sm text-[#444444] font-mono">
-              💡 Click on any background card to bring that window directory to the front.
-            </p>
-
-            {/* Overlapping Stack Containers */}
-            <div className="relative min-h-[460px] sm:min-h-[400px] mt-6 w-full max-w-2xl">
-              
-              {/* NSS Experience Card */}
-              <motion.div
-                layout
-                onClick={() => setExperienceStack(['schneider', 'nss'])}
-                style={{ zIndex: experienceStack.indexOf('nss') + 10 }}
-                animate={{
-                  x: experienceStack.indexOf('nss') * 16,
-                  y: experienceStack.indexOf('nss') * 16,
+            {/* Swiper Carousel Container */}
+            <div className="w-full max-w-[850px] mx-auto mt-6 relative select-none">
+              <Swiper
+                modules={[Navigation, Pagination, Autoplay]}
+                spaceBetween={30}
+                slidesPerView={1}
+                loop={true}
+                pagination={{
+                  clickable: true,
                 }}
-                transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                className="absolute top-0 left-0 w-full cursor-pointer"
-              >
-                <RetroWindow 
-                  title="NSS Volunteer" 
-                  titleBarColor={experienceStack[1] === 'nss' ? 'bg-[#111111] text-white' : 'bg-[#D6D6D6] text-[#444444]'}
-                >
-                  <div className="space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b-2 border-black pb-2 border-dashed">
-                      <div>
-                        <h3 className="text-base sm:text-lg font-bold font-heading">National Service Scheme (NSS)</h3>
-                        <p className="text-xs text-[#2563EB] font-bold font-mono">Volunteer Officer</p>
-                      </div>
-                      <span className="text-xs font-mono font-bold bg-[#EFEFEF] border border-black px-2 py-0.5 mt-2 sm:mt-0">
-                        Jan 2024 - Present
-                      </span>
-                    </div>
-
-                    <ul className="list-disc list-inside space-y-2 text-xs text-[#444444] font-sans">
-                      <li>Engaged in community service initiatives by organizing and contributing to blood donation camps, cleanliness drives, and awareness programs.</li>
-                      <li>Fostered social responsibility and civic engagement within the student community.</li>
-                    </ul>
-                  </div>
-                </RetroWindow>
-              </motion.div>
-
-              {/* Schneider Electric Card */}
-              <motion.div
-                layout
-                onClick={() => setExperienceStack(['nss', 'schneider'])}
-                style={{ zIndex: experienceStack.indexOf('schneider') + 10 }}
-                animate={{
-                  x: experienceStack.indexOf('schneider') * 16,
-                  y: experienceStack.indexOf('schneider') * 16,
+                autoplay={{
+                  delay: 3500,
+                  disableOnInteraction: false,
                 }}
-                transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-                className="absolute top-0 left-0 w-full cursor-pointer"
+                onSwiper={setSwiper}
+                className="w-full"
               >
-                <RetroWindow 
-                  title="Schneider Electric Internship" 
-                  titleBarColor={experienceStack[1] === 'schneider' ? 'bg-[#111111] text-white' : 'bg-[#D6D6D6] text-[#444444]'}
-                >
-                  <div className="space-y-4">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b-2 border-black pb-2 border-dashed">
-                      <div>
-                        <h3 className="text-base sm:text-lg font-bold font-heading">Schneider Electric</h3>
-                        <p className="text-xs text-[#2563EB] font-bold font-mono">Software Development Intern</p>
-                      </div>
-                      <span className="text-xs font-mono font-bold bg-[#EFEFEF] border border-black px-2 py-0.5 mt-2 sm:mt-0">
-                        July 2025 - September 2025
-                      </span>
+                {experiences.map((exp, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="p-1 pb-12 flex justify-center w-full">
+                      <RetroWindow 
+                        title={exp.title} 
+                        titleBarColor="bg-[#111111] text-white"
+                        className="w-full"
+                      >
+                        <div className="space-y-4">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b-2 border-black pb-2 border-dashed">
+                            <div>
+                              <h3 className="text-base sm:text-lg font-bold font-heading">{exp.company}</h3>
+                              <p className="text-xs text-[#2563EB] font-bold font-mono">{exp.role}</p>
+                            </div>
+                            <span className="text-xs font-mono font-bold bg-[#EFEFEF] border border-black px-2 py-0.5 mt-2 sm:mt-0 whitespace-nowrap">
+                              {exp.duration}
+                            </span>
+                          </div>
+
+                          <ul className="list-disc list-inside space-y-2 text-xs text-[#444444] font-sans">
+                            {exp.responsibilities.map((resp, i) => (
+                              <li key={i}>{resp}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </RetroWindow>
                     </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
 
-                    <ul className="list-disc list-inside space-y-2 text-xs text-[#444444] font-sans">
-                      <li>Collaborated in a team of 4 members under the guidance of a Senior Architect.</li>
-                      <li>Developed a prototype for detecting errors in a home automation system using event sourcing logs and AI.</li>
-                      <li>Collected large-scale sensor and system event data, including deliberately introduced faults, to train AI models for anomaly detection and corrective action recommendations.</li>
-                      <li>Integrated AI with system code access to enable autonomous optimization and real-time decision-making.</li>
-                    </ul>
-                  </div>
-                </RetroWindow>
-              </motion.div>
+              {/* Custom Controls */}
+              <div className="flex items-center justify-center space-x-4 mt-4 font-mono">
+                <RetroButton
+                  onClick={() => swiper?.slidePrev()}
+                  className="w-10 h-10 flex items-center justify-center p-0"
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft size={18} className="fi fi-rs-arrow-small-left" />
+                </RetroButton>
 
+                <RetroButton
+                  onClick={() => {
+                    if (isPlaying) {
+                      swiper?.autoplay?.stop()
+                      setIsPlaying(false)
+                    } else {
+                      swiper?.autoplay?.start()
+                      setIsPlaying(true)
+                    }
+                  }}
+                  className="w-10 h-10 flex items-center justify-center p-0"
+                  aria-label={isPlaying ? 'Pause autoplay' : 'Play autoplay'}
+                >
+                  {isPlaying ? (
+                    <Pause size={18} className="fi fi-rs-pause-circle" />
+                  ) : (
+                    <Play size={18} className="fi fi-rs-play-circle" />
+                  )}
+                </RetroButton>
+
+                <RetroButton
+                  onClick={() => swiper?.slideNext()}
+                  className="w-10 h-10 flex items-center justify-center p-0"
+                  aria-label="Next slide"
+                >
+                  <ChevronRight size={18} className="fi fi-rs-arrow-small-right" />
+                </RetroButton>
+              </div>
             </div>
           </div>
         </section>
@@ -1030,7 +1126,7 @@ export default function Portfolio() {
         <section id="certificates" className="scroll-mt-24">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading">
-              📂 05. Folder Credentials
+              📂 05. Certificates Folder
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -1109,7 +1205,7 @@ export default function Portfolio() {
         <section id="metrics" className="scroll-mt-24">
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl font-bold font-heading">
-              📂 06. Developer Monitor
+              📂 06. Coding Journey
             </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
