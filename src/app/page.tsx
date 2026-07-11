@@ -648,9 +648,6 @@ export default function Portfolio() {
                 <div className="space-y-6">
                   {/* Photo Container */}
                   <div className="border-2 border-black p-1 bg-white relative">
-                    <div className="absolute top-2 right-2 bg-green-500 border-2 border-black text-[9px] font-bold text-white px-2 py-0.5 z-10 font-mono shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]">
-                      ONLINE
-                    </div>
                     <div className="bg-[#EFEFEF] flex justify-center items-center overflow-hidden aspect-square border-2 border-black">
                       <Image 
                         src="/profile-photo.jpg" 
