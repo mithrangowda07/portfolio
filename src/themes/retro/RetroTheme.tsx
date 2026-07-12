@@ -293,7 +293,7 @@ function ContactForm() {
             onChange={handleChange}
             required
             className="w-full px-3 py-2 bg-white border-2 border-black rounded-none text-black placeholder-gray-400 focus:outline-none focus:bg-[#EFEFEF] transition-colors text-sm"
-            placeholder="John Doe"
+            placeholder="Name"
           />
         </div>
         <div>
@@ -308,7 +308,7 @@ function ContactForm() {
             onChange={handleChange}
             required
             className="w-full px-3 py-2 bg-white border-2 border-black rounded-none text-black placeholder-gray-400 focus:outline-none focus:bg-[#EFEFEF] transition-colors text-sm"
-            placeholder="john@example.com"
+            placeholder="xyz@example.com"
           />
         </div>
       </div>
@@ -391,6 +391,7 @@ export default function RetroTheme({
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [isResumeOpen, setIsResumeOpen] = useState(false)
   const [activeAboutTab, setActiveAboutTab] = useState('profile')
+  const [showAllProjects, setShowAllProjects] = useState(false)
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
@@ -483,7 +484,7 @@ export default function RetroTheme({
             className="border-2 border-black bg-white text-xs font-bold px-3 py-1 hover:bg-[#EFEFEF] active:translate-y-[1px] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none transition-all block font-mono cursor-pointer"
             title="Toggle Visual Theme"
           >
-            💾 theme: retro
+            💾 Switch Theme
           </button>
           <button
             onClick={() => setIsResumeOpen(true)}
@@ -877,13 +878,18 @@ export default function RetroTheme({
               📂 03. Project Windows
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-              {resumeData.projects.map((project: Project, index: number) => {
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+              {(showAllProjects ? resumeData.projects : resumeData.projects.slice(0, 2)).map((project: Project, index: number) => {
                 const isFeatured = index === 0;
+                const colSpanClass = isFeatured 
+                  ? 'md:col-span-12 lg:col-span-8' 
+                  : (index === 1 && !showAllProjects) 
+                    ? 'md:col-span-12 lg:col-span-4' 
+                    : 'md:col-span-6 lg:col-span-4';
                 return (
                   <div 
                     key={index} 
-                    className={`${isFeatured ? 'md:col-span-12 lg:col-span-8' : 'md:col-span-6 lg:col-span-4'} flex flex-col h-full`}
+                    className={`${colSpanClass} flex flex-col h-full`}
                   >
                     <RetroWindow 
                       title={project.title}
@@ -960,6 +966,28 @@ export default function RetroTheme({
                   </div>
                 )
               })}
+            </div>
+
+            {/* Retro Toggle Button */}
+            <div className="flex justify-center pt-8 font-mono select-none">
+              {!showAllProjects ? (
+                <button
+                  onClick={() => setShowAllProjects(true)}
+                  className="border-2 border-black bg-white px-6 py-3 text-xs font-bold hover:bg-[#EFEFEF] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none cursor-pointer flex items-center gap-2"
+                >
+                  📂 Open Project Archives (Show {resumeData.projects.length - 2} More Windows)
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setShowAllProjects(false)
+                    scrollTo('projects')
+                  }}
+                  className="border-2 border-black bg-[#111111] text-white px-6 py-3 text-xs font-bold hover:bg-[#333333] shadow-[3px_3px_0px_0px_rgba(37,99,235,1)] active:translate-y-[2px] active:translate-x-[2px] active:shadow-none cursor-pointer flex items-center gap-2"
+                >
+                  📁 Fold Archive Windows
+                </button>
+              )}
             </div>
           </div>
         </section>

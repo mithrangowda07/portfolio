@@ -217,6 +217,93 @@
           "profile": "https://www.linkedin.com/in/meghana-j-l-27b219294"
         }
       ]
+    },
+    {
+      "title": "Adaptive Secure Communication System (PAACS)",
+      "tech_stack": ["Node.js", "Express.js", "Socket.IO", "SQLite", "React", "Vite", "Tailwind CSS", "Recharts", "Axios"],
+      "date": "June 2026",
+      "github_link": "https://github.com/mithrangowda07/Adaptive-Secure-and-Speed-Communication",
+      "demo_link": "",
+      "description": [
+        "Developed an adaptive secure communication platform demonstrating dynamic cryptographic algorithm switching based on real-time network conditions.",
+        "Built a multi-stage selector loop mapped to AES-256+RSA, ECC, ChaCha20, and AES-128 ciphers to optimize speed vs security trade-offs.",
+        "Implemented rolling average transfer time calculations, stability locks to prevent jitter thrashing, and WebSocket-driven key rotations.",
+        "Designed a dashboard showcasing live telemetry, database encryption lifecycle transmission logs, and SHA-256 packet tamper alarms."
+      ],
+      "features": [
+        "Performance-Aware Cryptographic Switching dynamically adapting ciphers to real-time network stability",
+        "Integrated hybrid encryption suite including AES-256 with RSA, ECC Ephemeral ECDH, ChaCha20, and AES-128",
+        "Rolling database transmission average and standard deviation analysis to detect fluctuations",
+        "Jitter stability locks and hysteresis controller to prevent rapid algorithm thrashing",
+        "Automated key rotation logs and real-time state synchronization via Socket.IO",
+        "SHA-256 integrity hash verification with client-side packet tampering detection and alerts",
+        "Comprehensive metrics visualization dashboard comparing QoS vs cipher levels using Recharts"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        }
+      ]
+    },
+    {
+      "title": "Integrated Emergency Response and Green Corridor Management System (IDP)",
+      "tech_stack": ["React", "Node.js", "Express.js", "Socket.IO", "MySQL", "MinIO", "Leaflet", "OSRM API", "Overpass API"],
+      "date": "May 2026",
+      "github_link": "https://github.com/mithrangowda07/Emergency_System",
+      "demo_link": "",
+      "description": [
+        "Built an integrated smart-city emergency dispatch and traffic-overriding green corridor management platform.",
+        "Implemented dynamic green corridor signal overrides snapping nearest traffic signals to traverse routes when vehicles are within 500m.",
+        "Developed real-time GPS simulation and live tracking rooms using Socket.IO, pushing en-route and return-to-station logs.",
+        "Integrated Leaflet maps with OSRM routing geometry and OpenStreetMap Overpass discovery queries for nearest services."
+      ],
+      "features": [
+        "Dynamic traffic signal overrides activating green corridor lights for dispatch vehicles",
+        "Nearest-point route-polyline signal snapping to prevent adjacent signal interference",
+        "Real-time GPS vehicle tracking and simulation en route and return via WebSockets",
+        "OpenStreetMap Overpass API integration discovering hospitals, fire stations, and police services",
+        "OSRM router calculating normal and corridor ETA metrics with 35% time savings",
+        "Role-based dashboards for traffic administrators, hospital operators, and citizen reporters",
+        "Citizen mobile-responsive reporting interface with Geolocation and camera media capture"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        },
+        {
+          "name": "Dhruthi D",
+          "profile": "https://www.linkedin.com/in/dhruthi-d-767235363"
+        }
+      ]
+    },
+    {
+      "title": "Wafer Defect Detection System",
+      "tech_stack": ["Python", "MobileNetV2", "Grad-CAM", "Streamlit", "AWS IoT Core", "AWS SNS", "MariaDB", "MQTT"],
+      "date": "Nov 2024",
+      "github_link": "https://github.com/mithrangowda07/Wafer_Defect_Detection",
+      "demo_link": "",
+      "description": [
+        "Developed an end-to-end edge-to-cloud industrial wafer defect classification and inspection system.",
+        "Finetuned a MobileNetV2 Deep Learning model to classify wafer defects with 95%+ classification accuracy.",
+        "Implemented Grad-CAM visualization mapping to explainable ML classification heatmaps for QA operators.",
+        "Created an AWS SNS integration publishing automated high-severity defect alerts to email lists."
+      ],
+      "features": [
+        "Wafer defect classification model using MobileNetV2 neural networks",
+        "Explainable AI defect visualization using Grad-CAM heatmaps",
+        "AWS SNS email alerting system for high-severity manufacturing anomalies",
+        "Edge publish scripts batching local defect logs to remote MariaDB/MySQL databases",
+        "Real-time analytics dashboard built with Streamlit and web sockets",
+        "MQTT-based cloud receive pipelines processing telemetry data"
+      ],
+      "contributors": [
+        {
+          "name": "Mithra N Gowda",
+          "profile": "https://www.linkedin.com/in/mithra-n-gowda-30b053294"
+        }
+      ]
     }
   ],
 

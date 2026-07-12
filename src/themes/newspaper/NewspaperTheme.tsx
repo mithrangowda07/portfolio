@@ -193,7 +193,7 @@ function NewspaperLeetCodeArticle({
           <img
             src="https://leetcard.jacoblin.cool/SilentNeedle?ext=heatmap"
             alt="LeetCode Heatmap Log"
-            className="w-full filter grayscale contrast-125 brightness-95"
+            className="w-full"
           />
         </div>
         <p className="text-[8.5px] text-center font-serif-body italic text-gray-500 select-none">
@@ -235,7 +235,7 @@ function NewspaperGitHubArticle() {
           <img
             src="https://streak-stats.demolab.com?user=mithrangowda07&theme=github-light&hide_border=true"
             alt="GitHub Commits Streak Stats"
-            className="w-full filter grayscale contrast-110"
+            className="w-full"
           />
         </div>
         <p className="text-[8.5px] text-center font-serif-body italic text-gray-500 select-none">
@@ -252,7 +252,7 @@ function NewspaperGitHubArticle() {
           <img
             src="https://github-readme-activity-graph.vercel.app/graph?username=mithrangowda07&theme=github-light&hide_border=true&area=true"
             alt="GitHub Activity Log"
-            className="w-full filter grayscale contrast-110"
+            className="w-full"
           />
         </div>
         <p className="text-[8.5px] text-center font-serif-body italic text-gray-500 select-none">
@@ -351,7 +351,7 @@ function ClassifiedContactForm() {
           onChange={handleChange}
           required
           className="w-full px-3 py-1.5 bg-[#FFFDF8] border border-[#1F1F1F] text-xs focus:outline-none focus:ring-1 focus:ring-black rounded-none text-black placeholder-gray-400"
-          placeholder="John Doe"
+          placeholder="Name"
         />
       </div>
       <div>
@@ -366,7 +366,7 @@ function ClassifiedContactForm() {
           onChange={handleChange}
           required
           className="w-full px-3 py-1.5 bg-[#FFFDF8] border border-[#1F1F1F] text-xs focus:outline-none focus:ring-1 focus:ring-black rounded-none text-black placeholder-gray-400"
-          placeholder="john@example.com"
+          placeholder="xyz@example.com"
         />
       </div>
       <div>
@@ -427,6 +427,7 @@ export default function NewspaperTheme({
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [isResumeOpen, setIsResumeOpen] = useState(false)
   const [systemAlert, setSystemAlert] = useState<string | null>(null)
+  const [showAllProjects, setShowAllProjects] = useState(false)
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
@@ -449,17 +450,6 @@ export default function NewspaperTheme({
 
   return (
     <div className="min-h-screen bg-[#F7F3EB] text-[#111111] pb-16 relative selection:bg-black selection:text-white">
-      {/* Subtle shape grid circle drifts */}
-      <ShapeGrid 
-        speed={0.05} 
-        squareSize={45}
-        direction="diagonal"
-        borderColor="rgba(31, 31, 31, 0.04)"
-        hoverFillColor="rgba(31, 31, 31, 0.02)"
-        shape="circle"
-        hoverTrailAmount={0}
-        theme="newspaper"
-      />
       
       <Script
         id="mithra-ngowda-person-schema"
@@ -664,7 +654,7 @@ export default function NewspaperTheme({
                         width={300}
                         height={375}
                         priority
-                        className="w-full h-full object-cover filter grayscale contrast-125 brightness-95"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                     <div className="mt-2 text-[9px] font-mono leading-tight text-gray-600">
@@ -1036,10 +1026,11 @@ export default function NewspaperTheme({
 
             {/* 2. Secondary Projects (Medium) side-by-side */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[resumeData.projects[1], resumeData.projects[2]].map((proj, idx) => {
+              {(showAllProjects ? [resumeData.projects[1], resumeData.projects[2]] : [resumeData.projects[1]]).map((proj, idx) => {
                 if (!proj) return null;
+                const colSpanClass = (!showAllProjects && idx === 0) ? "md:col-span-2" : "md:col-span-1";
                 return (
-                  <div key={idx} className="border border-[#1F1F1F] bg-[#FFFDF8] p-4 flex flex-col justify-between space-y-3 rounded-none">
+                  <div key={idx} className={`${colSpanClass} border border-[#1F1F1F] bg-[#FFFDF8] p-4 flex flex-col justify-between space-y-3 rounded-none`}>
                     <div className="space-y-2">
                       <div className="flex justify-between items-center text-[9px] font-mono text-gray-500 border-b border-[#1F1F1F]/10 pb-1 uppercase tracking-wider">
                         <span>Project Index #{idx + 2}</span>
@@ -1087,40 +1078,113 @@ export default function NewspaperTheme({
             </div>
 
             {/* 3. Tertiary Projects (Small briefs) side-by-side or filler */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-              {[resumeData.projects[3], resumeData.projects[4]].map((proj, idx) => {
-                if (!proj) return null;
-                return (
-                  <div key={idx} className="border-t border-b border-dashed border-[#1F1F1F] py-3 space-y-2">
-                    <div className="flex justify-between items-center text-[8.5px] font-mono text-gray-500 uppercase tracking-wider">
-                      <span className="font-bold text-[#111111]">★ Technology Brief</span>
-                      <span>{proj.date}</span>
+            {showAllProjects && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                {[resumeData.projects[3], resumeData.projects[4]].map((proj, idx) => {
+                  if (!proj) return null;
+                  return (
+                    <div key={idx} className="border-t border-b border-dashed border-[#1F1F1F] py-3 space-y-2">
+                      <div className="flex justify-between items-center text-[8.5px] font-mono text-gray-500 uppercase tracking-wider">
+                        <span className="font-bold text-[#111111]">★ Technology Brief</span>
+                        <span>{proj.date}</span>
+                      </div>
+                      <h4 
+                        onClick={() => setSelectedProject(proj)}
+                        className="font-serif-heading font-bold text-sm text-[#111111] hover:underline cursor-pointer uppercase leading-tight"
+                      >
+                        {proj.title}
+                      </h4>
+                      <p className="font-serif-body text-[11px] text-gray-600 text-justify leading-relaxed">
+                        {proj.description[0]}
+                      </p>
+                      <div className="flex justify-between items-center pt-1 font-mono text-[8.5px] select-none">
+                        <span className="text-gray-500">Stack: {proj.tech_stack.slice(0, 3).join(', ').toUpperCase()}</span>
+                        <div className="flex space-x-2">
+                          {proj.github_link && (
+                            <a href={proj.github_link} target="_blank" rel="noopener noreferrer" className="hover:underline font-bold text-black">
+                              Source ↗
+                            </a>
+                          )}
+                          <button onClick={() => setSelectedProject(proj)} className="hover:underline font-bold text-black cursor-pointer">
+                            Full Brief →
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <h4 
-                      onClick={() => setSelectedProject(proj)}
-                      className="font-serif-heading font-bold text-sm text-[#111111] hover:underline cursor-pointer uppercase leading-tight"
-                    >
-                      {proj.title}
-                    </h4>
-                    <p className="font-serif-body text-[11px] text-gray-600 text-justify leading-relaxed">
-                      {proj.description[0]}
-                    </p>
-                    <div className="flex justify-between items-center pt-1 font-mono text-[8.5px] select-none">
-                      <span className="text-gray-500">Stack: {proj.tech_stack.slice(0, 3).join(', ').toUpperCase()}</span>
-                      <div className="flex space-x-2">
-                        {proj.github_link && (
-                          <a href={proj.github_link} target="_blank" rel="noopener noreferrer" className="hover:underline font-bold text-black">
-                            Source ↗
-                          </a>
-                        )}
-                        <button onClick={() => setSelectedProject(proj)} className="hover:underline font-bold text-black cursor-pointer">
-                          Full Brief →
+                  );
+                })}
+              </div>
+            )}
+
+            {/* 4. Additional Archive Stories (for projects 5, 6, 7) */}
+            {showAllProjects && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                {[resumeData.projects[5], resumeData.projects[6], resumeData.projects[7]].map((proj, idx) => {
+                  if (!proj) return null;
+                  return (
+                    <div key={idx} className="border border-[#1F1F1F] bg-[#FFFDF8] p-4 flex flex-col justify-between space-y-3 rounded-none">
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center text-[9px] font-mono text-gray-500 border-b border-[#1F1F1F]/10 pb-1 uppercase tracking-wider">
+                          <span>Dispatch Archive #{idx + 6}</span>
+                          <span>{proj.date}</span>
+                        </div>
+                        <h3 
+                          onClick={() => setSelectedProject(proj)}
+                          className="font-serif-heading font-black text-sm text-black hover:underline cursor-pointer uppercase leading-tight"
+                        >
+                          {proj.title}
+                        </h3>
+                        <p className="font-serif-body text-[11px] text-gray-700 text-justify leading-normal">
+                          {proj.description[0]}
+                        </p>
+                        <div className="flex flex-wrap gap-1 font-mono text-[8px] select-none pt-1">
+                          {proj.tech_stack.slice(0, 4).map((tech, i) => (
+                            <span key={i} className="px-1 py-0.25 border border-[#1F1F1F]/60 bg-[#FFFDF8] uppercase">{tech}</span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center pt-2.5 border-t border-[#1F1F1F]/10 font-mono text-[9px] select-none">
+                        <div className="flex space-x-2">
+                          {proj.github_link && (
+                            <a href={proj.github_link} target="_blank" rel="noopener noreferrer" className="hover:underline font-bold text-black">
+                              Source ↗
+                            </a>
+                          )}
+                        </div>
+                        <button 
+                          onClick={() => setSelectedProject(proj)}
+                          className="hover:underline font-bold text-black cursor-pointer"
+                        >
+                          Details →
                         </button>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Newspaper Toggle Button */}
+            <div className="text-center pt-4 select-none font-mono">
+              {!showAllProjects ? (
+                <button
+                  onClick={() => setShowAllProjects(true)}
+                  className="w-full font-mono text-xs font-bold uppercase tracking-wider px-6 py-2.5 bg-transparent text-black border-2 border-double border-[#1F1F1F] hover:bg-[#1F1F1F] hover:text-[#FFFDF8] transition-all cursor-pointer"
+                >
+                  [+] Read Additional Project Registers & Briefs (Show {resumeData.projects.length - 2} More)
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setShowAllProjects(false)
+                    scrollTo('projects')
+                  }}
+                  className="w-full font-mono text-xs font-bold uppercase tracking-wider px-6 py-2.5 bg-transparent text-black border-2 border-double border-[#1F1F1F] hover:bg-red-700 hover:text-white hover:border-red-700 transition-all cursor-pointer"
+                >
+                  [-] Close Additional Project Registers
+                </button>
+              )}
             </div>
 
           </div>
@@ -1274,7 +1338,7 @@ export default function NewspaperTheme({
                     <img
                       src={cert.image}
                       alt={`Certificate Verification`}
-                      className="w-full h-auto filter grayscale contrast-125 brightness-95"
+                      className="w-full h-auto"
                     />
                   </div>
                   <div className="sm:col-span-8 space-y-3 text-xs font-serif-body">
