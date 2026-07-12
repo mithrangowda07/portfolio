@@ -1,137 +1,126 @@
 # Portfolio UI Design System & Architecture
 
-This document provides a comprehensive explanation of the design system, color theory, typography, layouts, responsiveness, and interactive user interface (UI) components implemented in the **Mithra N Gowda** personal portfolio.
+This document outlines the visual language, design system tokens, layout grids, components architecture, interactive micro-animations, and engineering practices implemented in **Mithra N Gowda's** retro OS-themed portfolio.
 
 ---
 
-## 1. Core Design Philosophy
+## 1. Design Philosophy: Neo-Retro Classic Desktop GUI
 
-The portfolio's user interface is designed to present a professional yet modern, high-tech, and engaging experience. It follows three major tenets:
-1. **Developer-Centric Monospace Accents**: Utilizing monospace numbers and code-like tags to reflect the software engineering focus of the owner.
-2. **Midnight Deep Dark Aesthetic**: Drawing inspiration from popular IDE themes like *Tokyo Night* to evoke a comfortable, developer-friendly reading environment.
-3. **Typographic Contrast**: Mixing a classic Serif font for brand identity with clean, readable Sans-Serif fonts for data-heavy structures.
+The user interface of the portfolio takes inspiration from classic desktop operating system environments (such as Windows 95, classic Macintosh OS, and early workstation GUIs) and blends it with modern **Neo-Brutalism**. 
+
+Key design pillars include:
+1. **Physical Depth and Tactile Feedback**: Utilizing thick, solid borders combined with sharp block shadows (`shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`) that translate/reduce on active click, simulating a physical button press.
+2. **File Explorer Metaphor**: Using directory folders, browser-like composer windows, and index numbering to structure content logically for developers and recruiters.
+3. **High-Contrast Monochrome Base**: A light-themed monochrome palette paired with a vibrant blue accent to guide readability, focus attention, and deliver a clean, professional aesthetic.
+4. **Retro Grayscale Imagery**: Portrait and certificate images are stylized with a CSS grayscale filter, reverting to color only on hover or user focus.
 
 ---
 
 ## 2. Color Palette & Visual Tokens
 
-The portfolio relies on a dark-themed CSS variable design system defined in `globals.css` with Tailwind CSS utility mappings:
+The portfolio implements a light-themed color hierarchy controlled via utility mappings and custom theme classes in `globals.css` and `tailwind.config`:
 
-| Token Name | CSS Variable | Hex Color | Tailwind Role / Context |
+| Token Name | Hex Color / Variable | Tailwind Mapping | Role / Context |
 | :--- | :--- | :--- | :--- |
-| **Background** | `--background` | `#0f0f23` | Main page background (deep midnight indigo-blue). |
-| **Card BG** | `--card-bg` | `#1a1a2e` | Component card backdrops, header background, and timeline cards. |
-| **Border** | `--border` | `#2d2d44` | Subtle container lines, divider lines, and card outlines. |
-| **Accent (Primary)** | `--accent` | `#4f46e5` | Core interactive elements (buttons, active nav, primary timeline borders). Indigo-600. |
-| **Accent Hover** | `--accent-hover` | `#6366f1` | Interactive elements hover state. Indigo-500. |
-| **Foreground** | `--foreground` | `#ffffff` | Primary text and major headers. |
-| **Muted Text** | N/A | `#9ca3af` / `#d1d5db` | Secondary text, descriptions, and timelines. |
-
-### Semantic Color Coding
-* **Education Timeline Elements**: Accentuated by Indigo (`#4f46e5`) borders to represent academic structure.
-* **Work Experience Timeline Elements**: Highlighted with Green (`#4ade80`) borders to signify growth, professional career, and stability.
-* **Leadership & Extracurricular Elements**: Denoted by Yellow (`#facc15`) borders representing community, energy, and volunteerism.
-* **LeetCode Ratings & Streaks**: Uses warm Amber/Orange gradients (`#f97316` to `#eab308`) representing gamification, competitive coding, and achievement.
+| **Workspace BG** | `#F8F8F5` | `bg-[#F8F8F5]` | Desktop workspace canvas backdrop. |
+| **Window BG** | `#FFFFFF` | `bg-white` | Body background for all interactive retro windows. |
+| **Control/Status BG** | `#EFEFEF` | `bg-[#EFEFEF]` | Inactive folder tabs, toolbar headers, button hover states. |
+| **Primary Accent** | `#2563EB` | `bg-[#2563EB]` / `text-[#2563EB]` | Active tabs, section highlights, focus rings, link details. |
+| **Text Foreground** | `#111111` | `text-[#111111]` | Primary text, headers, and window toolbar titles. |
+| **Muted Text** | `#444444` | `text-[#444444]` | Secondary paragraphs, descriptions, and metadata labels. |
+| **Borders** | `#000000` | `border-black` | Solid 2px outlines dividing workspace components. |
 
 ---
 
-## 3. Typography Hierarchy
+## 3. Typography System
 
-The UI achieves visual balance by combining three distinct typeface families:
+The interface creates typographic contrast by loading three custom Google Font families:
 
-1. **Brand Headers (Times New Roman)**
-   * **Application**: Logo text (`Mithra N Gowda`) and the Hero Greeting (`Hi, I'm Mithra N Gowda`).
-   * **Rationale**: The serif styling offers a classic, authoritative, and stable contrast to the tech-heavy sans-serif layout, creating a premium "editorial" feel.
-2. **Body & Controls (Inter)**
-   * **Application**: Applied globally to body texts, lists, inputs, and form buttons.
-   * **Rationale**: A highly legible, modern geometric sans-serif that ensures excellent readability at both small and large sizes, with optimal kerning for digital displays.
-3. **Technical Labeling (Monospace)**
-   * **Application**: Navigation items (`00 : Home`, `01 : About`, etc.).
-   * **Rationale**: Adds a code-like aesthetic, reinforcing the engineering theme of the portfolio.
+1. **Body & Controls (Inter)**
+   * **CSS Variable**: `--font-sans`
+   * **Usage**: Paragraphs, lists, form input labels, button labels.
+   * **Rationale**: A highly legible geometric sans-serif that ensures excellent readability at all sizes on high-DPI screens.
+2. **Headers & Display (Space Grotesk)**
+   * **CSS Variable**: `--font-heading`
+   * **Usage**: Main landing headers, section names, and window dashboard titles.
+   * **Rationale**: A geometric sans-serif with quirky accents, reinforcing the modern neo-brutalist structure.
+3. **Technical Labeling & Code (JetBrains Mono)**
+   * **CSS Variable**: `--font-mono`
+   * **Usage**: Navigation links, composer headers, data grids, status bars, and terminal alerts.
+   * **Rationale**: A clean, modern developer-focused monospace font reflecting code interfaces.
 
 ---
 
-## 4. Layout & Grid Systems
+## 4. Interactive Canvas Grid Background (`ShapeGrid`)
 
-The application uses Next.js app layout paradigms to structure the page into a scrollable SPA (Single Page Application):
+The portfolio features a custom background component (`ShapeGrid.tsx`) that renders an interactive grid on an HTML5 canvas:
 
-### Fluid Layout Flow
-* **Root Layout ([layout.tsx](file:///home/mithra/projects/portfolio/src/app/layout.tsx))**: Enforces a full viewport constraint (`min-h-screen`) and injects the global style sheet.
-* **Horizontal Navigation**: A fixed top navigation bar (`fixed top-0 left-0 right-0 z-50`) with a thin border separator (`border-b border-[#2d2d44]`). It remains visible at all times to facilitate seamless jumping between sections.
-* **One-Way Vertical Scrolling**: All page content sits inside `<main className="pt-16">` in a single-column block where individual sections are highlighted via viewport intersection tracking.
+* **Grid Geometry**: Dynamically calculates and renders shapes (squares, hexagons, triangles, circles) matching the viewport size.
+* **Cursor Trail Mapping**: Detects mouse movements, calculates grid column/row indices, and illuminates the cell under the cursor with a fading trailing opacity path (`hoverTrailAmount={6}`).
+* **Light-Theme Vignette**: Overlays a radial gradient that fades out to the retro background color `#F8F8F5` at the screen boundaries, centering visual focus on the portfolio content.
 
 ---
 
 ## 5. Detailed Component UI Walkthrough
 
-### 5.1 Fixed Navigation Header
-* **Desktop View**: Horizontal spread. Each item is prefixed by a two-digit monospace index (`00 : `, `01 : `) to simulate code structures. The active section receives an Indigo hue.
-* **Mobile View**: Collapses into a burger menu. Clicking the Lucide `Menu` icon opens an animated mobile drawer containing full-width stacked button targets to guarantee touch usability. Clicking an item automatically dismisses the drawer (`setIsSidebarOpen(false)`).
+### 5.1 Floating Retro Toolbar Navbar
+* **Layout**: A fixed, floating panel (`fixed top-4 left-1/2 -translate-x-1/2`) with a heavy block shadow.
+* **Active State**: Navigation items display a solid black background with white text when matching the current active section.
+* **Mobile Drawer**: On mobile devices, the toolbar collapses into a hamburger menu. Tapping the trigger slides down a vertical directory list mimicking a desktop menu file dropdown.
 
-### 5.2 Hero / Home Section
-* **Grid Split**: Combines a standard two-column layout on desktop which collapses into a single-column layout on mobile.
-* **Text Side (Left)**: Bold statement headers alongside immediate contact hooks (Mail, LinkedIn, MapPin) and two contrasting call-to-actions:
-  * *Primary CTA (View My Work)*: Solid Indigo background.
-  * *Secondary CTA (Get in Touch)*: Bordered transparent design.
-* **Image Side (Right)**: Circular profile portrait framed by an indigo border shadow (`rounded-full shadow-xl border-4 border-indigo-400`).
+### 5.2 Retro Window Widget (`RetroWindow`)
+* **Window Header**: Features close, minimize, and maximize buttons (`●`, `○`, `□`) that trigger interactive animations, alongside an active system status indicator.
+* **Tactile Boundaries**: Bound by a solid 2px black border with a block shadow.
 
-### 5.3 About & Education Cards
-* **Education Timeline**: Education records are structured inside cards with an elegant left border accent (`border-l-4 border-[#4f46e5] pl-4 lg:pl-6`) and standard spacing. 
-* **Coursework & Hobbies Grid**: Relevant subjects and leisure pursuits are organized inside responsive tag pill boxes (`bg-[#1a1a2e] border border-[#2d2d44] rounded-lg`) to avoid walls of text.
+### 5.3 Tabbed Profile Dashboard (`About` Section)
+* **Tab Selector**: Vertical tab navigation on desktop, horizontal scroll on mobile.
+* **Dynamic Panels**: Smooth transition animations via `framer-motion` when swapping tabs (About Me, Education, Coursework, Interests, Quick Facts).
 
-### 5.4 Experience Timelines
-* **Work Experience Cards**: Styled with a green border (`border-l-4 border-green-400`) and standard typography. Bulleted responsibility lists utilize clean indentation margins.
-* **Leadership Timeline**: Leverages yellow styling (`border-l-4 border-yellow-400`) to visually separate student volunteer work (NSS) from industrial internships.
+### 5.4 Technical Skills Grid
+* **Filters**: Categories separated into "Languages", "Frameworks", and "Tools & DBs".
+* **Progress Bars**: Every skill card displays a custom retro progress bar mapping the skill's proficiency index.
+* **System Alert popup**: Clicking a skill triggers a retro OS-style dialog notification showing detailed stats.
 
-### 5.5 Interactive Projects Grid & Modals
-* **The Grid**: Renders project cards that subtly light up on hover (`hover:border-[#4f46e5] transition-colors`).
-* **Show More Trigger**: Opens a fully immersive modal system:
-  * **Overlay Layout**: Fixed full-screen display (`fixed inset-0 z-50`) with an organic glassmorphic blur (`backdrop-blur-sm bg-black/80`).
-  * **Inner Modal Card**: Rich gradient backdrop (`bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460]`) with overlapping diagonal violet light gradients (`absolute inset-0 opacity-10`).
-  * **Tech Tags**: Represented as translucent pills (`bg-white/10 border border-white/20 rounded-full`).
-  * **CTA Buttons**: Double-row buttons for GitHub code repository and Live Demo URL, designed as hover-reactive cards that enlarge slightly (`transform hover:scale-105 transition-all`).
+### 5.5 Project Cards & Lightbox Modals
+* **Bento Grid**: Features a variable-span layout highlighting key applications (e.g., KCET EduGuide).
+* **Immersive Modal**: Clicking "Know More" launches a lightbox dialog card (`backdrop-blur-[1px] bg-black/40`) containing comprehensive release dates, team contributors, descriptive bullets, and direct action redirect links.
 
-### 5.6 GitHub Contributions Section
-* Incorporates live dynamic cards that render contribution progress:
-  * **Contribution Streak**: Fetched from `streak-stats.demolab.com` themed in *Tokyo Night* (`theme=tokyonight`).
-  * **Heatmap Activity**: Fetched from `github-readme-activity-graph` themed to match the dark color guidelines.
-  * Cards are encased in responsive panels that stretch gracefully across layouts.
+### 5.6 Experience Timeline Carousel
+* **Auto-Play Swiper**: Incorporates a custom Swiper engine rendering professional history cards.
+* **Player Dashboard**: A custom playback control bar allows users to play/pause autoplays or manually scroll slides using retro-style arrow navigation buttons.
 
-### 5.7 LeetCode Journey Section
-* **API Integration**: Fetches live data from `alfa-leetcode-api` to output up-to-date competitive coding indicators.
-* **Status Indicators**:
-  * Displays four metrics cards (Contest Rating, Global Contest Rank, Top Percentage, Contests Attended).
-  * Each card has a distinct accent border hover-color (Orange, Yellow, Amber, Green).
-* **LeetCode Heatmap**: Uses a dedicated Jacoblin LeetCode widget matching the layout width.
+### 5.7 Folder-Style Certificates Drawer
+* **Dynamic Expansion**: Simulates unfolding folder drawers. Clicking a certificate opens a drawer displaying NPTEL/IIT/IISc verified certificates with an option to open full-resolution copies.
 
-### 5.8 Certificates Drawer Modal
-* Clicking any certificate card (`cursor-pointer bg-[#1a1a2e] hover:scale-105`) launches a responsive lightbox modal, showcasing the verified NPTEL/IIT/IISc credentials over a dark screen backdrop.
+### 5.8 API Metrics Panels
+* **LeetCode API**: Interacts with the `alfa-leetcode-api` backend to fetch rating metrics and ranks. In case of API rate limits, it falls back to a clean default state.
+* **Github Streak & Activity Heatmaps**: Incorporates live-linked SVGs styled with `theme=github-light` and `filter grayscale` to match the monochrome aesthetic.
 
-### 5.9 Interactive Contact Form
-* A custom React-controlled form with responsive grids.
-* **Fields**: Styled text inputs using `#1a1a2e` background with Indigo border focus state overrides (`focus:border-[#4f46e5] focus:outline-none`).
-* **Status Hooks**: Success/Error states render inline notifications dynamically (green for success, red for failures).
+### 5.9 Contact Terminal / Composer
+* **Design**: Recreates a classic email composer interface.
+* **Validation**: Focus overrides utilize dynamic color styling to indicate validation state (e.g., green for successful transmission, red for errors).
 
 ---
 
-## 6. Micro-animations, Transitions & CSS Tweaks
+## 6. Micro-animations, Transitions & Tactile Feedback
 
-To ensure the portfolio feels alive and responsive, the following styling details are applied:
+To make the desktop GUI feel alive, the portfolio integrates customized feedback animations:
 
-1. **Hover Scale Scaling**: Heavy interactive items like project buttons, LeetCode profile links, and certificates use `hover:scale-105 transition-all duration-300` to provide physical feedback to user interaction.
-2. **Smooth Scroll**: Defined in `globals.css` (`scroll-behavior: smooth`) to transition the page view when navigation items are clicked.
-3. **Custom Scrollbar Styling**: 
-   * A unified visual interface for scrollbars using webkit extensions.
-   * Wide track on desktop (`8px`) which scales down on mobile devices (`4px`) to preserve view real estate.
-   * Thumbs colored to match container borders and transitioning to primary indigo on hover.
-4. **Touch Improvements**: `-webkit-tap-highlight-color: transparent` stops blue flashes from appearing on touch devices when navigation links are clicked.
+1. **Physical Button Press**: Active button presses utilize tailwind class translations:
+   ```css
+   .active-press {
+     transform: translate(2px, 2px);
+     box-shadow: 1px 1px 0px 0px rgba(0, 0, 0, 1);
+   }
+   ```
+2. **Tab and Modal Transitions**: `framer-motion` animates transitions, utilizing subtle scaling and opacity fade-ins to prevent abrupt layout shifts.
+3. **Monospace Custom Scrollbar**: Thick scrollbars styled with `#D6D6D6` handles and solid black borders, resizing on mobile platforms to optimize real estate.
 
 ---
 
-## 7. Accessibility (a11y) & SEO Integration
+## 7. Accessibility (a11y) & SEO Architecture
 
-The user interface was built to meet modern search engine optimization (SEO) and user accessibility requirements:
-* **Semantic Outlining**: Strictly uses semantic tags: `<main>`, `<nav>`, `<section>`, `<address>`, `<aside>`, and nested `<h1>` through `<h4>` tags in perfect hierarchical order.
-* **Image Optimizations**: All images utilize the Next.js `<Image />` component with set height/widths and automated quality compression parameters.
-* **Aria Role Attributes**: Screen readers are supported via explicit label descriptors (e.g. `aria-label="Visit Mithra N Gowda on GitHub"`, `aria-label="Primary"`).
-* **Search Engine Visibility**: Injects structured JSON-LD data schemas representing a `Person` directly inside the DOM to improve indexing results.
+* **Semantic HTML**: Standardized layout structuring using HTML5 `<main>`, `<section>`, `<nav>`, `<footer>`, `<header>`, and `<address>` tags.
+* **Next.js Image Optimization**: All image components use `next/image` to serve optimized NextGen formats (WebP/AVIF), complete with alt descriptions.
+* **SEO Metadata**: Features robust search-engine meta headers, OpenGraph profiles, and an integrated robots.txt & sitemap generator.
+* **Structured Data**: Injects a Person JSON-LD Schema into the DOM to populate search engines with clean indexing indices.

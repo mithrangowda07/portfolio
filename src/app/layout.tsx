@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
+import { Inter, Space_Grotesk, JetBrains_Mono, Playfair_Display, Lora } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({
@@ -17,6 +17,18 @@ const spaceGrotesk = Space_Grotesk({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
+  display: 'swap',
+})
+
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-serif-heading',
+  display: 'swap',
+})
+
+const lora = Lora({
+  subsets: ['latin'],
+  variable: '--font-serif-body',
   display: 'swap',
 })
 
@@ -103,8 +115,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
-      <body className="antialiased bg-[#F8F8F5] text-[#111111] font-sans selection:bg-[#2563EB] selection:text-white">
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable} ${lora.variable}`}>
+      <body className="antialiased">
         {children}
       </body>
     </html>

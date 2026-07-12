@@ -12,6 +12,7 @@ interface ShapeGridProps {
   shape?: 'square' | 'hexagon' | 'circle' | 'triangle'
   hoverTrailAmount?: number
   className?: string
+  theme?: 'retro' | 'newspaper'
 }
 
 interface Point {
@@ -27,7 +28,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
   hoverFillColor = '#222',
   shape = 'square',
   hoverTrailAmount = 0,
-  className = ''
+  className = '',
+  theme = 'retro'
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const requestRef = useRef<number | null>(null)
@@ -208,7 +210,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
         }
       }
 
-      // Light-theme vignette radial gradient fading out to retro background color #F8F8F5
+      // Vignette radial gradient color matching the active theme background
+      const vignetteColor = theme === 'newspaper' ? '247, 243, 235' : '248, 248, 245'
       const gradient = ctx.createRadialGradient(
         canvas.width / 2,
         canvas.height / 2,
@@ -217,8 +220,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
         canvas.height / 2,
         Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2
       )
-      gradient.addColorStop(0, 'rgba(248, 248, 245, 0)')
-      gradient.addColorStop(1, 'rgba(248, 248, 245, 0.75)')
+      gradient.addColorStop(0, `rgba(${vignetteColor}, 0)`)
+      gradient.addColorStop(1, `rgba(${vignetteColor}, 0.75)`)
 
       ctx.fillStyle = gradient
       ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -415,7 +418,7 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
         cancelAnimationFrame(requestRef.current)
       }
     }
-  }, [direction, speed, borderColor, hoverFillColor, squareSize, shape, hoverTrailAmount])
+  }, [direction, speed, borderColor, hoverFillColor, squareSize, shape, hoverTrailAmount, theme])
 
   return <canvas ref={canvasRef} className={`shapegrid-canvas ${className}`}></canvas>
 }

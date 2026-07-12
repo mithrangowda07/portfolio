@@ -8,5 +8,5 @@
   display: block;
   z-index: -1;
   pointer-events: auto;
-  background-color: #F8F8F5;
+  background-color: var(--background);
 }
