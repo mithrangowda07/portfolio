@@ -153,3 +153,57 @@ html {
 .swiper-pagination-bullet-active {
   background: #111111 !important;
 }
+
+/* Authentic Newspaper Print Styles */
+.newspaper-double-border {
+  border-bottom: 4px double #1F1F1F;
+}
+
+.newspaper-double-border-top {
+  border-top: 4px double #1F1F1F;
+}
+
+.newspaper-double-border-y {
+  border-top: 4px double #1F1F1F;
+  border-bottom: 4px double #1F1F1F;
+}
+
+.newspaper-drop-cap::first-letter {
+  float: left;
+  font-size: 3.8rem;
+  line-height: 0.8;
+  margin-top: 0.15em;
+  margin-right: 0.1em;
+  font-family: var(--font-serif-heading), serif;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+/* Custom column rule separator */
+.column-rule {
+  column-rule: 1px solid rgba(31, 31, 31, 0.2);
+}
+
+.theme-newspaper input, 
+.theme-newspaper textarea {
+  border-radius: 0 !important;
+}
+
+/* Scrolling News Marquee Animation */
+@keyframes marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+
